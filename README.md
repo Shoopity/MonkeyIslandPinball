@@ -10,3 +10,27 @@ This is a place for people to contribute to the Visual Pinball original table, M
 Here is the thread where work was being done. As you can see, it started way back in 2016. Life happened and I pretty much fell out of the community as a whole, and work on the table definitely stopped. Here in 2021, I was surprised to see the thread still alive, so I figured I could at least try to make a place where people with the skills, time, and gumption to make this an actual table that people would be proud to put in their cabs. I'm not sure how much I can contribute to the table anymore, but at least I can work on this place.
 
 That's the idea anyway. This could be a horrible way of doing this for all I know. But here we go.
+
+One thing I want to say on this page, for debugging the game:
+Push 5 as normal to insert a coin
+Push 1 to start the game as normal
+DO NOT LAUNCH THE BALL
+Push "t" to "pick up the ball" (move it off the table)
+You can then push the following keys to throw a test ball at all the shots:
+A	Eek shot
+S	Left Loop
+E	"I" target
+F	Scumm Shot
+G	"N" target
+H	Scumm Ramp
+J	"S" target
+K	Le Chuck
+L	Ack shot
+;	Monkey Head
+'	Voodoo lady
+Z	"U" target
+X	Banana ramp
+C	"L" target
+V	Grog/right loop
+B	"T" target
+N	Ook shot
