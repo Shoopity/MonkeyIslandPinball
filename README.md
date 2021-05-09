@@ -11,26 +11,26 @@ Here is the thread where work was being done. As you can see, it started way bac
 
 That's the idea anyway. This could be a horrible way of doing this for all I know. But here we go.
 
-One thing I want to say on this page, for debugging the game:
-Push 5 as normal to insert a coin
-Push 1 to start the game as normal
-DO NOT LAUNCH THE BALL
-Push "t" to "pick up the ball" (move it off the table)
-You can then push the following keys to throw a test ball at all the shots:
-A	Eek shot
-S	Left Loop
-E	"I" target
-F	Scumm Shot
-G	"N" target
-H	Scumm Ramp
-J	"S" target
-K	Le Chuck
-L	Ack shot
-;	Monkey Head
-'	Voodoo lady
-Z	"U" target
-X	Banana ramp
-C	"L" target
-V	Grog/right loop
-B	"T" target
-N	Ook shot
+One thing I want to say on this page, for debugging the game:\
+Push 5 as normal to insert a coin\
+Push 1 to start the game as normal\
+DO NOT LAUNCH THE BALL\
+Push "t" to "pick up the ball" (move it off the table)\
+You can then push the following keys to throw a test ball at all the shots:\
+A	Eek shot\
+S	Left Loop\
+E	"I" target\
+F	Scumm Shot\
+G	"N" target\
+H	Scumm Ramp\
+J	"S" target\
+K	Le Chuck\
+L	Ack shot\
+;	Monkey Head\
+'	Voodoo lady\
+Z	"U" target\
+X	Banana ramp\
+C	"L" target\
+V	Grog/right loop\
+B	"T" target\
+N	Ook shot\
