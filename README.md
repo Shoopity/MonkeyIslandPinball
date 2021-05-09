@@ -17,20 +17,20 @@ Push 1 to start the game as normal\
 DO NOT LAUNCH THE BALL\
 Push "t" to "pick up the ball" (move it off the table)\
 You can then push the following keys to throw a test ball at all the shots:\
-A	Eek shot\
-S	Left Loop\
-E	"I" target\
-F	Scumm Shot\
-G	"N" target\
-H	Scumm Ramp\
-J	"S" target\
-K	Le Chuck\
-L	Ack shot\
-;	Monkey Head\
-'	Voodoo lady\
-Z	"U" target\
-X	Banana ramp\
-C	"L" target\
-V	Grog/right loop\
-B	"T" target\
-N	Ook shot\
+A -	Eek shot\
+S -	Left Loop\
+E -	"I" target\
+F -	Scumm Shot\
+G -	"N" target\
+H -	Scumm Ramp\
+J -	"S" target\
+K -	Le Chuck\
+L -	Ack shot\
+; -	Monkey Head\
+' -	Voodoo lady\
+Z -	"U" target\
+X -	Banana ramp\
+C -	"L" target\
+V -	Grog/right loop\
+B -	"T" target\
+N -	Ook shot\
