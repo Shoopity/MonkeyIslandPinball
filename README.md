@@ -33,4 +33,4 @@ X -	Banana ramp\
 C -	"L" target\
 V -	Grog/right loop\
 B -	"T" target\
-N -	Ook shot\
+N -	Ook shot
