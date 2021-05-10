@@ -1,3 +1,4 @@
+
 Option Explicit
 Randomize
 
@@ -137,7 +138,7 @@ End Sub
 
 Sub Table1_KeyDown(ByVal keycode)
 	'Test Kicker Stuff
-	If Keycode = 20 Then
+	If Keycode = 20 Then															'EP- T  "Pick up" the ball
 		If NOT (BallMoverHold is Nothing) Then
 			BallMoverHold.X = KiHold.X
 			BallMoverHold.Y = KiHold.Y
@@ -145,7 +146,7 @@ Sub Table1_KeyDown(ByVal keycode)
 	End If
 	If Keycode = 30 Then KiTest1.CreateBall.ID= 21:KiTest1.Kick -45, 20, 0			'EP- A	Eek shot
 	If Keycode = 31 Then KiTest1.CreateBall.ID= 21:KiTest1.Kick -35, 60, 0			'EP- S	Left Loop
-	If Keycode = 32 Then KiTest1.CreateBall.ID= 21:KiTest1.Kick -26, 30, 0			'EP- D	"I" target
+	If Keycode = 18 Then KiTest1.CreateBall.ID= 21:KiTest1.Kick -26, 30, 0			'EP- E	"I" target
 	If Keycode = 33 Then KiTest1.CreateBall.ID= 21:KiTest1.Kick -23, 40, 0			'EP- F	Scumm Shot
 	If Keycode = 34 Then KiTest1.CreateBall.ID= 21:KiTest1.Kick -15, 25, 0			'EP- G	"N" target
 	If Keycode = 35 Then KiTest1.CreateBall.ID= 21:KiTest1.Kick -12, 40, 0			'EP- H	Scumm Ramp
@@ -417,6 +418,7 @@ Next
 
 Sub Timer1_Timer()
 	'Palm Trees
+	'TextBox2.Text = PrTrunk1.RotY
 	PrTrunk1.RotY = dSin(Sway)*2
 	PrTrunk2.RotY = PrTrunk1.RotY
 	PrTrunk3.RotY = PrTrunk1.RotY
@@ -433,10 +435,10 @@ Sub Timer1_Timer()
 	'******
 	'Rotate and move the magic dust
 	For Each X in Magic
-		X.RotZ = X.RotZ + 0.1
-'		X.Height = X.Height + 0.1
-		If X.Height >= 60 Then
-			X.Height = 0
+		X.RotZ = X.RotZ + 1
+		X.Height = X.Height + 0.025
+		If X.Height >= 80 Then
+			X.Height = 25
 			If MotorTimer.Enabled = True Then
 				X.X = RovingMagnet.X
 				X.Y = RovingMagnet.Y
@@ -449,14 +451,14 @@ Sub Timer1_Timer()
 	'***********
 End Sub
 
-Dim Waterfall:Waterfall = Array("Frame 10 (100ms)", "Frame 11 (100ms)", "Frame 12 (100ms)", "Frame 13 (100ms)", "Frame 14 (100ms)", "Frame 15 (100ms)", "Frame 16 (100ms)", "Frame 17 (100ms)", "Frame 18 (100ms)", "Frame 19 (100ms)", "Frame 20 (100ms)", "Frame 21 (100ms)", "Frame 22 (100ms)", "Frame 23 (100ms)", "Frame 24 (100ms)", "Frame 25 (100ms)", "Frame 26 (100ms)", "Frame 27 (100ms)", "Frame 28 (100ms)", "Frame 29 (100ms)", "Frame 30 (100ms)")
+Dim Waterfall:Waterfall = Array("Frame 10 (100ms)", "Frame 11 (100ms)", "Frame 12 (100ms)", "Frame 13 (100ms)", "Frame 14 (100ms)", "Frame 15 (100ms)", "Frame 16 (100ms)", "Frame 17 (100ms)", "Frame 18 (100ms)", "Frame 19 (100ms)", "Frame 20 (100ms)", "Frame 21 (100ms)", "Frame 22 (100ms)", "Frame 23 (100ms)", "Frame 24 (100ms)", "Frame 25 (100ms)", "Frame 26 (100ms)", "Frame 27 (100ms)", "Frame 28 (100ms)", "Frame 29 (100ms)", "Frame 30 (100ms)", "Frame 31 (100ms)", "Frame 32 (100ms)", "Frame 33 (100ms)", "Frame 34 (100ms)", "Frame 35 (100ms)", "Frame 36 (100ms)", "Frame 37 (100ms)", "Frame 38 (100ms)", "Frame 39 (100ms)", "Frame 40 (100ms)")
 Dim Waterfallkey:WaterfallKey = 0
 Sub TiWaterfall_Timer()
 	Ramp12.Image = WaterFall(WaterfallKey)
 	'Ramp11.Image = WaterFall(WaterfallKey)
 	'Ramp10.Image = WaterFall(WaterfallKey)
 	WaterfallKey = WaterfallKey + 1
-	If WaterfallKey >= 15 Then WaterfallKey = 1
+	If WaterfallKey > 30 Then WaterfallKey = 1
 End Sub
 
 ' *************************************************************************************
@@ -1309,26 +1311,32 @@ Sub AttractMode()
 	AttractLights()
 End Sub
 
-Dim AttractLightsStep:AttractLightsStep = 2
+Dim AttractLightsStep:AttractLightsStep = 1
+Dim tester:tester = 0
 Sub AttractLights()
 	TiLights.Enabled = 0
 	Select Case AttractLightsStep
 	Case 1
-		Attract1.UpdateInterval=1
+		Attract1.UpdateInterval=10
 		Attract1.Play SeqCircleOutOn ,20,3,50
 		Attract1.Play SeqClockRightOn ,90,3,50
 		Attract1.Play SeqMiddleOutVertOn ,20,3,50
 		AttractLightsStep = 2
 	Case 2
+		SeqModes.UpdateInterval=10
+		SeqMisc.UpdateInterval=10
+		SeqInsult.UpdateInterval=10
+		SeqShots.UpdateInterval=10
+		SeqLechuck.UpdateInterval=10
 		SeqModes.Play SeqRandom, 1, , 20000
-		SeqMisc.Play SeqScrewRightOn, 45, 50, 5
+		SeqMisc.Play SeqScrewRightOn, 90, 50, 1
+		SeqInsult.Play SeqBlinking, 10, 1000, 500
 		For X = 1 to 10
 			SeqShots.Play SeqRightOn, 60, 2, 1
 			SeqShots.Play SeqLeftOn, 60, 2, 1
-			SeqLeChuck.Play SeqUpOn, 0, 1, 1
-			SeqLeChuck.Play SeqDownOff, 0, 1, 1
+			SeqLeChuck.Play SeqUpOn, 10, 1, 1
+			SeqLeChuck.Play SeqDownOff, 10, 1, 1
 		Next
-		SeqInsult.Play SeqBlinking, , 1000, 50
 		AttractLightsStep = 1
 	End Select
 End Sub
@@ -5048,10 +5056,10 @@ Sub MotorTimer_Timer()
 	If RovingMagnet.X <= 150 Then Gate4.Open = 1
 	RovingMagnet.X = RovingMagnet.X - VooDooSpeedX
 	RovingMagnet.Y = (VooDooSlope * RovingMagnet.X) + VDC
-	For Each X in Magic
-		X.X = RovingMagnet.X
-		X.Y = RovingMagnet.Y
-	Next
+'	For Each X in Magic
+'		X.X = RovingMagnet.X
+'		X.Y = RovingMagnet.Y
+'	Next
 	If RovingMagnet.Y < Kicker9.Y Then MagnetsOffMain
 End Sub
 
@@ -6140,7 +6148,7 @@ End Sub
 '**************************************************
 '
 '   Generic Williams Display Driver Functions
-'                VersionString 2.0
+'                Version 2.0
 '
 '     Written By Chris Leathley (ala Black)
 '
@@ -7169,5 +7177,5 @@ End Sub
 Sub TiDebug_Timer()
 '	Dim BOT
 '	TextBox2.Text = CStr(BOT)
-	TextBox2.Text = GIGrog.State
+'	TextBox2.Text = GIGrog.State
 End Sub
