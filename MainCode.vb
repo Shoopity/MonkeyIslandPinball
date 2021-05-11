@@ -1,4 +1,3 @@
-
 Option Explicit
 Randomize
 
@@ -43,7 +42,7 @@ Sub Table1_Init()
 		.CreateEvents "AutoPlunger"
 	End With
 	emAvalaible = True
-'	TextBox1.Text= "": TextBox3.Text="F1 = HELP" 
+'	TextBox1.Text= "": TextBox3.Text="F1 = HELP"
 '	ScoreText.Text= ""
 	MoveHead(180)
 	Randomize
@@ -52,7 +51,7 @@ Sub Table1_Init()
 	MoveMouthguard(-1)
 	DisplayInit 20,7,1
 	DisplayQueueScreen "    TESTING     ", "    TESTING     ",3,3,0,1000,False,"Init5"
-	DisplayQueueScreen "     TABLE      ", "       OK       ",8,8,0,1000,False,""	
+	DisplayQueueScreen "     TABLE      ", "       OK       ",8,8,0,1000,False,""
 	DisplayQueueScreen "  MONKEY ISLAND ", "     "&VersionString&"     ",4,4,0,2000,False,""
 	DisplayQueueScreen " COPYRIGHT 2005 ", "   IAN  TAYLOR  ",0,0,0,2000,False,""
 	DisplayQueueScreen " VISUAL PINBALL ", " BY RANDY DAVIS ",0,0,0,1500,false,""
@@ -77,7 +76,7 @@ Sub Table1_Init()
 		.Size = 100
 		.GrabCenter = 0
 	End With
-	
+
 	Set voodoomag = New cvpmMagnet
 	With voodoomag
 		.InitMagnet Kicker6, 50
@@ -86,7 +85,7 @@ Sub Table1_Init()
 		.Y = Kicker6.Y
 		.Size = 100
 	End With
-	
+
 	Set MonkeyMag2 = New cvpmMagnet
 	With MonkeyMag2
 		.InitMagnet AKick, 50
@@ -95,7 +94,7 @@ Sub Table1_Init()
 		.Y = AKick.Y
 		.Size = 100
 	End With
-	
+
 	Set MonkeyMag1 = New cvpmMagnet
 	With MonkeyMag1
 		.InitMagnet EKick, 50
@@ -104,7 +103,7 @@ Sub Table1_Init()
 		.Y = EKick.Y
 		.Size = 100
 	End With
-	
+
 	Set MonkeyMag3 = New cvpmMagnet
 	With MonkeyMag3
 		.InitMagnet OKick, 50
@@ -113,7 +112,7 @@ Sub Table1_Init()
 		.Y = OKick.Y
 		.Size = 100
 	End With
-	
+
 '	TextBox1.Text= "Press 5 For Credit"
 	TiLights.Enabled = 0
 	Attract1.Play SeqCircleOutOn ,50,,2000
@@ -185,12 +184,12 @@ Sub Table1_KeyDown(ByVal keycode)
 		If (hsbModeActive = True) Then HighScoreProcessKey(keycode)
 	Case LeftFlipperKey
 		MoveHead(90)			'For Testing
-		If emModeActive = True Then			
+		If emModeActive = True Then
 			MenuIndex=MenuIndex+1
 			OperatorMenu: PlaySound "Ack"
 		ElseIf ModePicking = 1 Then
 			PickMode(-1)
-		Else								
+		Else
 			If GameStarted=0 Then
 				If (hsbModeActive = True) Then
 					HighScoreProcessKey(keycode)
@@ -202,7 +201,7 @@ Sub Table1_KeyDown(ByVal keycode)
 				If (Status="MonkeyBeat") Then BeatProcessKey(keycode)
 				If MysteryActive=True 	 Then MysteryProcessKey(keycode)
 			End If
-		End If								
+		End If
 	Case RightFlipperKey
 		MoveHead(-90)
 		If emModeActive = True Then
@@ -215,7 +214,7 @@ Sub Table1_KeyDown(ByVal keycode)
 			OperatorMenu: PlaySound "tink"
 		ElseIf ModePicking = 1 Then
 			PickMode(1)
-		Else				
+		Else
 			If GameStarted=0 Then
 				If (hsbModeActive = True) Then
 					HighScoreProcessKey(keycode)
@@ -257,7 +256,7 @@ Sub Table1_KeyDown(ByVal keycode)
 '			Case 4
 '				DisplayQueueScreen "   GO  TO THE   "," HOUSE OF MOJO  ",0,0,0,1500,True,""
 '			End Select
-'		Case "VoodooMagic" 
+'		Case "VoodooMagic"
 '			X=VoodooItemTodo-VoodooItem
 '			DisplayQueueScreen "HIT CAPTIVE BALL","  " & x & " HITS TO GO ",0,0,0,1000,True,""
 '		Case "Spitting","HighDive"
@@ -265,16 +264,16 @@ Sub Table1_KeyDown(ByVal keycode)
 '			DisplayQueueScreen "    TO ENTER    ","   COMPETITION  ",0,0,0,2500,True,""
 '		Case "SwordMaster"
 '			DisplayQueueScreen "   HIT INSULT   ","     TARGETS    ",0,0,0,500,False,""
-'			DisplayQueueScreen "  "&II&" "&NN&" "&SS&" "&UU&" "&LL&" "&TT&"   ","  SPELL INSULT  ",0,0,0,500,True,"" 
+'			DisplayQueueScreen "  "&II&" "&NN&" "&SS&" "&UU&" "&LL&" "&TT&"   ","  SPELL INSULT  ",0,0,0,500,True,""
 '		Case "DaintyLady"
 '			DisplayQueueScreen "  HIT FLASHING  ","    LIGHT TO    ",0,0,0,5000,False,""
-'			DisplayQueueScreen "    GET THE     ","      SHIP      ",0,0,0,500,True,""			
+'			DisplayQueueScreen "    GET THE     ","      SHIP      ",0,0,0,500,True,""
 '		Case "GraveDigger"
 '			DisplayQueueScreen "  HIT FLASHING  ","     LIGHT      ",0,0,0,5000,True,""
 '		Case "Normal"
-'			If ModesStarted=8 Then 
-'				If EscapeItems=8 Then 'if all items collected give message to shoot lechuck 		
-'					DisplayQueueScreen " ALL ITEMS FOUND"," SHOOT LECHUCK  ",3,3,0,2000,False,"init5"  		
+'			If ModesStarted=8 Then
+'				If EscapeItems=8 Then 'if all items collected give message to shoot lechuck
+'					DisplayQueueScreen " ALL ITEMS FOUND"," SHOOT LECHUCK  ",3,3,0,2000,False,"init5"
 '				Else
 ' 					DisplayQueueScreen "   ALL  MODES   ","    COMPLETE    ",3,3,0,1000,False,"init5"
 '					DisplayQueueScreen "      SHOOT     ","     LECHUCK    ",8,8,0,1000,False,"chuck1"
@@ -292,7 +291,7 @@ Sub Table1_KeyDown(ByVal keycode)
 '						DisplayQueueScreen "  "&II&" "&NN&" "&SS&" "&UU&" "&LL&" "&TT&"   ","  SPELL INSULT  ",2,2,0,1000,false,""
 '					End If
 '				End If
-'			End If 
+'			End If
 '			DisplayQueueScreen "      "&FormatScore1K(Barrels,"","")&"       "," BARRELS BUSTED ",2,2,0,1000,False,""
 '			DisplayQueueScreen "  " &FormatScore1K(Combos,"","") & " COMBOS    ","  " &FormatScore(ComboValue) &"     ",2,2,0,1000,False,""
 '			DisplayQueueScreen "     BONUS      ","      X "&BonusMultiplier&"       ",2,2,0,1000,False,""
@@ -304,7 +303,7 @@ Sub Table1_KeyDown(ByVal keycode)
 '				DisplayQueueScreen "    TO LITE     ","    JACKPOTS    ",3,3,0,1000,True,""
 '			End If
 '			If Super=1 Then DisplayQueueScreen " SHOOT LE CHUCK "," SUPER JACKPOT  ",3,3,0,1500,True,""
-'			If JPLight.State=LightStateBlinking Then 
+'			If JPLight.State=LightStateBlinking Then
 '				DisplayQueueScreen "   SHOOT  THE   ","  MONKEY  HEAD  ",0,0,0,1000,False,""
 '				DisplayQueueScreen "       FOR      ","     JACKPOT    ",0,0,0,50,False,""
 '				DisplayQueueScreen "       FOR      ","     JACKPOT    ",3,3,0,1000,True,""
@@ -312,43 +311,43 @@ Sub Table1_KeyDown(ByVal keycode)
 '		Case Else
 '			DisplayQueueScreen "  ESCAPE  MODE  "," HIT EVERYTHING ", 0,8,8,1000,True,""
 '		End Select
-'		End If			
+'		End If
 	Case StartGameKey
-		If emModeActive = True Then			
+		If emModeActive = True Then
 			OperatorMenuValidate
 			PlaySound "tink"
 		ElseIf ModePicking = 1 Then
 			PickMode(0)
 		Else
-			If GameStarted=0 Then	
-				If (hsbModeActive = True) Then  
+			If GameStarted=0 Then
+				If (hsbModeActive = True) Then
 					HighScoreProcessKey(keycode)
 				Else
 					If Credits>0 Then
 						Credits=Credits-1
 						GameStarted=1
-						StartGame			
+						StartGame
 					Else
 						DisplayFlushQueue
 						DisplayQueueScreen "     INSERT     ","      COINS     ",3,3,0,500,False,""
 						TextBox1.Text= "Press 5 For Credit"
 					End If
-				End If			
+				End If
 			Else 'game in pregress
-				If (Status="HighDive") Then  
+				If (Status="HighDive") Then
 					DiveProcessKey(keycode)
 				End If
 			End If
 		End If
-	Case AddCreditKey	
-		If emModeActive = False Then 		
-			emAvalaible = False				
+	Case AddCreditKey
+		If emModeActive = False Then
+			emAvalaible = False
 			Credits=Credits+1
 			Backflash
 			DisplayFlushQueue
 			PlaySound "start"
-			If GameStarted=0 Then			
-				If (hsbModeActive = True) Then  
+			If GameStarted=0 Then
+				If (hsbModeActive = True) Then
 					HighScoreProcessKey(keycode)
 				Else
 					If Credits=0 Then
@@ -370,7 +369,7 @@ Sub Table1_KeyDown(ByVal keycode)
 				End If
 			DisplayScoreQueue 2,1
 			End If
-		End If		
+		End If
 	Case 7
 		If emAvalaible = True Then
 			Lightning()
@@ -392,7 +391,7 @@ Sub Table1_KeyDown(ByVal keycode)
 				OperatorMenu_End
 			End If
 		End If
-	End Select                                                                               
+	End Select
 End Sub
 
 Sub Table1_KeyUp(ByVal keycode)'*********** KEY DOWN
@@ -447,7 +446,7 @@ Sub Timer1_Timer()
 	Next
 	'***********
 	'Temp Mouth testing
-	
+
 	'***********
 End Sub
 
@@ -507,7 +506,7 @@ Sub GetEscapeItems
 		AddScore (50000)
 		Kicker3Delay=Kicker3Delay+300
 	End If
-	If EscapeItems<8 Then	
+	If EscapeItems<8 Then
 		If ModesStarted=8 Then
 			DisplayQueueScreen "   ALL MODES    ","   COMPLETED    ",3,3,0,1250,True,"init5"
 			InitEscapeTimer.Enabled=True
@@ -518,7 +517,7 @@ Sub GetEscapeItems
 			Kicker3.TimerInterval=Kicker3Delay
 			Kicker3.TimerEnabled=True 'do not enable this timer when escape mode lit
 		End If
-	Else 'blink all items and start escape mode 
+	Else 'blink all items and start escape mode
 		EndMusic()
 		DisplayQueueScreen "   ALL ITEMS    ","   RECOVERED    ",3,3,0,1250,True,"init5"
 		LightArray(31, 1) = 0
@@ -573,7 +572,7 @@ Sub DoChuck()
 		SuperJackpot()
 	Else
 		DisplayFlushQueue()
-		DisplayQueueScreen " ADD TO JACKPOT ","      50K      ",0,0,0,500,True,"" 
+		DisplayQueueScreen " ADD TO JACKPOT ","      50K      ",0,0,0,500,True,""
 		PlaySound "clack"
 		PlaySound "multihit1"
 		Jackpot=Jackpot+50000
@@ -593,9 +592,9 @@ Sub DoChuck()
 		ModeTotal=ModeTotal+ModeTotalCoeff
 		ModeCompleteTimer.Enabled=True
 		LightArray(54, 1) = 1
-	Else	
+	Else
 		Kicker3Hits = Kicker3Hits+1
-		CheckKicker3Timer.Enabled=True	
+		CheckKicker3Timer.Enabled=True
 	End If
 	Case "Spitting"
 	If HurryUp=1 Then
@@ -613,7 +612,7 @@ Sub DoChuck()
 		Else
 			Kicker3.TimerEnabled=True
 		End If
-	Else	
+	Else
 		Kicker3.TimerEnabled=True
 	End If
 	Case "HighDive"
@@ -634,7 +633,7 @@ Sub DoChuck()
 		Else
 			Kicker3.TimerEnabled=True
 		End If
-	Else	
+	Else
 		Kicker3.TimerEnabled=True
 	End If
 	Case "SwordMaster"
@@ -654,7 +653,7 @@ Sub DoChuck()
 		Else
 			Kicker3.TimerEnabled=True
 		End If
-	Else	
+	Else
 		Kicker3.TimerEnabled=True
 	End If
 	Case "DaintyLady"
@@ -673,7 +672,7 @@ Sub DoChuck()
 		Else
 			Kicker3.TimerEnabled=True
 		End If
-	Else	
+	Else
 		Kicker3.TimerEnabled=True
 	End If
 	Case "MonkeyCombat"
@@ -682,7 +681,7 @@ Sub DoChuck()
 			EndMusic()
 			PlaySound "bigstep"
 			EscapeItem6=1
-			EscapeItems=EscapeItems+1 
+			EscapeItems=EscapeItems+1
 			DisplayFlushQueue()
 			DisplayQueueScreen " MEGA LE CHUCK  ","    DEFEATED    ",8,8,0,1500,False,"dargh"
 			DisplayQueueScreen " ITEM RECEIVED= ","   BRONZE HAT   ",0,0,0,2500,False,"bronzehat"
@@ -691,7 +690,7 @@ Sub DoChuck()
 		Else
 			Kicker3.TimerEnabled=True
 		End If
-	Else	
+	Else
 		Kicker3.TimerEnabled=True
 	End If
 	Case "TreasureHunt"
@@ -736,13 +735,13 @@ Sub DoChuck()
 			SwitchOn()
 		End If
 		Kicker3Hits = Kicker3Hits+1
-		CheckKicker3Timer.Enabled=True	
+		CheckKicker3Timer.Enabled=True
 	End Select
 	HurryUp=0
 	LightArray(31, 1) = 1			'EP- But... it just got turned on possibly??
 End Sub
 
-Sub ModeCompleteTimer_Timer()	' to allow displays before GoModeTotal... 
+Sub ModeCompleteTimer_Timer()	' to allow displays before GoModeTotal...
 	ModeCompleteTimer.Enabled=False
 	ModeComplete=1
 	GoModeTotal()
@@ -752,7 +751,7 @@ End Sub
 Sub CheckKicker3Timer_Timer()
 	If Kicker3.TimerEnabled=True Then Exit Sub
 	Kicker3.TimerEnabled=True
-	Kicker3Hits = Kicker3Hits-1 
+	Kicker3Hits = Kicker3Hits-1
 	If Kicker3Hits<1 Then CheckKicker3Timer.Enabled=False
 End Sub
 
@@ -763,7 +762,7 @@ Sub Kicker3_Timer()
 	LeChuckMover.Z = 370
 	Me.Kick 270, 2, 0
 	PlaySound "SoloOn"
-	
+
 	Kicker3.TimerEnabled=False
 	LightArray(50, 1) = 0
 	LightArray(31, 1) = 0
@@ -773,11 +772,11 @@ Sub Kicker3_Timer()
 	Me.Kick 270, 2, 0
 	PlaySound "ballinr"
 	PlaySound "ballroll2"
-	If Status="Normal" Then 
+	If Status="Normal" Then
 		Song="EFMI_MonkeyTheme.mp3": PlayMusic Song
 		Kicker3Delay=2000
 	End If
-	
+
 	Set LeChuckMover = Nothing
 End Sub
 
@@ -808,7 +807,7 @@ Sub BustBarrels()
 	If Status <> "GoEscape" Then
 		DisplayFlushQueue
 		DisplayQueueScreen "      "&Barrels&"       "," BARRELS BUSTED ",0,0,0,100,False,""
-	End If	
+	End If
 	AddScore(50000): AddBonus(1000)
 	PlaySound "shakegrog"
 End Sub
@@ -821,10 +820,10 @@ Sub Bumper1_Hit()
 	HasJumped1 = 0
 	If Status="GoEscape" Then
 		If EscapeSwitch(10)=0 Then
-			Bumper4.State=LightStateOn			
+			Bumper4.State=LightStateOn
 			SwitchNumber=10
-			SwitchOn	
-		End If	
+			SwitchOn
+		End If
 	Else
 		BustBarrels
 	End If
@@ -865,8 +864,8 @@ Sub Bumper2_Hit()
 	HasJumped2 = 0
 	If Status="GoEscape"  Then
 		If EscapeSwitch(11)=0 Then
-			Bumper3.State=LightStateOn			
-			SwitchNumber=11: SwitchOn	
+			Bumper3.State=LightStateOn
+			SwitchNumber=11: SwitchOn
 		End If
 	Else
 		BustBarrels
@@ -905,10 +904,10 @@ Sub Bumper3_Hit()
 	Me.TimerEnabled = 1
 	TipFull3 = 8
 	HasJumped3 = 0
-	If Status="GoEscape"  Then		
+	If Status="GoEscape"  Then
 		If EscapeSwitch(12)=0 Then
 			SwitchNumber=12: SwitchOn
-			Bumper1.State=LightStateOn		
+			Bumper1.State=LightStateOn
 		End If
 	Else
 		BustBarrels
@@ -963,6 +962,10 @@ End Function
 '                      Supporting Ball & Sound Functions
 ' *********************************************************************
 
+Dim SoundLevelMult:SoundLevelMult = 1
+
+Function LVL(input) : LVL = Input * SoundLevelMult : End Function
+
 Function Vol(ball) ' Calculates the Volume of the sound based on the ball speed
 Vol = Csng(BallVel(ball) ^2 / 2000)
 End Function
@@ -971,9 +974,9 @@ Function Pan(ball) ' Calculates the pan for a ball based on the X position on th
 Dim tmp
 tmp = ball.x * 2 / table1.width-1
 If tmp > 0 Then
-    Pan = Csng(tmp ^10)
+	Pan = Csng(tmp ^10)
 Else
-    Pan = Csng(-((- tmp) ^10) )
+	Pan = Csng(-((- tmp) ^10) )
 End If
 End Function
 
@@ -996,7 +999,7 @@ InitRolling
 Sub InitRolling
 Dim i
 For i = 0 to tnob
-    rolling(i) = False
+	rolling(i) = False
 Next
 End Sub
 
@@ -1006,8 +1009,8 @@ BOT = GetBalls
 
 	' stop the sound of deleted balls
 For b = UBound(BOT) + 1 to tnob
-    rolling(b) = False
-    StopSound("fx_ballrolling" & b)
+	rolling(b) = False
+	StopSound("fx_ballrolling" & b)
 Next
 
 	' exit the sub if no balls on the table
@@ -1015,15 +1018,15 @@ If UBound(BOT) = -1 Then Exit Sub
 
 	' play the rolling sound for each ball
 For b = 0 to UBound(BOT)
-    If BallVel(BOT(b) ) > 1 AND BOT(b).z < 30 Then
-        rolling(b) = True
-        PlaySound("fx_ballrolling" & b), -1, Vol(BOT(b) ), Pan(BOT(b) ), 0, Pitch(BOT(b) ), 1, 0
-    Else
-        If rolling(b) = True Then
-            StopSound("fx_ballrolling" & b)
-            rolling(b) = False
-        End If
-    End If
+	If BallVel(BOT(b) ) > 1 AND BOT(b).z < 30 Then
+		rolling(b) = True
+		PlaySound("fx_ballrolling" & b), -1, Vol(BOT(b) ), Pan(BOT(b) ), 0, Pitch(BOT(b) ), 1, 0
+	Else
+		If rolling(b) = True Then
+			StopSound("fx_ballrolling" & b)
+			rolling(b) = False
+		End If
+	End If
 Next
 End Sub
 
@@ -1055,7 +1058,7 @@ End Sub
 
 ' the routine checks first for deleted balls and stops the rolling sound.
 
-' The For loop goes through all the balls on the table and checks for the ball speed and 
+' The For loop goes through all the balls on the table and checks for the ball speed and
 ' if the ball is on the table (height lower than 30) then then it plays the sound
 ' otherwise the sound is stopped, like when the ball has stopped or is on a ramp or flying.
 
@@ -1069,7 +1072,7 @@ End Sub
 '**************************************
 
 ' The collision is built in VP.
-' You only need to add a Sub OnBallBallCollision(ball1, ball2, velocity) and when two balls collide they 
+' You only need to add a Sub OnBallBallCollision(ball1, ball2, velocity) and when two balls collide they
 ' will call this routine. What you add in the sub is up to you. As an example is a simple Playsound with volume and paning
 ' depending of the speed of the collision.
 
@@ -1105,7 +1108,7 @@ End Sub
 Sub Rubbers_Hit(idx)
 	dim finalspeed
 	finalspeed=SQR(activeball.velx * activeball.velx + activeball.vely * activeball.vely)
-	If finalspeed > 20 then 
+	If finalspeed > 20 then
 		PlaySound "fx_rubber2", 0, Vol(ActiveBall), Pan(ActiveBall), 0, Pitch(ActiveBall), 1, 0
 	End if
 	If finalspeed >= 6 AND finalspeed <= 20 then
@@ -1116,7 +1119,7 @@ End Sub
 Sub Posts_Hit(idx)
 	dim finalspeed
 	finalspeed=SQR(activeball.velx * activeball.velx + activeball.vely * activeball.vely)
-	If finalspeed > 16 then 
+	If finalspeed > 16 then
 		PlaySound "fx_rubber2", 0, Vol(ActiveBall), Pan(ActiveBall), 0, Pitch(ActiveBall), 1, 0
 	End if
 	If finalspeed >= 6 AND finalspeed <= 16 then
@@ -1160,11 +1163,11 @@ Const Freeplay=0 '1=on
 
 Dim BallsPerGame
 Dim Kicker3Hits
-Dim BallSM					                       
-Dim CoeffTimer					
-Dim ModeTotalCoeff				
-Dim CoeffGoEscape				
-Dim SpitCoeff					
+Dim BallSM
+Dim CoeffTimer
+Dim ModeTotalCoeff
+Dim CoeffGoEscape
+Dim SpitCoeff
 Dim Super 'super jackpot
 Dim Song
 Dim ReplayGiven
@@ -1172,7 +1175,7 @@ Dim Tilt
 Dim SaveActive 'lower save targets
 Dim Barrels, BarrelScore
 Dim EscapeItems, EscapeTotal, EscapeActive
-Dim ModesGet(8)					
+Dim ModesGet(8)
 Dim ModeCount, ModesStarted, ModeTotal, ModeTimeLeft, MoreTimeDelay
 Dim GameStarted, GamesPlayed
 Dim BallsInPlay, Ball, BallSave, BallsRemaining, LockedBalls, BallStop, BallSaved
@@ -1185,7 +1188,7 @@ Dim SpinningDirection
 Dim MouthPos, HeadPos, HeadHits
 Dim CombatAward, CombatLevel, CombatCount
 Dim Combat1Count, Combat2Count, Combat3Count
-Dim VoodooCount, VooDooItem, VoodooItemToDo			
+Dim VoodooCount, VooDooItem, VoodooItemToDo
 Dim Mystery, MysteryActive ' mystery key lock
 Dim II, NN, SS, UU, LL, TT
 Dim LastInsult, TH_Insult
@@ -1209,9 +1212,9 @@ Dim Flipokay, Plungeokay, NudgeOkay, NudgeAllowed
 Dim RovingMagnet, MagnetsOn, MotorDirection, VoodooMag, MonkeyMag1, MonkeyMag2, MonkeyMag3, ScummMag, GrogMag
 Dim MouthHits
 Dim Spitting, SpitDistance, SpitPower, SpitPos(13) 'set in frames
-Dim SpitPic, SpitCount, SpitActive, NextSpitKey, NextSpitDistance, SpitAdjust 
-Dim SpittingDistance(5)		
-Dim SpitNumber				
+Dim SpitPic, SpitCount, SpitActive, NextSpitKey, NextSpitDistance, SpitAdjust
+Dim SpittingDistance(5)
+Dim SpitNumber
 Dim Dive, DiveNumber, DivesPerformed, DiveActive, NextDiveUpper, NextDiveLower
 Dim DiveRangeStart, DiveRangeEnd, DiveToDo
 Dim JudgeScore(3), CoeffDive(6), ScoreMini(6), ScoreMaxi(6)
@@ -1227,21 +1230,21 @@ Dim LoopEntrance 'outside loop
 Dim ScummLoops, NextScummAward
 Dim Bananas, BananaPicker
 Dim CorrectDiveCount
-Dim SwordTarget, SwordNumber, SwordComplete, SwordToDo			
-Dim DaintyLadyScores(3)		
+Dim SwordTarget, SwordNumber, SwordComplete, SwordToDo
+Dim DaintyLadyScores(3)
 Dim ShipNumber, ShipTarget, LastShipTarget
 Dim MadSetNumber, MadNumber, MadTargetNumber, MadTarget(3)
 Dim CorrectMadHits, CorrectMadSet, MadAllowed, WhatMadTarget
-Dim MadCombatToDo				
-Dim GraveDiggerScores(4)		
+Dim MadCombatToDo
+Dim GraveDiggerScores(4)
 Dim GraveTarget, GraveTarget1, GraveTarget2, GraveTarget3
-Dim SequenceToDo				
+Dim SequenceToDo
 Dim EscapeItem1, EscapeItem2, EscapeItem3, EscapeItem4, EscapeItem5, EscapeItem6, EscapeItem7, EscapeItem8
 Dim EscapeSwitch(26), SwitchNumber, EscapeNb, GoComplete, ModeComplete
 Dim BeatNb, BeatPos, BeatActive, MonkeyBeat 'monkey beat mode
 Dim BeatTarget(305), MyBeatTarget(305), CorrectBeatTargets, CorrectBeatRounds, TotalCorrectBeats, Rounds
 
-'Dive stuff 
+'Dive stuff
 
 Dim TempDS(9)
 For x=1 To 9: TempDS(x)="": Next
@@ -1255,7 +1258,7 @@ SpitPos(3)  = "**          MAX "
 SpitPos(4)  = "***         MAX "
 SpitPos(5)  = "****        MAX "
 SpitPos(6)  = "*****       MAX "
-SpitPos(7)  = "******      MAX " 
+SpitPos(7)  = "******      MAX "
 SpitPos(8)  = "*******     MAX "
 SpitPos(9)  = "********    MAX "
 SpitPos(10) = "*********   MAX "
@@ -1279,7 +1282,7 @@ Credits=0: Flipokay=0: HeadPos=15 'starts from right + moves to left
 MouthPos=1 'closed
 SwingForce=0: SwingTotal=0: Tilt=0
 Jackpot=5000000
-LoadStats			
+LoadStats
 
 '******************************** Attract Mode *****************************
 Dim InAttract				'Are we in attract Mode
@@ -1385,7 +1388,7 @@ Sub Bang() 'launch main
 	DisplayQueueScreen "      BANG      ","            O   ",8,0,0,10,False,""
 	DisplayQueueScreen "      BANG      ","           O    ",8,0,0,10,False,""
 	DisplayQueueScreen "      BANG      ","          O     ",8,0,0,10,False,""
-	DisplayQueueScreen "      BANG      ","         O      ",8,0,0,10,False,"" 
+	DisplayQueueScreen "      BANG      ","         O      ",8,0,0,10,False,""
 	DisplayQueueScreen "      BANG      ","        O       ",8,0,0,10,False,""
 	DisplayQueueScreen "      BANG      ","       O        ",8,0,0,10,False,""
 	DisplayQueueScreen "      BANG      ","      O         ",8,0,0,10,False,""
@@ -1450,7 +1453,7 @@ Sub TroughTimer_Timer() 'delays balls from entering drain until timer has run ou
 ' So we can do what to do before next ball go in drain...
 	If BallStop=1 Then Exit Sub								' have to wait more
 	TroughTimer.Enabled=False
-	BallStopper.IsDropped=True	' next ball can go	
+	BallStopper.IsDropped=True	' next ball can go
 End Sub
 
 Dim BallMover, BallMover2, BallMover3, BallMover4
@@ -1496,8 +1499,8 @@ Sub KickOut_Timer()										'This gets turned on at various times such as a bal
 	KickOut.Timerinterval=1500							'Reset this timer?
 	AutoPlunger.AutoFire
 	BallsInPlay=BallsInPlay+1
-	FlashSword		
-	Select Case Status	
+	FlashSword
+	Select Case Status
 	Case "Normal"
 		DisplayScoreQueue 1,2
 		PlaySound "fire"
@@ -1512,12 +1515,12 @@ Sub KickOut_Timer()										'This gets turned on at various times such as a bal
 		PlaySound "explode1"
 		PlaySound "eatdeath"
 		HeadFlash
-	Case "GoEscape" 
-		PlaySound "explode1"		
+	Case "GoEscape"
+		PlaySound "explode1"
 		If EscapeActive=0 Then Status="Normal"
 	Case Else
-		PlaySound "fire"	
-	End Select	
+		PlaySound "fire"
+	End Select
 	BallStop=0
 End Sub
 
@@ -1582,7 +1585,7 @@ Sub GoDrain
 		End If
 	Case "Spitting","HighDive","SwordMaster","DaintyLady","MonkeyCombat","GraveDigger","TreasureHunt"
 		If BallSave=1 Then
-			If Status="SwordMaster" Or Status="TreasureHunt" Then 
+			If Status="SwordMaster" Or Status="TreasureHunt" Then
 				Set BallSM = BallMover
 			End If
 			ServeBall()
@@ -1603,7 +1606,7 @@ Sub GoDrain
 				BallSave = 0
 				LightArray(22, 1) = 0
 			End If
-		Else	
+		Else
 			If BallsinPlay=1 Then 'back to normal
 				MultiballEnd()
 			Else 'display balls in play
@@ -1613,7 +1616,7 @@ Sub GoDrain
 			End If
 		End If
 	Case "GoEscape"
-		If BallSave=1 Then	
+		If BallSave=1 Then
 			ServeBall()
 			KickOut.TimerEnabled=False
 			KickOut.TimerEnabled=True
@@ -1630,7 +1633,7 @@ Sub Drain_Timer()
 	Drain.TimerEnabled=False 'end of drain
 	If BallsRemaining=0 Then
 		EndOfGame
-	Else 
+	Else
 		NudgeOkay=1
 		NewBall()
 	End If
@@ -1641,7 +1644,7 @@ Sub FinishDrain()
 	'be jumped to after other mode timers etc have expired
 	MoveMouthGuard(-1)
 	EndMusic()
-	Attract1.Play SeqCircleOutOn ,100,,10000 
+	Attract1.Play SeqCircleOutOn ,100,,10000
 	PlaySound "drain"
 	LeftFlipper.RotateToStart
 	RightFlipper.RotateToStart
@@ -1674,12 +1677,12 @@ Sub FinishDrain()
 		Bonus=1000
 	Else
 		DisplayQueueScreen "   BONUS HELD   ","  "&FormatScore(BonusHeld)&"  ",3,3,0,1000,true,"monkeyend"
-		Bonus=BonusHeld: BonusHeld=0	
+		Bonus=BonusHeld: BonusHeld=0
 	End If
 	If ExtraBalls=0 Then
 		Ball=Ball+1
 		BallsRemaining=BallsRemaining-1 'total balls left
-	End If   	
+	End If
 	LightArray(21, 1) = 0
 	PFMultiplier=1
 End Sub
@@ -1687,7 +1690,7 @@ End Sub
 ' ********************************* SCORING ROUTINES ***********************
 
 Sub AddScore(Points)
-	Score=Score+(Points*PFMultiplier)	
+	Score=Score+(Points*PFMultiplier)
 	Jackpot=Jackpot+250
 	If ReplayGiven=0 And Score>gsReplayValue Then
 		ReplayGiven=1: Credits=Credits+1
@@ -1704,7 +1707,7 @@ End Sub
 '********************************************************************************
 
 ' ************************* Start Game *************************************
-' Assign values to all variables except credits, individual mode settings, 
+' Assign values to all variables except credits, individual mode settings,
 ' scoring and table initialization.
 
 Sub StartGame()
@@ -1839,9 +1842,9 @@ Sub StartGame()
 	DisplayQueueScreen "     LAUNCH     ","      BALL      ",3,3,0,1000,False,""
 	ServeBall()
 	LightArray(55, 1) = 3
-	PlaySound "solon"	
+	PlaySound "solon"
 	Song="EFMI_Intro.mp3"
-	PlayMusic Song 
+	PlayMusic Song
 	LightArray(22, 1) = 2
 	CenterArrowsFlash
 	SpitDistance=0
@@ -1852,7 +1855,7 @@ Sub StartGame()
 	CancelModeLights()
 	LightArray(38, 1) = 0
 	'BallStopper.IsDropped=True
-	'MouthIn.Enabled=False 		 'disable mouth kicker	
+	'MouthIn.Enabled=False 		 'disable mouth kicker
 	'MouthMiss.Enabled=False		 'and the debug one
 	MultiballEnded=0
 	SwordTarget=0
@@ -1934,7 +1937,7 @@ Sub ResetAll()
 	For X = 0 to MaxLights
 		LightArray(x, 1) = 0
 	Next
-	ResetMonkeys 
+	ResetMonkeys
 	'Reset all timer interval wich can change
 	KickOut.TimerInterval=1500
 	EKick.TimerInterval=5000
@@ -1974,7 +1977,7 @@ Sub NewBall()
 	ActiveMonkeyBeat
 	LightArray(55, 1) = 3
 	MoveMouthGuard(-1)
-	GrogKicker.Enabled=False	
+	GrogKicker.Enabled=False
 	DisplayScoreQueue 2,1
 	GrogLight(-1)
 	GiGrogTimer.Enabled = 0
@@ -1992,7 +1995,7 @@ Sub NewBall()
 	If ExtraBalls > 0 Then
 		DisplayQueueScreen "     EXTRA      ","      BALL      ",8,8,0,500,False,""
 		DisplayQueueScreen "     SHOOT      ","     AGAIN      ",3,3,0,500,False,""
-		ExtraBalls=ExtraBalls-1		
+		ExtraBalls=ExtraBalls-1
 	Else
 		DisplayQueueScreen "     LAUNCH     ","      BALL      ",3,3,0,1000,False,""
 	End If
@@ -2005,7 +2008,7 @@ Sub NewBall()
 	Flipokay=1
 	EndMusic()
 	Song="EFMI_Intro.mp3"
-	PlayMusic Song	
+	PlayMusic Song
 '	BallSave=1
 	LightArray(22, 1) = 2
 	Tilt=0
@@ -2071,7 +2074,7 @@ Sub EndOfGame()
 	End If
 
 	If Score<10000000 Then PlaySound "whatamisupposed"
-	MaxLoopsThisGame=ScummLoops	
+	MaxLoopsThisGame=ScummLoops
 	If (Score > gsHighScore(4)) Or (MaxLoopsThisGame > gsLoopChamp) Then
 		HighScoreEntryInit()
 	Else
@@ -2080,12 +2083,12 @@ Sub EndOfGame()
 		MusicEndTimer.Enabled=True
 		GameStarted=0
 		LeftFlipper.RotateToStart
-		RightFlipper.RotateToStart	
+		RightFlipper.RotateToStart
 		gsLastScore=Score
 		gsGamesPlayed=gsGamesPlayed+1
 		If ReplayGiven=1 Then gsReplayValue= gsReplayValue+1000000
 		If ReplayGiven=0 And gsReplayValue>2000000 Then gsReplayValue= gsReplayValue-5000000
-		DisplayQueueScreen "   "&FormatScore(gsLastScore)&"   ", "      "&hsEnteredName&"       ", 0, 3, 0,2000,False,""  		
+		DisplayQueueScreen "   "&FormatScore(gsLastScore)&"   ", "      "&hsEnteredName&"       ", 0, 3, 0,2000,False,""
 		InAttract = 1
 		AttractMode()
 		If Credits>0 Or FreePlay=1 And GameStarted=0 Then
@@ -2173,12 +2176,12 @@ Sub ResetMonkeys()
 	Combat1Count=0: Combat2Count=0: Combat3Count=0
 End Sub
 
-Sub ResetHiScores()	
+Sub ResetHiScores()
 	gsHighScoreName(0)="IAN": gsHighScore(0)=120000000
-	gsHighScoreName(1)="MON": gsHighScore(1)=80000000  
-	gsHighScoreName(2)="KEY": gsHighScore(2)=60000000 
+	gsHighScoreName(1)="MON": gsHighScore(1)=80000000
+	gsHighScoreName(2)="KEY": gsHighScore(2)=60000000
 	gsHighScoreName(3)="ISL": gsHighScore(3)=40000000
-	gsHighScoreName(4)="AND": gsHighScore(4)=20000000 
+	gsHighScoreName(4)="AND": gsHighScore(4)=20000000
 	gsLoopChampName="IAN": gsLoopChamp=1
 End Sub
 
@@ -2186,8 +2189,8 @@ End Sub
 
 Sub ModesLit()
 	DisplayFlushQueue
-	EndCurrentInsult	
-	DisplayQueueScreen "  "&II&" "&NN&" "&SS&" "&UU&" "&LL&" "&TT&"   ","   MODES  LIT   ",3,3,0,1000,False,"" 
+	EndCurrentInsult
+	DisplayQueueScreen "  "&II&" "&NN&" "&SS&" "&UU&" "&LL&" "&TT&"   ","   MODES  LIT   ",3,3,0,1000,False,""
 	DisplayQueueScreen "  SHOOT FOR THE ","   SCUMM  BAR   ",8,8,0,1000,False,""
 	InsultBlinking
 	If LightArray(62, 1) = 0 Then
@@ -2197,18 +2200,18 @@ Sub ModesLit()
 	LightArray(62, 1) = 1
 	SetPulse 62, 1
 	PlaySound "solon"
-	DisplayScoreQueue 1,2	
+	DisplayScoreQueue 1,2
 	ScummOn
 End Sub
 
-Sub ScummOff()	
+Sub ScummOff()
 	PrScumm.Image = "Scumm Bar Off"
 	GiScumm.State = 0
 	ScummMag.MagnetOn = 0
 	ScummTrapper.IsDropped = 1
 End Sub
 
-Sub ScummOn()	
+Sub ScummOn()
 	PrScumm.Image = "Scumm Bar On"
 	GiScumm.State = 1
 	ScummMag.MagnetOn = 1
@@ -2405,22 +2408,22 @@ Sub BallSaveTimer_Timer()
 End Sub
 
 Sub CheckInsult()
-	If EscapeActive=1 Then 
-		
+	If EscapeActive=1 Then
+
 	Else
 		PlaySound "tink"
 '		AdvanceModeCount							'EP- I'm moving this so the modes change when the bumpers get hit
 		AddScore(2500)
 		DisplayFlushQueue
-		DisplayQueueScreen "  "&II&" "&NN&" "&SS&" "&UU&" "&LL&" "&TT&"   ","  SPELL INSULT  ",0,0,0,1000,False,"" 
-		DisplayQueueScreen "  "&II&" "&NN&" "&SS&" "&UU&" "&LL&" "&TT&"   "," TO LIGHT MODES ",0,0,0,1500,True,"" 
+		DisplayQueueScreen "  "&II&" "&NN&" "&SS&" "&UU&" "&LL&" "&TT&"   ","  SPELL INSULT  ",0,0,0,1000,False,""
+		DisplayQueueScreen "  "&II&" "&NN&" "&SS&" "&UU&" "&LL&" "&TT&"   "," TO LIGHT MODES ",0,0,0,1500,True,""
 		If (II="I") And (NN="N") And (SS="S") And (UU="U") And (LL="L") And (TT="T") Then ModesLit() 'should be here
 	End If
 End Sub
 
 Sub InsultBonus()
 	DisplayFlushQueue
-	DisplayQueueScreen " ADD TO JACKPOT ","      25K      ",0,0,0,500,True,"" 
+	DisplayQueueScreen " ADD TO JACKPOT ","      25K      ",0,0,0,500,True,""
 	PlaySound "clack": PlaySound "multihit1"
 	Jackpot=Jackpot+25000
 	DisplayScoreQueue 0,0
@@ -2686,7 +2689,7 @@ Sub TTTarg_Hit()
 		If LastInsult="T" And TH_ToDo=3 Then
 			LightArray(61, 1) = 1
 			TreasureHunt_Three()
-		End If	
+		End If
 	Case "GoEscape"
 		If EscapeSwitch(26)=0 Then
 			LightArray(61, 1) = 1
@@ -2750,12 +2753,12 @@ Sub LoadStats()
 	If Value<>"" Then NudgeAllowed=Value
 End Sub
 
-Sub ResetHiScores()	
+Sub ResetHiScores()
 	gsHighScoreName(0)="IAN": gsHighScore(0)=120000000
-	gsHighScoreName(1)="MON": gsHighScore(1)=80000000  
-	gsHighScoreName(2)="KEY": gsHighScore(2)=60000000 
+	gsHighScoreName(1)="MON": gsHighScore(1)=80000000
+	gsHighScoreName(2)="KEY": gsHighScore(2)=60000000
 	gsHighScoreName(3)="ISL": gsHighScore(3)=40000000
-	gsHighScoreName(4)="AND": gsHighScore(4)=20000000 
+	gsHighScoreName(4)="AND": gsHighScore(4)=20000000
 	gsLoopChampName="IAN": gsLoopChamp=1
 End Sub
 
@@ -2784,7 +2787,7 @@ Sub OperatorMenu()
 				Case 1
 				If BallsPerGame=3 Then Option_Set="*"
 				TempBottomStr="     " & Option_Set & " 3     "
-				Case 2	
+				Case 2
 				If BallsPerGame=5 Then Option_Set="*"
 				TempBottomStr="     " & Option_Set & " 5     "
 			End Select
@@ -2794,7 +2797,7 @@ Sub OperatorMenu()
 				Case 1
 				If Play_Mode="Easy" Then Option_Set="*"
 				TempBottomStr="    " & Option_Set & " EASY   "
-				Case 2	
+				Case 2
 				If Play_Mode="Medium" Then Option_Set="*"
 				TempBottomStr="   " & Option_Set & " MEDIUM   "
 				Case 3
@@ -2807,7 +2810,7 @@ Sub OperatorMenu()
 				Case 1
 				If Reset_HS="NO" Then Option_Set="*"
 				TempBottomStr="      " & Option_Set & " NO    "
-				Case 2	
+				Case 2
 				If Reset_HS="YES" Then Option_Set="*"
 				TempBottomStr="     " & Option_Set & " YES   "
 			End Select
@@ -2817,7 +2820,7 @@ Sub OperatorMenu()
 				Case 1
 				If NudgeAllowed="No" Then Option_Set="*"
 				TempBottomStr="      " & Option_Set & " NO    "
-				Case 2	
+				Case 2
 				If NudgeAllowed="Yes" Then Option_Set="*"
 				TempBottomStr="     " & Option_Set & " YES   "
 			End Select
@@ -2863,8 +2866,8 @@ End Sub
 Sub GoMystery()
 	DisplayFlushQueue
 	PlaySound "asyouwish"
-	DisplayQueueScreen " INTERNATIONAL  "," HOUSE OF MOJO  ",6,7,0,1500,True,""	
-	DisplayQueueScreen " PRESS FLIPPER  "," TO CHOOSE ITEM ",3,3,0,1500,True,""	
+	DisplayQueueScreen " INTERNATIONAL  "," HOUSE OF MOJO  ",6,7,0,1500,True,""
+	DisplayQueueScreen " PRESS FLIPPER  "," TO CHOOSE ITEM ",3,3,0,1500,True,""
 	MysteryWaitTimer.Enabled=True
 	LightArray(46, 1) = 3
 End Sub
@@ -2889,8 +2892,8 @@ Sub MysteryTimer_Timer()
 		Case 5: TextBoxTop.Text="  GROG MACHINE  ": TextBoxBottom.Text="    IS OPEN     "
 		Case 6: TextBoxTop.Text="      + 50      ": TextBoxBottom.Text="     BARRELS    "
 		Case 7: TextBoxTop.Text="     SMALL      ": TextBoxBottom.Text="     POINTS     "
-		Case 8: TextBoxTop.Text="     BONUS      ": TextBoxBottom.Text="      HELD      "	
-		Case 9: TextBoxTop.Text="      BIG       ": TextBoxBottom.Text="     POINTS     " 	
+		Case 8: TextBoxTop.Text="     BONUS      ": TextBoxBottom.Text="      HELD      "
+		Case 9: TextBoxTop.Text="      BIG       ": TextBoxBottom.Text="     POINTS     "
 	End Select
 	MysteryTimer.Enabled=True
 End Sub
@@ -2983,7 +2986,7 @@ Sub NormalVoodoo()
 	If VoodooCount=3 Then
 		DisplayQueueScreen "  "&VoodooCount&" VOODOO HITS "," MYSTERY ACTIVE ",3,8,0,1500,True,"efmi_fast3"
 		Kicker6.Enabled=True
-		PlaySound "howcani"	
+		PlaySound "howcani"
 		LightArray(46, 1) = 1
 		AddScore(250000)
 	End If
@@ -3007,13 +3010,13 @@ Sub Kicker6_Hit()
 	Set BallMover2 = ActiveBall
 	LightArray(46, 1) = 0
 	Select Case Status
-	Case "Normal" 
+	Case "Normal"
 		PlaySound "voodoohit"
 		PlaySound "monkeytargup"
 		EndMusic()
 		VooDooPopUp.IsDropped=False
 		GoMystery
-	Case "TreasureHunt" 
+	Case "TreasureHunt"
 		PlaySound "voodoohit"
 		TreasureHunt_Four()
 	Case "VoodooMagic"
@@ -3021,8 +3024,8 @@ Sub Kicker6_Hit()
 	Case Else
 		Kicker6.Enabled=False
 		VooDooMag.magnetOn = 0
-		PlaySound "ballinr"	
-	End Select	
+		PlaySound "ballinr"
+	End Select
 End Sub
 
 Sub Kicker6_UnHit()
@@ -3056,7 +3059,7 @@ Sub CheckGrog()
 			LightArray(44, 1) = 2
 			LightArray(45, 1) = 2
 		Case 4
- 			DisplayQueueScreen "  GROG MACHINE  ","     IS OPEN    ",3,3,0,1500,False,"init5"  
+			DisplayQueueScreen "  GROG MACHINE  ","     IS OPEN    ",3,3,0,1500,False,"init5"
 			If Status = "Normal" Then GrogKicker.Enabled = 1
 			GrogHits=3
 			AddBonus(5000)
@@ -3075,7 +3078,7 @@ Sub GoGrog()
 	DisplayFlushQueue()
 	PlaySound "grog"
 	DisplayQueueScreen "  GROG MACHINE  ","  GROG MACHINE  ",4,4,0,1000,False,""
-	DisplayQueueScreen "  GROG MACHINE  ","  GROG MACHINE  ",3,3,0,1000,False,"" 
+	DisplayQueueScreen "  GROG MACHINE  ","  GROG MACHINE  ",3,3,0,1000,False,""
 	LightArray(41, 1) = 1
 	LightArray(43, 1) = 0
 	LightArray(44, 1) = 0
@@ -3090,10 +3093,10 @@ Sub GrogTimer_Timer() 'delay before counting up the barrels
 End Sub
 
 Sub BarrelCountTimer_Timer()
-	BarrelCountTimer.Enabled=False	
+	BarrelCountTimer.Enabled=False
 	GrogTotal=GrogTotal+BarrelScore
 	PlaySound "gulp"
- 	TextBoxTop.Text="   " & Barrels & " BARRELS": TextBoxBottom.Text= "    + "& GrogTotal
+	TextBoxTop.Text="   " & Barrels & " BARRELS": TextBoxBottom.Text= "    + "& GrogTotal
 	Barrels=Barrels-1
 	If Barrels > 0 Then
 		BarrelCountTimer.Enabled=True
@@ -3106,12 +3109,12 @@ Sub BarrelCountTimer_Timer()
 		AddScore(GrogTotal)
 		GrogEndTimer.Enabled=True
 	End If
-End Sub 
+End Sub
 
 Sub GrogEndTimer_Timer()
 	GrogEndTimer.Enabled=False
-	PlaySound "ballinr"	
-	GrogKicker.Kick 4,22	
+	PlaySound "ballinr"
+	GrogKicker.Kick 4,22
 	DisplayScoreQueue 2,1
 	GrogLight(-1)
 	GiGrogTimer.Enabled = 0
@@ -3142,10 +3145,10 @@ Sub ScummKicker_Hit()
 		ScummTrapper.IsDropped = 0
 		PlaySound "ballinr"
 		If EB=1 Then
-			ExtraBall  
+			ExtraBall
 		Else
 			If Play_Mode = "Easy" Then ModePicking = 1
-			PlaySound "stayoutkitchen"	
+			PlaySound "stayoutkitchen"
 			SeqModes.Play SeqRandom ,6,,2500
 			If ModePicking = 1 Then Exit Sub
 			RestOfScumm()
@@ -3166,7 +3169,7 @@ Sub ScummKicker_UnHit()
 	ScummMag.RemoveBall ActiveBall
 End Sub
 
-Sub ExtraBall()	
+Sub ExtraBall()
 	EB=0
 	EndMusic()
 	DisplayFlushQueue
@@ -3197,7 +3200,7 @@ Sub ExtraBallTimer_Timer()
 End Sub
 
 Sub RestOfScumm()
-	If Status="Normal" Then	
+	If Status="Normal" Then
 		InsultOff()
 		CenterArrowsOff()
 		ModesStarted=ModesStarted+1
@@ -3222,7 +3225,7 @@ Sub RestOfScumm()
 			ScummMag.MagnetOn = 0
 			ScummTrapper.IsDropped = 1
 		End If
-	Else 
+	Else
 ' only possible case: just before multiball we have lit one mode...
 		ScummMag.MagnetOn = 0
 		ScummTrapper.IsDropped = 1
@@ -3271,7 +3274,7 @@ Sub AdvanceModeCount() 'remember these are NOT the correect order of the modes, 
 		LightArray(25, 1) = 1
 	Case 7							'Monkey Battle
 		LightArray(0, 1) = 1
-	Case 8							
+	Case 8
 		LightArray(5, 1) = 1		'Grave Digger
 	End Select
 End Sub
@@ -3287,7 +3290,7 @@ Sub GoModes()
 		SetPulse 8, 1
 		ModesGet(ModeCount)=1
 		VooDooMagic()
-	Case 2 
+	Case 2
 		LightArray(9, 1) = 1
 		SetPulse 9, 1
 		ModesGet(ModeCount)=1
@@ -3371,7 +3374,7 @@ Sub TiScummKicker_Timer()
 		ScummMag.MagnetOn = 0
 		ScummTrapper.IsDropped = 1
 		PlaySound "ballinr": PlaySound "doorclose"
-	Case "DaintyLady" 
+	Case "DaintyLady"
 		Song="EFMI_Ship.mp3": PlayMusic Song
 		ModeTimeLeft=Round((26 + Bananas) * CoeffTimer)
 		ModeLengthTimer.Enabled=True
@@ -3392,7 +3395,7 @@ Sub TiScummKicker_Timer()
 	Case "GraveDigger"
 		Song="EFMI_GraveDigger.mp3": PlayMusic Song
 		ModeTimeLeft=Round((30 + Bananas)*CoeffTimer)
-		ModeLengthTimer.Enabled=True  
+		ModeLengthTimer.Enabled=True
 		ScummMag.MagnetOn = 0
 		ScummTrapper.IsDropped = 1
 		PlaySound "ballinr": PlaySound "doorclose"
@@ -3409,13 +3412,13 @@ Sub ModeLengthTimer_Timer()
 	PlaySound "tick"
 	ModeTimeLeft = ModeTimeLeft - 1
 	If ModeTimeLeft=0 Then
-		If Status="GoEscape" Then 'escape mode over	
+		If Status="GoEscape" Then 'escape mode over
 			BallSave=0
 			BallSaveTimer.Enabled=False
 			LightArray(22, 1) = 0
 			FlipOkay=0
 			LeftFlipper.RotateToStart
-			RightFlipper.RotateToStart			
+			RightFlipper.RotateToStart
 			PlaySound "Flipperdown"
 			PlaySound "Flapopen"
 			EndMusic()
@@ -3437,7 +3440,7 @@ Sub ModeLengthTimer_Timer()
 			Case "MonkeyCombat": TextBoxTop.Text="*MONKEY COMBAT* "
 			Case "TreasureHunt": TextBoxTop.Text="  * TREASURE *  "
 			Case "GraveDigger":  TextBoxTop.Text=" *GRAVE DIGGER* "
-			Case "GoEscape": 	 TextBoxTop.Text=" "&EscapeNb&" HITS TO GO"			
+			Case "GoEscape": 	 TextBoxTop.Text=" "&EscapeNb&" HITS TO GO"
 		End Select
 		ModeLengthTimer.Enabled=True
 	End If
@@ -3502,7 +3505,7 @@ Sub HighDive()
 'lock ball in grog machine. Pause for instructions
 'sequence displayed. Pause for message. Timer runs down
 'keys are pressed. Timer finishes. Sequence compared
-'results. Repeat?. Mode total	
+'results. Repeat?. Mode total
 'each key press increases a variable (DiveKeyNumber)
 'check if too many keys pressed (DiveKeyLimit)
 'End If
@@ -3511,7 +3514,7 @@ Sub HighDive()
 	LightArray(9, 1) = 1
 	SetPulse 9, 1
 	Status="HighDive"
-	DiveNumber=0	
+	DiveNumber=0
 	NextDiveUpper=""
 	NextDiveLower=""
 	TempDiveKey="                "
@@ -3561,21 +3564,21 @@ Sub CalcDive()
 	Next
 End Sub
 
-Sub DiveIntro()	
+Sub DiveIntro()
 	DiveIntroTimer.Enabled=True
 	Dive=1							' we are in pure Dive sequence
 	If Tilt = 1 Then Exit Sub		' Nothing to do here
-	DiveNumber=DiveNumber+1	
+	DiveNumber=DiveNumber+1
 	DiveRangeStart=1
 	DiveRangeEnd=DiveNumber+3
-	DiveKeyLimit=DiveNumber+3	
+	DiveKeyLimit=DiveNumber+3
 	Select Case DiveNumber
 		Case 1: NextDiveUpper="     DOUBLE     ": NextDiveLower="   FLIP TWIST   "
 		Case 2: NextDiveUpper="   TRIPLE SPIN  ": NextDiveLower="    BACKFLIP    "
 		Case 3: NextDiveUpper="    FOREWARDS   ": NextDiveLower="    1080 ROLL   "
 		Case 4: NextDiveUpper="   FRONT FLIP   ": NextDiveLower="  REVERSE TWIST "
 		Case 5: NextDiveUpper="  TRIPLE FRONT  ": NextDiveLower="  ROLLING FLIP  "
-		Case 6: NextDiveUpper="  BACKWARDS 720 ": NextDiveLower="  TWISTING FLIP "	
+		Case 6: NextDiveUpper="  BACKWARDS 720 ": NextDiveLower="  TWISTING FLIP "
 	End Select
 	DisplayFlushQueue()
 	DisplayQueueScreen " COPY SEQUENCE  ","TO PERFORM DIVE ",3,3,0,1500,False,""
@@ -3593,26 +3596,26 @@ Sub DiveIntroTimer_Timer()
 	DiveIntroTimer.Enabled=False
 	If Tilt = 1 Then Exit Sub		' Nothing to do here
 	DiveTimer.Enabled=True			'show sequence
-End Sub	  
+End Sub
 
 Sub DiveTimer_Timer() 'show the dive sequence
 	DiveTimer.Enabled=False
 	If Tilt = 1 Then Exit Sub		' Nothing to do here
 	Kicker7.Kick 180,4 'high dive out
 	DisplayFlushQueue()
-	NextDiveNumber=NextDiveNumber+1	
-	If NextDiveNumber=DiveRangeEnd-1 Then PlaySound "springboard"	
+	NextDiveNumber=NextDiveNumber+1
+	If NextDiveNumber=DiveRangeEnd-1 Then PlaySound "springboard"
 	DisplayQueueScreen "     "&DS(NextDiveNumber),"                ",0,0,0,1500,False,"release"
 	If DS(NextDiveNumber)="LEFT"  Then Light80.State = 1
 	If DS(NextDiveNumber)="RIGHT" Then Light81.State = 1
 	If DS(NextDiveNumber)="FIRE"  Then Light56.State = 1
 	If DS(NextDiveNumber)="START" Then StartLight.State = 1
-	CancelDiveKeyTimer.Enabled=True	
+	CancelDiveKeyTimer.Enabled=True
 	If NextDiveNumber=DiveRangeEnd Then
 		TakeDive()
-	Else		
+	Else
 		DiveTimer.Enabled=True
-	End If	
+	End If
 End Sub
 
 Sub TakeDive()
@@ -3631,7 +3634,7 @@ Sub TakeDiveTimer_Timer()
 	DiveActive=True
 	DisplayFlushQueue()
 End Sub
-	
+
 Sub DiveProcessKey(keycode)
 	If DiveActive=False Then Exit Sub
 	CancelDiveKeyTimer.Enabled=True
@@ -3640,7 +3643,7 @@ Sub DiveProcessKey(keycode)
 		Case RightflipperKey: TempDiveKey="RIGHT": Light81.State = 1
 		Case PlungerKey: 	  TempDiveKey="FIRE":  Light56.State = 1
 		Case 2: 			  TempDiveKey="START": StartLight.State = 1
-	End Select	
+	End Select
 	CheckDive()
 End Sub
 
@@ -3695,8 +3698,8 @@ Sub Kicker4_Timer()
 End Sub
 
 Sub DiveWaitTimer_Timer()
-	DiveWaitTimer.Enabled=False	
-	If Tilt = 1 Then Exit Sub		' Nothing to do here	
+	DiveWaitTimer.Enabled=False
+	If Tilt = 1 Then Exit Sub		' Nothing to do here
 	DisplayFlushQueue()
 	DisplayQueueScreen "   LETS WATCH   ","   YOUR DIVE    ",3,3,0,1500,False,""
 	Kicker10.Kick 3,35
@@ -3730,17 +3733,17 @@ Sub TestDiveTimer_Timer()
 	TestDiveTimer.Enabled=False 	'show your next move
 	If Tilt = 1 Then Exit Sub		' Nothing to do here
 	DisplayFlushQueue()
-	NextDSNumber=NextDSNumber+1 
+	NextDSNumber=NextDSNumber+1
 	TextBoxTop.Text = "     "&TempDS(NextDSNumber)&"      "
 	TextBoxBottom.Text= "                "
 	If TempDS(NextDSNumber)="LEFT"  Then Light80.State = 1
 	If TempDS(NextDSNumber)="RIGHT" Then Light81.State = 1
 	If TempDS(NextDSNumber)="FIRE"  Then Light56.State = 1
 	If TempDS(NextDSNumber)="START" Then StartLight.State = 1
-	CancelDiveKeyTimer.Enabled=True	
+	CancelDiveKeyTimer.Enabled=True
 	If NextDSNumber=DiveRangeEnd Then
 		TestDisplayTimer.Enabled=True
-	Else	
+	Else
 		TestDiveTimer.Enabled=True
 	End If
 End Sub
@@ -3758,13 +3761,13 @@ Sub TestDive()
 	If CorrectDiveCount=DiveNumber+3 Then
 		If CorrectDiveCount=9 Then
 			JudgeScore(1)=10: JudgeScore(2)=10: JudgeScore(3)=10: GoCorrectDive
-		Else 
+		Else
 			While (JudgeScore(1)+JudgeScore(2)+JudgeScore(3))<ScoreMini(DiveNumber) Or (JudgeScore(1)+JudgeScore(2)+JudgeScore(3))>ScoreMaxi(DiveNumber)
 				JudgeScore(1)=round(rnd*CoeffDive(DiveNumber))
 				JudgeScore(2)=round(rnd*CoeffDive(DiveNumber))
 				JudgeScore(3)=round(rnd*CoeffDive(DiveNumber))
 			Wend
-			If DiveToDo*CorrectDiveCount=28 Then JudgeScore(1)=8: JudgeScore(2)=8: JudgeScore(3)=8	
+			If DiveToDo*CorrectDiveCount=28 Then JudgeScore(1)=8: JudgeScore(2)=8: JudgeScore(3)=8
 		GoCorrectDive()
 		End If
 	Else
@@ -3776,7 +3779,7 @@ Sub JudgeTimer_Timer()
 	JudgeTimer.Enabled=False
 	If Tilt = 1 Then Exit Sub		' Nothing to do here
 	ModeTimeLeft=ModeTimeLeft+8-DivesPerformed
-	If ModeTimeLeft<5 Then ModeTimeLeft=5 
+	If ModeTimeLeft<5 Then ModeTimeLeft=5
 	GrogMover.X = Kicker11.X
 	GrogMover.Y = Kicker11.Y
 	GrogMover.Z = 370
@@ -3794,7 +3797,7 @@ Sub GoCorrectDive()
 	DisplayFlushQueue()
 	DisplayQueueScreen "    NICE DIVE   ","    GUYBRUSH    ",8,8,0,1500,False,""
 	DisplayQueueScreen "    JUDGES =    ","                ",2,1,0,1000,False,""
-	If DiveNumber < 6 Then					
+	If DiveNumber < 6 Then
 		DisplayQueueScreen "[1]   [2]   [3] "," "&JudgeScore(1)&"     ",0,0,0,1500,False,""
 		DisplayQueueScreen "[1]   [2]   [3] "," "&JudgeScore(1)&"     "&JudgeScore(2)&"     ",0,0,0,1500,False,""
 		DisplayQueueScreen "[1]   [2]   [3] "," "&JudgeScore(1)&"     "&JudgeScore(2)&"     "&JudgeScore(3),0,0,0,1500,False,""
@@ -3802,7 +3805,7 @@ Sub GoCorrectDive()
 		DisplayQueueScreen "[1]   [2]   [3] ","10   ",0,0,0,1500,False,""
 		DisplayQueueScreen "[1]   [2]   [3] ","10    10  ",0,0,0,1500,False,""
 		DisplayQueueScreen "[1]   [2]   [3] ","10    10    10 ",0,0,0,1500,False,""
-	End If	   
+	End If
 	ModeTotal=ModeTotal+((JudgeScore(1) + JudgeScore(2) + JudgeScore(3))*200000)
 	If Play_Mode="Medium" And DiveNumber>1 Then ModeTotal=ModeTotal - ((5+DiveNumber)*100000)
 	DisplayQueueScreen "    PRIZE =     ","  "&FormatScore(ModeTotal)&"  ",0,8,0,1500,False,"nicedive"
@@ -3832,7 +3835,7 @@ Sub PFMultiplierLight_Timer()
 	PFMultiplier=1
 End Sub
 
-Sub GoWrongDive()	
+Sub GoWrongDive()
 	If Tilt = 1 Then Exit Sub		' Nothing to do here
 	DisplayFlushQueue()
 	DisplayQueueScreen "    BAD LUCK    ","    GUYBRUSH    ",3,3,0,1500,False,"baddive"
@@ -3882,7 +3885,7 @@ Sub SpittingCompetition()
 End Sub
 
 Sub GrogIntro()
-	Spitting=1		' we are in pure Spitting sequence	
+	Spitting=1		' we are in pure Spitting sequence
 	SpitPower=1
 	SpitPic=1
 	SpitCount=0
@@ -3902,10 +3905,10 @@ End Sub
 Sub GrogKicker_Timer()	'start comp
 	GrogKicker.TimerEnabled=False
 	Select Case Status
-	Case "Normal" 
+	Case "Normal"
 		GrogKicker.Kick 4,22
-	Case "Spitting"	
-		If Tilt=1 Then Exit Sub	
+	Case "Spitting"
+		If Tilt=1 Then Exit Sub
 		'Kicker10.CreateBall.Image="green ball"				'EP- Can I change the image of the current ball?
 		PlaySound "ballinr": PlaySound "rattle"
 		DisplayFlushQueue()
@@ -3938,7 +3941,7 @@ Sub SpitProcessKey(keycode)
 			End If
 		NextSpitKey=0 'left
 	End If
-	End Select	
+	End Select
 End Sub
 
 Sub SpitTimer_Timer()
@@ -3957,12 +3960,12 @@ Sub SpitTimer_Timer()
 		SpitActive=False
 		FinishSpittingTimer.Enabled=True
 		TextBoxTop.Text="   READY FOR"
-		TextBoxBottom.Text="    " & SpitPower & " FEET" 
+		TextBoxBottom.Text="    " & SpitPower & " FEET"
 		If SpitPic > 12 Then SpitPic=12
 	Else
 		SpitTimer.Enabled=True 'restart the timer
 	End If
-End Sub	
+End Sub
 
 Sub FinishSpittingTimer_Timer()
 	FinishSpittingTimer.Enabled=False
@@ -3974,18 +3977,18 @@ Sub FinishSpit()
 	SpitTimer.Enabled=False
 	SpitActive=False
 	If Tilt=1 Then Exit Sub
-	Kicker10.Kick 13,(SpitPic+3) * 2 'grog kickout	
+	Kicker10.Kick 13,(SpitPic+3) * 2 'grog kickout
 	PlaySound "release"
 	PlaySound "ballroll"
 	DisplayFlushQueue()
 	DisplayQueueScreen "  * PHTOOEY *   ","       []       ",3,0,0,20,False,""
-	DisplayQueueScreen "-","      [  ]      ",0,0,0,20,False,""		
-	DisplayQueueScreen "-","     [    ]     ",0,0,0,20,False,""	
+	DisplayQueueScreen "-","      [  ]      ",0,0,0,20,False,""
+	DisplayQueueScreen "-","     [    ]     ",0,0,0,20,False,""
 	DisplayQueueScreen "-","    [      ]    ",0,0,0,20,False,""
 	DisplayQueueScreen "-","   [        ]   ",0,0,0,20,False,""
 	DisplayQueueScreen "-","  [          ]  ",0,0,0,20,False,""
 	DisplayQueueScreen "-"," [            ] ",0,0,0,20,False,""
-	DisplayQueueScreen "-","       *        ",0,0,0,2000,False,"tin can"   	
+	DisplayQueueScreen "-","       *        ",0,0,0,2000,False,"tin can"
 End Sub
 
 Sub Kicker10_Hit() 'top of grog machine - check spit distance
@@ -3998,10 +4001,10 @@ Sub Kicker10_Hit() 'top of grog machine - check spit distance
 End Sub
 
 Sub TestSpit()
-	If Tilt=1 Then Exit Sub	
+	If Tilt=1 Then Exit Sub
 	DisplayFlushQueue()
 	DisplayQueueScreen "   LETS   SEE   ","  HOW  YA  DID  ",3,3,0,750,False,""
-	ModeTotal=(ModeTotal+SpitPower*SpitCoeff)	
+	ModeTotal=(ModeTotal+SpitPower*SpitCoeff)
 	If SpitPower >= NextSpitDistance  Then
 		GoSpitAward()
 	Else
@@ -4029,10 +4032,10 @@ End Sub
 
 Sub GoSpitAward()
 '	DisplayFlushQueue()							'EP- removed because it clears the "Let's see" stuff
-	If Tilt=1 Then Exit Sub	
+	If Tilt=1 Then Exit Sub
 	PlaySound "congratulations"
 	SpitNumber=SpitNumber+1
-	NextSpitDistance=SpittingDistance(SpitNumber)	
+	NextSpitDistance=SpittingDistance(SpitNumber)
 	If SpitNumber=5 Then
 		DisplayQueueScreen "  COMPETITION   ","     WINNER     ",8,8,0,2000,False,"iwon"
 		DisplayQueueScreen "     HURRY      "," SHOOT LE CHUCK ",3,3,0,1500,False,"init5"
@@ -4043,8 +4046,8 @@ Sub GoSpitAward()
 		HurryUpWaitTimer.Interval=8000
 		HurryUpWaitTimer.Enabled=True
 		If Play_Mode="Easy" Then: 	If ModeTotal> 10000000 Then: Modetotal=10000000: End If
- 		If Play_Mode="Medium" Then: If ModeTotal> 15000000 Then: Modetotal=15000000: End If
- 		If Play_Mode="Hard" Then: 	If ModeTotal> 20000000 Then: Modetotal=20000000: End If
+		If Play_Mode="Medium" Then: If ModeTotal> 15000000 Then: Modetotal=15000000: End If
+		If Play_Mode="Hard" Then: 	If ModeTotal> 20000000 Then: Modetotal=20000000: End If
 	Else
 		DisplayQueueScreen "     TARGET     ","    REACHED     ",8,8,0,2000,False,"bellring"
 		DisplayQueueScreen "   NOW GO FOR   ","    "&NextSpitDistance&"  FEET",3,3,0,2000,True,""
@@ -4112,7 +4115,7 @@ Sub NextSwordTimer_Timer()
 		SwordNumber=SwordNumber-1
 	End Select
 	DisplayScoreQueue 1,2
-End Sub	
+End Sub
 
 Sub CheckSword()
 	FlashSword()
@@ -4121,7 +4124,7 @@ Sub CheckSword()
 	ModeTotal=ModeTotal+250000
 	If (II="I") And (NN="N") And (SS="S") And (UU="U") And (LL="L") And (TT="T") Then
 'all targets down
-		If SwordNumber=SwordToDo Then SwordComplete=1	
+		If SwordNumber=SwordToDo Then SwordComplete=1
 		InitSMTimer()
 		DisplayFlushQueue()
 		Select Case SwordNumber
@@ -4143,10 +4146,10 @@ Sub CheckSword()
 			ModeTotal=ModeTotal+4000000
 		Case 5
 			DisplayQueueScreen "     HURRY      "," SHOOT LE CHUCK ",3,3,0,1500,True,"init5"
-			SwordNumber=5 'make this loop until lechuck hit or mode over	
+			SwordNumber=5 'make this loop until lechuck hit or mode over
 		End Select
 		CheckSwordTimer.Enabled=True
-	Else	
+	Else
 		DisplayScoreQueue 1,2
 	End If
 End Sub
@@ -4199,7 +4202,7 @@ Sub SMTimer_Timer()
 	BallSM.Y = SwordY
 	BallSM.VelX = 0
 	BallSM.VelY = 0
-End Sub	
+End Sub
 
 '********************************* dainty lady **************************************
 
@@ -4216,7 +4219,7 @@ Sub DaintyLady()
 	DisplayQueueScreen "    GET THE     ","      SHIP      ",0,0,0,1500,True,"lechucksproperty"
 	BallSave=1
 	LightArray(22, 1) = 2
-	Status="DaintyLady"	
+	Status="DaintyLady"
 End Sub
 
 Sub ShipTimer_Timer()
@@ -4246,10 +4249,10 @@ Sub ShipTimer_Timer()
 End Sub
 
 Sub ShipMoveTimer_Timer() '5 seconds up -move the target!
-	ShipMoveTimer.Enabled=False 
+	ShipMoveTimer.Enabled=False
 	DisplayFlushQueue()
 	MoveShip()
-End Sub	
+End Sub
 
 Sub MoveShip()
 	PlaySound "splash44"
@@ -4300,7 +4303,7 @@ Sub GotShipTarget()
 		ModeTotal=ModeTotal+(DaintyLadyScores(3)*1000000)
 		HurryUpWaitTimer.Enabled=True
 	End If
-	ShipNumber=ShipNumber+1 'shot number (so check 4 when hitting lechuck!!!)	
+	ShipNumber=ShipNumber+1 'shot number (so check 4 when hitting lechuck!!!)
 End Sub
 
 Sub ResetShipTargets()
@@ -4317,7 +4320,7 @@ Sub MadMonkeyCombat()
 'Hit the monkey targets in order,
 'Complete 3 sets to defeat lechuck.
 'Gives bronze hat on completion if lechuck hit.
-'variables: 
+'variables:
 'MadSetNumber -number of set
 'MadNumber -which mad target number we are on
 'MadTargetNumber -which target we have hit
@@ -4347,12 +4350,12 @@ Sub FirstMadTimer_Timer()
 	FirstMadTimer.Enabled=False
 	PlaySound "ballinr": PlaySound "doorclose"
 	BallSaveTimer.Enabled=False
-	BallSaveTimer.Enabled=True 
-End Sub	
+	BallSaveTimer.Enabled=True
+End Sub
 
 Sub NewMadTargetTimer_Timer() 'delay for each target set
 	NewMadTargetTimer.Enabled=False
-	If Tilt = 1 Then Exit Sub 
+	If Tilt = 1 Then Exit Sub
 	NewMadTargetTimer.Interval=5000
 	DisplayFlushQueue
 	DisplayQueueScreen "    LE CHUCK    ","     MOVES     ",3,3,0,500,False,"bigstep"
@@ -4362,7 +4365,7 @@ Sub NewMadTargetTimer_Timer() 'delay for each target set
 End Sub
 
 Sub ResetMadStuff()
-	eekLight.State=LightStateOff: ackLight.State=LightStateOff: ookLight.State=LightStateOff	
+	eekLight.State=LightStateOff: ackLight.State=LightStateOff: ookLight.State=LightStateOff
 	MadTargetNumber=99
 	WhatMadTarget=0: MadNumber=0
 	MadTarget(1)=0: MadTarget(2)=0: MadTarget(3)=0
@@ -4387,19 +4390,19 @@ Sub FirstMadTarget()
 	SequenceToDo="HIT"
 	DisplayMadTarget
 	MadTargetTimer.Enabled=True 'turn on timer for second target
-End Sub	
+End Sub
 
 Sub SecondMadTarget()
 	MadTarget(2)=Madtarget(1)
-	While MadTarget(2)=Madtarget(1): MadTarget(2)=round(rnd*2+1): Wend	
+	While MadTarget(2)=Madtarget(1): MadTarget(2)=round(rnd*2+1): Wend
 	DisplayMadTarget
 	MadTargetTimer.Enabled=True 'turn on timer for third target
 End Sub
 
 Sub ThirdMadTarget()
 	MadTarget(3)=1
-	While MadTarget(3)=Madtarget(1) Or MadTarget(3)=Madtarget(2): MadTarget(3)=round(rnd*2+1): Wend	
-	DisplayMadTarget	 
+	While MadTarget(3)=Madtarget(1) Or MadTarget(3)=Madtarget(2): MadTarget(3)=round(rnd*2+1): Wend
+	DisplayMadTarget
 	MadAllowed=1 		'can now hit monkey targets
 	ModeTimeLeft=ModeTimeLeft-3: If ModeTimeLeft<3 Then ModeTimeLeft=3
 	ModeLengthTimer.Enabled=True
@@ -4414,7 +4417,7 @@ End Sub
 Sub LastMoveTimer_Timer()
 	LastMoveTimer.Enabled=False
 	MadNumber=MadNumber+1
-	If MadNumber<4 Then LastMoveTimer.Enabled=True	
+	If MadNumber<4 Then LastMoveTimer.Enabled=True
 	DisplayMadTarget
 End Sub
 
@@ -4424,15 +4427,18 @@ Sub DisplayMadTarget()
 		PlaySound "bigchuckeek"
 		DisplayFlushQueue
 		DisplayQueueScreen "      EEK       ","      EEK      ",0,0,0,500,False,""
-		SequenceToDo=SequenceToDo & " EEK"		
+		SequenceToDo=SequenceToDo & " EEK"
+		EekVel = SQR(activeball.velx * activeball.velx + activeball.vely * activeball.vely)
 		LUpTimer.Enabled=True
+		PlaySound "monkeytargup"
 	End If
 	If MadTarget(MadNumber)=2 Then
 		ackLight.State=LightStateBlinking
 		PlaySound "bigchuckack"
 		DisplayFlushQueue
 		DisplayQueueScreen "      ACK       ","      ACK      ",0,0,0,500,False,""
-		SequenceToDo=SequenceToDo & " ACK"		
+		SequenceToDo=SequenceToDo & " ACK"
+		AckVel = SQR(activeball.velx * activeball.velx + activeball.vely * activeball.vely)
 		MUpTimer.Enabled=True
 	End If
 	If MadTarget(MadNumber)=3 Then
@@ -4440,15 +4446,16 @@ Sub DisplayMadTarget()
 		PlaySound "bigchuckoop"
 		DisplayFlushQueue
 		DisplayQueueScreen "      OOK       ","      OOK      ",0,0,0,500,False,""
-		SequenceToDo=SequenceToDo & " OOK"		
+		SequenceToDo=SequenceToDo & " OOK"
+		OokVel = SQR(activeball.velx * activeball.velx + activeball.vely * activeball.vely)
 		RUpTimer.Enabled=True
 	End If
 	If MadNumber=3 Then
 		MadNumber=0
 		LastMoveTimer.Enabled=False
-		ShowLastMoveTimer.Enabled=True 'timer to keep repeating moves in time with song : )		
+		ShowLastMoveTimer.Enabled=True 'timer to keep repeating moves in time with song : )
 	End If
-	
+
 End Sub
 
 '*** hitting the targets
@@ -4473,7 +4480,7 @@ End Sub
 
 Sub Check1stMoveEek()
 	If MadTarget(1)=1 Then
-		MadEek		
+		MadEek
 	Else
 		MadMiss
 	End If
@@ -4481,7 +4488,7 @@ End Sub
 
 Sub Check2ndMoveEek()
 	If MadTarget(2)=1 Then
-		MadEek		
+		MadEek
 	Else
 		MadMiss
 	End If
@@ -4489,14 +4496,14 @@ End Sub
 
 Sub Check3rdMoveEek()
 	If MadTarget(3)=1 Then
-		MadEek		
+		MadEek
 	Else
 		MadMiss
 	End If
 End Sub
 
-Sub MadEek()			
-	PlaySound ""		
+Sub MadEek()
+	PlaySound ""
 	DisplayQueueScreen "      EEK       ","      EEK     ",8,8,0,500,True,""
 	eekLight.State=LightStateOff
 	HitBigChuck
@@ -4511,7 +4518,7 @@ End Sub
 
 Sub Check1stMoveAck()
 	If MadTarget(1)=2 Then
-		MadAck		
+		MadAck
 	Else
 		MadMiss
 	End If
@@ -4519,22 +4526,22 @@ End Sub
 
 Sub Check2ndMoveAck()
 	If MadTarget(2)=2Then
-		MadAck		
-	Else  
+		MadAck
+	Else
 		MadMiss
 	End If
 End Sub
 
 Sub Check3rdMoveAck()
 	If MadTarget(3)=2Then
-		MadAck		
+		MadAck
 	Else
 		MadMiss
 	End If
 End Sub
 
-Sub MadAck()			
-	PlaySound ""		
+Sub MadAck()
+	PlaySound ""
 	DisplayQueueScreen "      ACK       ","      ACK     ",8,8,0,500,True,""
 	ackLight.State=LightStateOff
 	HitBigChuck
@@ -4549,7 +4556,7 @@ End Sub
 
 Sub Check1stMoveOok()
 	If MadTarget(1)=3 Then
-		MadOok		
+		MadOok
 	Else
 		MadMiss
 	End If
@@ -4557,7 +4564,7 @@ End Sub
 
 Sub Check2ndMoveOok()
 	If MadTarget(2)=3Then
-		MadOok		
+		MadOok
 	Else
 		MadMiss
 	End If
@@ -4565,14 +4572,14 @@ End Sub
 
 Sub Check3rdMoveOok()
 	If MadTarget(3)=3Then
-		MadOok		
+		MadOok
 	Else
 		MadMiss
 	End If
 End Sub
 
-Sub MadOok()			
-	PlaySound ""		
+Sub MadOok()
+	PlaySound ""
 	DisplayQueueScreen "      OOK       ","      OOK     ",8,8,0,500,True,""
 	ookLight.State=LightStateOff
 	HitBigChuck
@@ -4591,8 +4598,9 @@ Sub HitBigChuck()
 	BigChuckTimer.Enabled=True
 	LastMoveTimer.Enabled=False 'stop the show timers
 	ShowLastMoveTimer.Enabled=False
-	LUpTimer.Enabled=True: MUpTimer.Enabled=True: RUpTimer.Enabled=True	
-	CorrectMadHits=CorrectMadHits+1	
+	EekVel = SQR(activeball.velx * activeball.velx + activeball.vely * activeball.vely)
+	LUpTimer.Enabled=True: MUpTimer.Enabled=True: RUpTimer.Enabled=True
+	CorrectMadHits=CorrectMadHits+1
 	If CorrectMadHits=3 Then
 		CorrectMadSet=CorrectMadSet+1
 		CorrectMadHits=0
@@ -4600,9 +4608,9 @@ Sub HitBigChuck()
 	End If
 
 	If CorrectMadHits=2 Then MadMonkeyKicker
-	
+
 	Select Case CorrectMadSet
-	
+
 	Case 3		 'last set complete
 		DisplayQueueScreen "  EAAAARRRRRRR  ","  AAAAARRRRGHH  ",8,8,0,500,False,"chuck1"
 		DisplayQueueScreen "     HURRY      "," SHOOT LE CHUCK ",3,3,0,1500,False,"init5"
@@ -4611,12 +4619,12 @@ Sub HitBigChuck()
 		HurryUpWaitTimer.Enabled=True
 		Chuck1Light.State=LightStateOn: Light24.State=LightStateBlinking
 		MadAllowed=0
-	
+
 	Case 2		 '2nd set complete
 		If CorrectMadHits=0 Then		' Display only when set complete
 			ModeTotal=ModeTotal+5000000
-			If MadCombatToDo > 2 Then	
-				DisplayQueueScreen "  AAAAARRRRRRR  ","  AAAAARRRRGH  ",8,8,0,500,False,"dargh"		
+			If MadCombatToDo > 2 Then
+				DisplayQueueScreen "  AAAAARRRRRRR  ","  AAAAARRRRGH  ",8,8,0,500,False,"dargh"
 				DisplayQueueScreen "    LE CHUCK    ","    DEFEATED   ",3,3,0,1500,False,""
 				DisplayQueueScreen "      LAST      ","     ROUND     ",3,3,0,1500,False,"init5"
 				MoreTime
@@ -4625,23 +4633,23 @@ Sub HitBigChuck()
 				DisplayQueueScreen "  EAAAARRRRRRR  ","  AAAAARRRRGHH  ",8,8,0,500,False,"chuck1"
 				DisplayQueueScreen "     HURRY      "," SHOOT LE CHUCK ",3,3,0,1500,False,"init5"
 				ModeTotalTimer.Enabled=false: HurryUpWaitTimer.Enabled=True
-				Chuck1Light.State=LightStateOn: Light24.State=LightStateBlinking 
+				Chuck1Light.State=LightStateOn: Light24.State=LightStateBlinking
 				MadAllowed=0
-			End If	
-		End If							 		
-	
+			End If
+		End If
+
 	Case 1		 '1st set complete
 		If CorrectMadHits=0 Then		' Display only when set complete
-			DisplayQueueScreen "  AAAAARRRRRRR  ","  AAAAARRRRGH  ",8,8,0,500,False,"dargh"		
+			DisplayQueueScreen "  AAAAARRRRRRR  ","  AAAAARRRRGH  ",8,8,0,500,False,"dargh"
 			DisplayQueueScreen "    LE CHUCK    ","    DEFEATED   ",3,3,0,1500,False,""
 			DisplayQueueScreen "      NEXT      ","     ROUND     ",3,3,0,1500,False,""
 			ModeTotal=ModeTotal+5000000: MoreTime
-			ResetMadStuff				' have to reset			
-		End If							' all the variables		
+			ResetMadStuff				' have to reset
+		End If							' all the variables
 	End Select
-	DisplayScoreQueue 0,0	
+	DisplayScoreQueue 0,0
 End Sub
-	
+
 Sub BigChuckTimer_Timer() 'pause to show mega lechuck hit
 	BigChuckTimer.Enabled=False
 End Sub
@@ -4652,8 +4660,8 @@ Sub GraveDigger()
 'shoot the combos in sequence to dig up the graves,
 'if shot missed combos are reset.
 'scores go up 2 million each shot
-'sequence is: 
-'Scumm Loop - Banana Ramp - LeChuck - Captive Ball	
+'sequence is:
+'Scumm Loop - Banana Ramp - LeChuck - Captive Ball
 	InsultOff
 	CenterArrowsOff
 	ScummKicker.TimerEnabled=True
@@ -4676,7 +4684,7 @@ Sub InitGraveTimer_Timer()
 	InitGraveTimer.Enabled=False
 	NextGraveTarget
 End Sub
-	
+
 Sub NextGraveTarget()
 	ResetGraveTargets
 	If GraveTarget=1 Then
@@ -4699,32 +4707,32 @@ Sub NextGraveTarget()
 End Sub
 
 
-Sub GotGraveTarget()	
+Sub GotGraveTarget()
 	DisplayFlushQueue
 	If GraveTarget=1 Then
 		DisplayQueueScreen "   SCUMMLOOP    ","      HIT       ",8,8,0,500,False,"hey"
 		If GraveTarget1=0 Then
-			DisplayQueueScreen "   " & GraveDiggerScores(1) & " GRAVES DUG ","                ",0,0,0,500,False,"CHAINS" 
+			DisplayQueueScreen "   " & GraveDiggerScores(1) & " GRAVES DUG ","                ",0,0,0,500,False,"CHAINS"
 			DisplayQueueScreen "  GRAVE  AWARD  ","   " & GraveDiggerScores(1) & " MILLIONS   ",0,0,0,500,False,"CHAINS"
 			GraveTarget1=1: MoreTime
 			ModeTotal=ModeTotal+(GraveDiggerScores(1)*1000000)
-		End If	
+		End If
 	End If
 
 	If GraveTarget=2 Then
 		DisplayQueueScreen "  BANANA RAMP   ","      HIT       ",8,8,0,500,False,"hey"
 		If GraveTarget2=0 Then
-			DisplayQueueScreen "   " & GraveDiggerScores(2) & " GRAVES DUG ","                ",0,0,0,500,False,"CHAINS" 
+			DisplayQueueScreen "   " & GraveDiggerScores(2) & " GRAVES DUG ","                ",0,0,0,500,False,"CHAINS"
 			DisplayQueueScreen "  GRAVE  AWARD  ","   " & GraveDiggerScores(2) & " MILLIONS   ",0,0,0,500,False,"CHAINS"
 			GraveTarget2=1: MoreTime
 			ModeTotal=ModeTotal+(GraveDiggerScores(2)*1000000)
-		End If	
+		End If
 	End If
 
 	If GraveTarget=3 Then
 		DisplayQueueScreen "    LECHUCK     ","      HIT       ",8,8,0,500,False,"hey"
 		If GraveTarget3=0 Then
-			DisplayQueueScreen "   " & GraveDiggerScores(3) & " GRAVES DUG ","                ",0,0,0,500,False,"CHAINS" 
+			DisplayQueueScreen "   " & GraveDiggerScores(3) & " GRAVES DUG ","                ",0,0,0,500,False,"CHAINS"
 			DisplayQueueScreen "  GRAVE  AWARD  ","   " & GraveDiggerScores(3) & " MILLIONS   ",0,0,0,500,False,"CHAINS"
 			GraveTarget3=1: MoreTime
 			ModeTotal=ModeTotal+(GraveDiggerScores(3)*1000000)
@@ -4733,7 +4741,7 @@ Sub GotGraveTarget()
 
 	If GraveTarget=4 Then
 		DisplayQueueScreen "  CAPTIVE BALL  ","      HIT      ",8,8,0,500,False,"hey"
-		DisplayQueueScreen "   " & GraveDiggerScores(4) & " GRAVES DUG ","                ",0,0,0,500,False,"CHAINS" 
+		DisplayQueueScreen "   " & GraveDiggerScores(4) & " GRAVES DUG ","                ",0,0,0,500,False,"CHAINS"
 		DisplayQueueScreen "  GRAVE  AWARD  ","   " & GraveDiggerScores(4) & " MILLIONS   ",0,0,0,500,False,"CHAINS"
 		DisplayQueueScreen "     SHOOT      ","    LE CHUCK    ",3,3,0,500,False,"init5"
 		ModeLengthTimer.Enabled=False 'stops main timer
@@ -4741,8 +4749,8 @@ Sub GotGraveTarget()
 		Light82.State=LightStateOff
 		HurryUpWaitTimer.Enabled=True
 	End If
-	
-	GraveTarget=GraveTarget+1 'shot number (so check 5 when hitting lechuck!!!)	
+
+	GraveTarget=GraveTarget+1 'shot number (so check 5 when hitting lechuck!!!)
 	If GraveTarget < 5 Then NextGraveTarget
 End Sub
 
@@ -4753,7 +4761,7 @@ End Sub
 
 ' ***************************** Treasure Hunt ************************************************
 Sub TreasureHunt()
-	LightArray(6, 1) = 1 
+	LightArray(6, 1) = 1
 	LightArray(25, 1) = 1
 	SetPulse 6, 1
 	SetPulse 25, 1
@@ -4776,7 +4784,7 @@ Sub TreasureHunt_One()
 	DisplayFlushQueue()
 	DisplayQueueScreen "    YOU  GET    ","   THE SHOVEL   ",8,8,0,500,False,"efmi_fast3"
 	DisplayQueueScreen " TREASURE BONUS ","   " & TreasureHuntScores(1) & " MILLIONS   ",0,3,0,1000,False,"coin"
-	DisplayQueueScreen "    HIT  THE    ","   LIT  MONKEY  ",3,3,0,1500,False,""	
+	DisplayQueueScreen "    HIT  THE    ","   LIT  MONKEY  ",3,3,0,1500,False,""
 	DisplayQueueScreen "   TO GET THE   ","  TREASURE MAP  ",3,3,0,1500,False,""
 	DisplayQueueScreen "  EXTRA  TIME   ","    AWARDED     ",3,3,0,1000,True,"parrotcall"
 	ModeTotal=ModeTotal+(TreasureHuntScores(1)*1000000)
@@ -4796,32 +4804,36 @@ Sub TreasureHunt_MonkeyTimer_Timer()
 	If MadTarget(3)=1 Then
 '		eekLight.State=LightStateBlinking
 		PlaySound"Eek"
+		EekVel = SQR(activeball.velx * activeball.velx + activeball.vely * activeball.vely)
 		LupTimer.Enabled=True
+		PlaySound "monkeytargup"
 	End if
 	If MadTarget(3)=2 Then
 '		ackLight.State=LightStateBlinking
 		PlaySound"Ack"
+		AckVel = SQR(activeball.velx * activeball.velx + activeball.vely * activeball.vely)
 		MupTimer.Enabled=True
 	End If
 	If MadTarget(3)=3 Then
 '		ookLight.State=LightStateBlinking
 		PlaySound"Oop"
+		OokVel = SQR(activeball.velx * activeball.velx + activeball.vely * activeball.vely)
 		RupTimer.Enabled=True
 	End If
 End Sub
 
 Sub TreasureHunt_Two()
-	TreasureHunt_MonkeyTimer.Enabled=False 
+	TreasureHunt_MonkeyTimer.Enabled=False
 	'EP- Turn off Monkey Lights
 	EekTrapper.IsDropped = 1:AckTrapper.IsDropped = 1:OokTrapper.IsDropped = 1
 	DisplayFlushQueue()
 	DisplayQueueScreen "  YOU FIND THE  ","  TREASURE MAP  ",8,8,0,500,False,"efmi_fast3"
 	DisplayQueueScreen " TREASURE BONUS ","   " & TreasureHuntScores(2) & " MILLIONS   ",0,3,0,1000,False,"coin"
-	DisplayQueueScreen "    HIT  THE    "," INSULT  LETTER ",3,3,0,1000,False,""	
+	DisplayQueueScreen "    HIT  THE    "," INSULT  LETTER ",3,3,0,1000,False,""
 	DisplayQueueScreen "  TO FIND THE   ","     ISLAND     ",3,3,0,1000,False,""
 	DisplayQueueScreen "  EXTRA  TIME   ","    AWARDED     ",3,3,0,1000,True,"parrotcall"
 	ModeTotal=ModeTotal+(TreasureHuntScores(2)*1000000): MoreTime
-	TH_ToDo=3: TH_Insult=0 
+	TH_ToDo=3: TH_Insult=0
 	TreasureHunt_InsultTimer.Enabled=True
 	CenterArrowsOff()
 End Sub
@@ -4839,14 +4851,14 @@ Sub TreasureHunt_InsultTimer_Timer()
 		Case 6: LastInsult="T": LightArray(61, 1) = 2
 	End Select
 End Sub
-	
+
 Sub TreasureHunt_Three
 	TreasureHunt_InsultTimer.Enabled=False
 	InitSMTimer()
 	DisplayFlushQueue()
 	DisplayQueueScreen "    YOU FIND    ","   THE ISLAND   ",8,8,0,1000,False,"efmi_fast3"
 	DisplayQueueScreen " TREASURE BONUS ","   " & TreasureHuntScores(3) & " MILLIONS   ",0,3,0,1000,False,"coin"
-	DisplayQueueScreen "   VISIT  THE   "," HOUSE OF MOJO  ",0,0,0,1500,False,""	
+	DisplayQueueScreen "   VISIT  THE   "," HOUSE OF MOJO  ",0,0,0,1500,False,""
 	DisplayQueueScreen "    TO GRAB     ","  THE TREASURE  ",0,0,0,1500,False,""
 	DisplayQueueScreen "  EXTRA  TIME   ","    AWARDED     ",3,3,0,1000,True,"parrotcall"
 	ModeTotal=ModeTotal+(TreasureHuntScores(3)*1000000)
@@ -4874,7 +4886,7 @@ Sub TreasureHunt_Four
 	CenterArrowsOff()
 	LightArray(46, 1) = 0
 End Sub
-	
+
 ' ******************************* END OF MODES ***********************************************
 
 
@@ -4886,11 +4898,11 @@ Sub WaLeftSling_Slingshot()
 			SwitchOn()
 			'EP- Blink Left Sling
 		End If
-	Else	
-		Playsound "doh"	
+	Else
+		Playsound "doh"
 		'EP- blink Left Sling
 		AddScore(500)
-		AddBonus(250)	
+		AddBonus(250)
 	End If
 End Sub
 
@@ -4902,8 +4914,8 @@ Sub WaRightSling_Slingshot()
 			SwitchOn
 			'EP- Blink Right Sling
 		End If
-	Else	
-		Playsound "uuuh"	
+	Else
+		Playsound "uuuh"
 		'EP- Blink Right Sling
 		AddScore(500)
 		AddBonus(250)
@@ -4914,7 +4926,7 @@ End Sub
 
 Sub VooDooMagic()
 'knock off 2 ball multi with captive item awards
-'items: 
+'items:
 'sea slug pate
 'voodoo dolls
 'essence of seagull
@@ -4936,7 +4948,7 @@ Sub VooDooMagic()
 	Status="VoodooMagic"
 	VoodooItem=0
 End Sub
-	
+
 Sub VooDooItemHit(WhoHit)
 	Dim TempBall
 	PlaySound "orbit"
@@ -4948,7 +4960,7 @@ Sub VooDooItemHit(WhoHit)
 		ModeTotal=ModeTotal+2000000
 	Case 2
 		DisplayQueueScreen "  VOODOO DOLLS  ","   3 MILLIONS   ",8,0,0,1000,True,"dolls"
-		ModeTotal=ModeTotal+3000000 
+		ModeTotal=ModeTotal+3000000
 	Case 3
 		DisplayQueueScreen "  GULL ESSENCE  ","   4 MILLIONS   ",8,0,0,1000,True,"essenceofseagull"
 		ModeTotal=ModeTotal+4000000
@@ -5112,9 +5124,9 @@ Sub GoModeTotal()
 	BallSave=0
 	LightArray(22, 1) = 0
 	If Status <> "Spitting" Then DisplayFlushQueue()
-	If ModeComplete = 0 Then 
+	If ModeComplete = 0 Then
 		If HurryUp=1 Then
-			HurryUpTimer.Enabled=False: HurryUpBonus=0	
+			HurryUpTimer.Enabled=False: HurryUpBonus=0
 			DisplayQueueScreen "      ITEM      ","      LOST      ",3,3,0,500,False,""
 			PlaySound "muhaha"
 			HurryUp=0
@@ -5146,7 +5158,7 @@ Sub GoModeTotal()
 		PlaySound "voodooend"
 		Kicker6.Enabled=False
 		LightArray(46, 1) = 0
-	Case "Spitting" 		'spitting comp	
+	Case "Spitting" 		'spitting comp
 		If ModeComplete=0 Then DisplayQueueScreen "  COMPETITION   ","    FINISHED    ",3,3,0,1000,False,"spit"
 		If ModeComplete=1 Then DisplayQueueScreen "  COMPETITION   ","     WINNER     ",3,3,0,1000,False,"spit"
 		WaSpit.IsDropped = 1
@@ -5247,14 +5259,14 @@ Sub GoModeTotal()
 		LightArray(45, 1) = 2
 		If Status = "Normal" Then GrogKicker.Enabled = 1
 	End If
- 	If GrogHits = 2 Then
+	If GrogHits = 2 Then
 		LightArray(43, 1) = 1
 		LightArray(44, 1) = 1
 	End If
- 	If GrogHits = 1 Then LightArray(43, 1) = 1
+	If GrogHits = 1 Then LightArray(43, 1) = 1
 	If Tilt=1 Then ModeTotal=0 		'TILT!
 	DisplayQueueScreen "   MODE TOTAL   ","   "&FormatScore(ModeTotal)&"   ",0,0,0,1000,True,""
- 	AddScore(ModeTotal)
+	AddScore(ModeTotal)
 	ModeTotalTimer.Enabled=True
 	DisplayScoreQueue 1,2
 End Sub
@@ -5509,7 +5521,7 @@ Sub GoScummLoop()
 		NextScummAward=3
 		ScummTarget.IsDropped=False
 		ScummTarget.TimerEnabled=True
-	Case 3	 '5 bananas	
+	Case 3	 '5 bananas
 		If Bananas < 5 Then Bananas=Bananas+1
 		DisplayQueueScreen "  + 1 BANANAS   ","                ",5,4,0,500,False,"haveabanana"
 		DisplayQueueScreen "  BANANAS = "&Bananas,"                ",0,0,0,1000,False,""
@@ -5546,7 +5558,7 @@ Sub GoScummLoop()
 		NextScummAward=36
 		Barrels=Barrels+25
 		ScummTarget.IsDropped=False
-		ScummTarget.TimerEnabled=True	
+		ScummTarget.TimerEnabled=True
 	Case 36 'Playfield x3
 		DisplayQueueScreen "   PLAYFIELD    ","      X 3      ",8,8,0,1500,False,"3headedmonkey"
 		NextScummAward=45
@@ -5585,7 +5597,7 @@ Sub GoScummLoop()
 	DisplayScoreQueue 2,1
 	BarrelScore=BarrelScore+1500
 End Sub
-	
+
 Sub ScummTarget_Hit(): PlaySound "shakegrog": End Sub
 
 Sub ScummTarget_Timer()
@@ -5615,7 +5627,7 @@ Sub GoBananas() ' ::)) sic!
 		DisplayQueueScreen "   "&Bananas&" BANANAS "," )              ",0,0,0,125,False,""
 		DisplayQueueScreen "   "&Bananas&" BANANAS "," (              ",0,0,0,125,False,""
 		DisplayQueueScreen "   "&Bananas&" BANANAS "," )              ",0,0,0,125,False,""
-	
+
 	Case 2
 		DisplayQueueScreen "   "&Bananas&" BANANAS "," ( (            ",0,0,0,125,False,""
 		DisplayQueueScreen "   "&Bananas&" BANANAS "," ) )            ",0,0,0,125,False,""
@@ -5625,7 +5637,7 @@ Sub GoBananas() ' ::)) sic!
 		DisplayQueueScreen "   "&Bananas&" BANANAS "," ) )            ",0,0,0,125,False,""
 		DisplayQueueScreen "   "&Bananas&" BANANAS "," ( (            ",0,0,0,125,False,""
 		DisplayQueueScreen "   "&Bananas&" BANANAS "," ) )            ",0,0,0,125,False,""
-	
+
 	Case 3
 		DisplayQueueScreen "   "&Bananas&" BANANAS "," ( ( (          ",0,0,0,125,False,""
 		DisplayQueueScreen "   "&Bananas&" BANANAS "," ) ) )          ",0,0,0,125,False,""
@@ -5635,7 +5647,7 @@ Sub GoBananas() ' ::)) sic!
 		DisplayQueueScreen "   "&Bananas&" BANANAS "," ) ) )          ",0,0,0,125,False,""
 		DisplayQueueScreen "   "&Bananas&" BANANAS "," ( ( (          ",0,0,0,125,False,""
 		DisplayQueueScreen "   "&Bananas&" BANANAS "," ) ) )          ",0,0,0,125,False,""
-		
+
 	Case 4
 		DisplayQueueScreen "   "&Bananas&" BANANAS "," ) ) ) )        ",0,0,0,125,False,""
 		DisplayQueueScreen "   "&Bananas&" BANANAS "," ( ( ( (        ",0,0,0,125,False,""
@@ -5645,7 +5657,7 @@ Sub GoBananas() ' ::)) sic!
 		DisplayQueueScreen "   "&Bananas&" BANANAS "," ( ( ( (        ",0,0,0,125,False,""
 		DisplayQueueScreen "   "&Bananas&" BANANAS "," ) ) ) )        ",0,0,0,125,False,""
 		DisplayQueueScreen "   "&Bananas&" BANANAS "," ( ( ( (        ",0,0,0,125,False,""
-	
+
 	Case 5
 		DisplayQueueScreen "   "&Bananas&" BANANAS "," ( ( ( ( (      ",0,0,0,125,False,""
 		DisplayQueueScreen "   "&Bananas&" BANANAS "," ) ) ) ) )      ",0,0,0,125,False,""
@@ -5655,7 +5667,7 @@ Sub GoBananas() ' ::)) sic!
 		DisplayQueueScreen "   "&Bananas&" BANANAS "," ) ) ) ) )      ",0,0,0,125,False,""
 		DisplayQueueScreen "   "&Bananas&" BANANAS "," ( ( ( ( (      ",0,0,0,125,False,""
 		DisplayQueueScreen "   "&Bananas&" BANANAS "," ) ) ) ) )      ",0,0,0,125,False,""
-	
+
 	Case 6
 		DisplayQueueScreen "   "&Bananas&" BANANAS "," ( ( ( ( ( (    ",0,0,0,125,False,""
 		DisplayQueueScreen "   "&Bananas&" BANANAS "," ) ) ) ) ) )    ",0,0,0,125,False,""
@@ -5706,22 +5718,22 @@ Sub Trigger4_Hit()
 End Sub
 
 Sub HurryUpTimer_Timer()
-	HurryUpTimer.Enabled=False	
+	HurryUpTimer.Enabled=False
 	HurryUp=1
 	DisplayFlushQueue
 	DisplayHurryUp()
 	PlaySound "meterplink"
 	HurryUpBonus=HurryUpBonus-1
 	If HurryUpBonus=-1 Then
-		HurryUp=0		
+		HurryUp=0
 		LightArray(50, 1) = 0
 		LightArray(31, 1) = 0
 		DisplayFlushQueue
-		DisplayQueueScreen "      ITEM      ","      LOST      ",1,2,0,1500,False,"muhaha"	
+		DisplayQueueScreen "      ITEM      ","      LOST      ",1,2,0,1500,False,"muhaha"
 		DisplayQueueScreen "      ITEM      ","      LOST      ",3,3,0,1500,False,""
 		HurryUpEndTimer.Enabled=True
 	Else
-		HurryUpTimer.Enabled=True	 
+		HurryUpTimer.Enabled=True
 	End If
 End Sub
 
@@ -5758,9 +5770,11 @@ Sub EEKTarg_Hit()
 			SwitchNumber=5
 			SwitchOn()
 		End If
-	Case "MonkeyCombat"	
+	Case "MonkeyCombat"
 		LBounce=0
+		EekVel = SQR(activeball.velx * activeball.velx + activeball.vely * activeball.vely)
 		LUpTimer.Enabled=True
+		PlaySound "monkeytargup"
 		If MadAllowed=1 Then
 			WhatMadTarget=WhatMadTarget+1
 			PlaySound "bigeek"
@@ -5769,7 +5783,9 @@ Sub EEKTarg_Hit()
 		End If
 	Case Else
 		LBounce=0
+		EekVel = SQR(activeball.velx * activeball.velx + activeball.vely * activeball.vely)
 		LUpTimer.Enabled=True
+		PlaySound "monkeytargup"
 		DisplayFlushQueue()
 		If Combat1Count=10 Then
 			DisplayQueueScreen "  COMBAT BONUS  ","   1  MILLION   ",3,8,0,1000,True,"GUYEEK"
@@ -5783,11 +5799,46 @@ Sub EEKTarg_Hit()
 	End Select
 End Sub
 
+Dim Dir1, chdir1, updown1, slowmo
+slowmo = 1'.98												'Make this number lower for slow-mo Monkeys
+Dir1 = 1
+updown1 = 1
+ChDir1 = 0
+Dim EekVel:EekVel = 0
+Dim EekDir:EekDir = 1
 Sub LUpTimer_Timer()
-	'EP- Animation for Left Monkey
-	me.enabled = 0
-	PlaySound "monkeytargup"
-'	If Status <> "TreasureHunt" Then EEKLight.State=LightStateOn			'EP- If not in TreasureHunt, then keep this light on
+	dim rotdir
+	'If it has come down and has stopped moving then let it start moving.  This prevents double hits as the monkey shouldn't jump again while it's still in the air
+	If updown1 = -1 AND ChDir1 = 0 Then ChDir1 = 1
+	'If it's on it's way up, then...
+	If ChDir1 = 1 Then
+		'If it "hit the glass", play a sound and send it back down
+		If PrEekMonkey.Z >= 200 Then
+			PlaySound "knocker", 0, LVL(0.1), -1, 0
+			ChDir1 = 2
+		End If
+	End If
+	'Move the monkey according to Maths
+	PrEekMonkey.Z = dSin(dir1) * EekVel * 10 + 120
+	'If the monkey has rotated left, then start it rotating right, else start it rotating left
+	If PrEekMonkey.Rotz > 20 then
+		EekDir = -1
+	ElseIf PrEekMonkey.rotz < -55 Then
+		EekDir = 1
+	End If
+	'simple rotation
+	PrEekMonkey.RotZ = PrEekMonkey.RotZ + (EekVel * 0.05 * EekDir)
+
+	If dir1 >= 80 Then updown1 = -1
+	dir1 = dir1 + dCos(dir1) * updown1 * slowmo
+	'If the monkey landed, make sure it's at it's resting spot and turn off the animatino
+	If PrEekMonkey.Z <= 119 Then
+		PrEekMonkey.Z = 120
+		Me.Enabled = 0
+		Dir1 = 1
+		ChDir1 = 0
+		updown1 = 1
+	End If
 End Sub
 
 ' MID
@@ -5799,12 +5850,13 @@ Sub AckTarg_Hit()
 			SwitchOn()
 		End If
 	Else
-		MBounce=0	
+		MBounce=0
+		AckVel = SQR(activeball.velx * activeball.velx + activeball.vely * activeball.vely)
 		MUpTimer.Enabled=True
-		If Status="MonkeyCombat" Then	
+		If Status="MonkeyCombat" Then
 			If MadAllowed=1 Then
 				WhatMadTarget=WhatMadTarget+1
-				PlaySound "bigack"	
+				PlaySound "bigack"
 				MadTargetNumber=2
 				MadTarget2Hit()
 			End If
@@ -5823,11 +5875,44 @@ Sub AckTarg_Hit()
 	End If
 End Sub
 
+Dim Dir2, chdir2, updown2
+Dir2 = 1
+updown2 = 1
+ChDir2 = 0
+Dim AckVel:AckVel = 0
+Dim AckDir:AckDir = 1
 Sub MUpTimer_Timer()
-	'EP- Animation for Center Monkey
-	PlaySound "monkeytargup"
-	me.enabled = 0
-'	If Status <> "TreasureHunt" Then ACKLight.State=LightStateOn		'If not in Treasure Hunt, center light on
+	dim rotdir
+	'If it has come down and has stopped moving then let it start moving.  This prevents double hits as the monkey shouldn't jump again while it's still in the air
+	If updown2 = -1 AND ChDir2 = 0 Then ChDir2 = 1
+	'If it's on it's way up, then...
+	If ChDir2 = 1 Then
+		'If it "hit the glass", play a sound and send it back down
+		If PrAckMonkey.Z >= 200 Then
+			PlaySound "knocker", 0, LVL(0.1), 0, 0
+			ChDir2 = 2
+		End If
+	End If
+	'Move the monkey according to Maths
+	PrAckMonkey.Z = dSin(dir2) * AckVel * 10 + 120
+	'If the monkey has rotated left, then start it rotating right, else start it rotating left
+	If PrAckMonkey.Rotz > 20 then
+		AckDir = -1
+	ElseIf PrAckMonkey.rotz < -55 Then
+		AckDir = 1
+	End If
+	'simple rotation
+	PrAckMonkey.RotZ = PrAckMonkey.RotZ + (AckVel * 0.05 * AckDir)
+	If dir2 >= 80 Then updown2 = -1
+	dir2 = dir2 + dCos(dir2) * updown2 * slowmo
+	'If the monkey landed, make sure it's at it's resting spot and turn off the animatino
+	If PrAckMonkey.Z <= 119 Then
+		PrAckMonkey.Z = 120
+		Me.Enabled = 0
+		Dir2 = 1
+		ChDir2 = 0
+		updown2 = 1
+	End If
 End Sub
 
 ' RIGHT
@@ -5839,9 +5924,10 @@ Sub OOKTarg_Hit()
 			SwitchOn()
 		End If
 	Else
-		RBounce=0		
+		RBounce=0
+		OokVel = SQR(activeball.velx * activeball.velx + activeball.vely * activeball.vely)
 		RUpTimer.Enabled=True
-		If Status="MonkeyCombat" Then	
+		If Status="MonkeyCombat" Then
 			If MadAllowed=1 Then
 				WhatMadTarget=WhatMadTarget+1
 				PlaySound "bigoop"
@@ -5864,25 +5950,58 @@ Sub OOKTarg_Hit()
 	End If
 End Sub
 
+Dim Dir3, chdir3, updown3
+Dir3 = 1
+updown3 = 1
+ChDir3 = 0
+Dim OokVel:OokVel = 0
+Dim OokDir:OokDir = 1
 Sub RUpTimer_Timer()
-	'EP- Animation for Right Monkey
-	PlaySound "monkeytargup"
-	me.enabled = 0
-'	If Status <> "TreasureHunt" Then OOKLight.State=LightStateOn	'EP- If not in TreasureHunt, keep right light one
+	dim rotdir
+	'If it has come down and has stopped moving then let it start moving.  This prevents double hits as the monkey shouldn't jump again while it's still in the air
+	If updown3 = -1 AND ChDir3 = 0 Then ChDir3 = 1
+	'If it's on it's way up, then...
+	If chdir3 = 1 Then
+		'If it "hit the glass", play a sound and send it back down
+		If PrOokMonkey.Z >= 200 Then
+			PlaySound "knocker", 0, LVL(0.1), 1, 0
+			chdir3 = 2
+		End If
+	End If
+	'Move the monkey according to Maths
+	PrOokMonkey.Z = dSin(Dir3) * OokVel * 10 + 120
+	'If the monkey has rotated left, then start it rotating right, else start it rotating left
+	If PrOokMonkey.Rotz > 20 then
+		OkkDir = -1
+	ElseIf PrOokMonkey.rotz < -55 Then
+		OokDir = 1
+	End If
+	'simple rotation
+	PrOokMonkey.RotZ = PrOoMonkey.RotZ + (OokVel * 0.05 * OokDir)
+	If dir3 >= 80 Then updown3 = -1
+	Dir3 = dir3 + dCos(dir3) * updown3 * slowmo
+	'If the monkey landed, make sure it's at it's resting spot and turn off the animatino
+	If PrOokMonkey.Z <= 119 Then
+		PrOokMonkey.Z = 120
+		Me.Enabled = 0
+		Dir3 = 1
+		chdir3 = 0
+		updown3 = 1
+	End If
 End Sub
 
 Sub CheckCombat()
 	AddScore(8000): AddBonus(1000)
 	x=Combat1Count*Combat2Count*Combat3Count
-	If Status = "Normal" Then 
+	If Status = "Normal" Then
 		If x>0 Then
 			AKick.Enabled=True: EKick.Enabled=True: OKick.Enabled=True
-			CombatTimer.Enabled=True	
+			CombatTimer.Enabled=True
 			CombatLevel=CombatLevel+1
 			DefeatDisplay()
 		End If
 	DisplayScoreQueue 0,0
-	Else 
+	Else
 		If x>0 Then
 			DisplayFlushQueue()
 			DisplayQueueScreen "     BONUS +    ","      25000     ",0,0,0,500,True,""
@@ -5899,7 +6018,7 @@ Sub DefeatDisplay()
 	EEKTrapper.IsDropped = 0
 	OOKTrapper.IsDropped = 0
 	ACKTrapper.IsDropped = 0
-	Select Case CombatLevel		
+	Select Case CombatLevel
 		Case 1: CombatAward="500000"
 		Case 2: CombatAward="750000"
 		Case 3: CombatAward="1000000"
@@ -5908,7 +6027,7 @@ Sub DefeatDisplay()
 		Case 6: CombatAward="6000000"
 		Case 7: CombatAward="8000000"
 		Case 8: CombatAward="10000000"
-		Case 9: CombatAward="12500000"			
+		Case 9: CombatAward="12500000"
 	End Select
 	'EP- blink all 3 monkey lights
 	'EP- Animate all three Monkeys
@@ -5935,7 +6054,7 @@ Sub DefeatDisplay()
 		ActiveMonkeyBeat()
 		CombatLevel=0
 	Else
-		DisplayQueueScreen "     MONKEY     ","    DEFEATED    ",8,8,0,500,False,""	
+		DisplayQueueScreen "     MONKEY     ","    DEFEATED    ",8,8,0,500,False,""
 		DisplayQueueScreen " COMBAT LEVEL "&CombatLevel&" ","   "&FormatScore(CombatAward)&"    ",0,0,0,1500,True,"bigstep"
 	End If
 	AddScore(CombatAward)
@@ -5968,7 +6087,7 @@ End Sub
 
 ' ************************************ KICKERS
 
-Sub EKick_Hit()  	 
+Sub EKick_Hit()
 	'EP- Bounce Monkey
 	EekTrapper.IsDropped = 0
 	If Status="MonkeyCombat" Then
@@ -5980,7 +6099,7 @@ Sub EKick_Hit()
 				EKick.TimerInterval=1500	' last set, kicker must be faster
 			Else
 				EKick.TimerInterval=8500	' firsts sets have to see displays
- 			End If
+			End If
 			EKick.TimerEnabled = True
 			MadTarget1Hit()
 		End If
@@ -6023,7 +6142,7 @@ Sub AKick_Hit()
 	End If
 End Sub
 
-Sub OKick_Hit()  	
+Sub OKick_Hit()
 	OokTrapper.IsDropped = 0
 	If Status="MonkeyCombat" Then
 		If MadAllowed=1 Then
@@ -6050,7 +6169,7 @@ Sub OKick_Hit()
 	End If
 End Sub
 
-Sub EKick_Timer()	
+Sub EKick_Timer()
 	EKick.TimerEnabled = False
 	EKick.TimerInterval=5000
 	EekTrapper.IsDropped = 1
@@ -6059,7 +6178,7 @@ Sub EKick_Timer()
 	If Status="TreasureHunt" Then ModeLengthTimer.Enabled=True
 End Sub
 
-Sub AKick_Timer()	
+Sub AKick_Timer()
 	AKick.TimerEnabled = False
 	AKick.TimerInterval=5000
 	AckTrapper.IsDropped = 1
@@ -6068,7 +6187,7 @@ Sub AKick_Timer()
 	If Status="TreasureHunt" Then ModeLengthTimer.Enabled=True
 End Sub
 
-Sub OKick_Timer()	
+Sub OKick_Timer()
 	OKick.TimerEnabled = False
 	OKick.TimerInterval=5000
 	OokTrapper.IsDropped = 1
@@ -6091,13 +6210,13 @@ Sub ComboTimer_Timer()
 			DisplayQueueScreen "  COMBO MISSED  ","   TRY  AGAIN   ",3,3,0,1000,True,"doh"
 			CenterArrowsOff()
 			LightArray(33, 1) = 2
-		End If						
+		End If
 	End If
 End Sub
 
 Sub AddCombo()
 	Combos=Combos+1
-	ComboValue=Combos*500000	
+	ComboValue=Combos*500000
 	DisplayFlushQueue
 	DisplayQueueScreen "  " &FormatScore1K(Combos,"","") & " COMBOS    ","  " &FormatScore(ComboValue) &"     ",0,0,0,500,False,"hey"
 	DisplayQueueScreen "  " &FormatScore1K(Combos,"","") & " COMBOS    ","  " &FormatScore(ComboValue) &"     ",0,8,0,500,True,""
@@ -6134,7 +6253,7 @@ Sub AddMulti()
 			EB=1
 		End If
 	End Select
-	If BonusMultiplier = 14 Then BonusMultiplier = 12	
+	If BonusMultiplier = 14 Then BonusMultiplier = 12
 	DisplayFlushQueue
 	DisplayQueueScreen "     BONUS      ","   MULTIPLER    ",0,0,0,500,False,"explode1"
 	DisplayQueueScreen "   * BONUS *    ","      X "&BonusMultiplier,0,8,0,1000,True,""
@@ -6201,9 +6320,9 @@ Const eNone             = 0       ' Instantly displayed
 Const eScrollLeft       = 1       ' scroll on from the right
 Const eScrollRight      = 2       ' scroll on from the left
 Const eBlink            = 3       ' Blink (blinks for 'TimeOn') at user specified intervals (slow speed)
-                              ' blink speed (either line) in milliseconds (default 100ms) must be multiple of dcEFFECTSPEED
-                              ' it takes 2*n to do a full cycle (n on and n off). DisplayQueueScreen TimeOn should be multiple
-                              ' of 2*n to ensure a smooth effect transition
+							  ' blink speed (either line) in milliseconds (default 100ms) must be multiple of dcEFFECTSPEED
+							  ' it takes 2*n to do a full cycle (n on and n off). DisplayQueueScreen TimeOn should be multiple
+							  ' of 2*n to ensure a smooth effect transition
 Const eScrollOut        = 4       ' scroll out from middle to the edges
 Const eScrollIn         = 5       ' scroll in the edges to the middle
 Const eScrollLeftOver   = 6       ' scroll on from the right (over current text)
@@ -6297,7 +6416,7 @@ Sub DisplayScore()
 		TextBoxTop.Text    = TempTopStr
 		Balls = BallsPerGame + 1: Balls = Balls - BallsRemaining
 		Select Case Status
-		Case "Normal"    
+		Case "Normal"
 			If BallsRemaining<>0 Then
 				TempBottomStr = "         BALL "&Balls&" "
 			Else
@@ -6326,7 +6445,7 @@ Sub DisplayScore()
 		Case "MonkeyBeat"
 			TempTopStr = "     MONKEY     ": TempBottomStr ="      BEAT      "
 		End Select
-		DispCurrentTopLine 		= TempTopStr	
+		DispCurrentTopLine 		= TempTopStr
 		DispCurrentBottomLine 	= TempBottomStr
 		TextBoxTop.Text    		= TempTopStr
 		TextBoxBottom.Text    	= TempBottomStr
@@ -6389,38 +6508,38 @@ Case eNone:             DispEffectCountT1End = 1                                
 Case eScrollLeft:       DispEffectCountT1End = Len(DispQueueText1(DispQueueHead)) ' effect loops
 Case eScrollRight:      DispEffectCountT1End = Len(DispQueueText1(DispQueueHead))
 Case eBlink:            DispEffectCountT1End = int(DispQueueTimeOn(DispQueueHead) / DispEffectSpeed)
-                        DispEffectBlinkCycleT1 = 0
+						DispEffectBlinkCycleT1 = 0
 Case eScrollOut:        DispEffectCountT1End = Len(DispQueueText1(DispQueueHead))/2
 Case eScrollIn:         DispEffectCountT1End = Len(DispQueueText1(DispQueueHead))/2
 Case eScrollLeftOver:   DispEffectCountT1End = Len(DispQueueText1(DispQueueHead))
 Case eScrollRightOver:  DispEffectCountT1End = Len(DispQueueText1(DispQueueHead))
 Case eBlinkFast:        DispEffectCountT1End = int(DispQueueTimeOn(DispQueueHead) / DispEffectSpeed)
-                        DispEffectBlinkCycleT1 = 0
+						DispEffectBlinkCycleT1 = 0
 Case eTrailIn:          DispEffectCountT1End = Len(DispQueueText1(DispQueueHead))/2
-                        DispCurrentTopLine = DisplayBlankLine
+						DispCurrentTopLine = DisplayBlankLine
 Case eBlinkMask:        DispEffectCountT1End = int(DispQueueTimeOn(DispQueueHead) / DispEffectSpeed)
-                        DispEffectBlinkCycleT1 = 0
+						DispEffectBlinkCycleT1 = 0
 Case eBlinkMaskFast:    DispEffectCountT1End = int(DispQueueTimeOn(DispQueueHead) / DispEffectSpeed)
-                        DispEffectBlinkCycleT1 = 0
+						DispEffectBlinkCycleT1 = 0
 	End Select
 	Select Case (DispQueueEffectOnT2(DispQueueHead))
 Case eNone:             DispEffectCountT2End = 1
 Case eScrollLeft:       DispEffectCountT2End = Len(DispQueueText2(DispQueueHead))
 Case eScrollRight:      DispEffectCountT2End = Len(DispQueueText2(DispQueueHead))
 Case eBlink:            DispEffectCountT2End = int(DispQueueTimeOn(DispQueueHead) / DispEffectSpeed)
-                        DispEffectBlinkCycleT2 = 0
+						DispEffectBlinkCycleT2 = 0
 Case eScrollOut:        DispEffectCountT2End = Len(DispQueueText2(DispQueueHead))/2
 Case eScrollIn:         DispEffectCountT2End = Len(DispQueueText2(DispQueueHead))/2
 Case eScrollLeftOver:   DispEffectCountT2End = Len(DispQueueText2(DispQueueHead))
 Case eScrollRightOver:  DispEffectCountT2End = Len(DispQueueText2(DispQueueHead))
 Case eBlinkFast:        DispEffectCountT2End = int(DispQueueTimeOn(DispQueueHead) / DispEffectSpeed)
-                        DispEffectBlinkCycleT2 = 0
+						DispEffectBlinkCycleT2 = 0
 Case eTrailIn:          DispEffectCountT2End = Len(DispQueueText2(DispQueueHead))/2
-                        DispCurrentBottomLine = DisplayBlankLine
+						DispCurrentBottomLine = DisplayBlankLine
 Case eBlinkMask:        DispEffectCountT2End = int(DispQueueTimeOn(DispQueueHead) / DispEffectSpeed)
-                        DispEffectBlinkCycleT2 = 0
+						DispEffectBlinkCycleT2 = 0
 Case eBlinkMaskFast:    DispEffectCountT2End = int(DispQueueTimeOn(DispQueueHead) / DispEffectSpeed)
-                        DispEffectBlinkCycleT2 = 0
+						DispEffectBlinkCycleT2 = 0
 	End Select
 	' if there is a sound for this screen Then play it
 	If (DispQueueSound(DispQueueHead) <> "") Then PlaySound(DispQueueSound(DispQueueHead))
@@ -6502,103 +6621,103 @@ Sub DisplayProcessEffectOn()
 	case eNone:
 		TempTopStr = DispQueueText1(DispQueueHead)
   case eScrollLeft:
-    TempTopStr = Right(DispCurrentTopLine, dcCHARSPERLINE-1)
-    TempTopStr = TempTopStr & Mid(DispQueueText1(DispQueueHead), DispEffectCountT1 ,1)
+	TempTopStr = Right(DispCurrentTopLine, dcCHARSPERLINE-1)
+	TempTopStr = TempTopStr & Mid(DispQueueText1(DispQueueHead), DispEffectCountT1 ,1)
 
   case eScrollRight:
-    TempTopStr = Mid(DispQueueText1(DispQueueHead), (dcCHARSPERLINE+1)-DispEffectCountT1 ,1)
-    TempTopStr = TempTopStr & Left(DispCurrentTopLine, dcCHARSPERLINE-1)
+	TempTopStr = Mid(DispQueueText1(DispQueueHead), (dcCHARSPERLINE+1)-DispEffectCountT1 ,1)
+	TempTopStr = TempTopStr & Left(DispCurrentTopLine, dcCHARSPERLINE-1)
 
   case eBlink:
-    BlinkEffect = True
-    If ((DispEffectCountT1 MOD DispEffectBlinkSlowRate) = 0) Then
-      DispEffectBlinkCycleT1 = DispEffectBlinkCycleT1 xor 1
-    End If
-    If (DispEffectBlinkCycleT1 = 0) Then
-      TempTopStr = DispQueueText1(DispQueueHead)
-    Else
-      TempTopStr = DisplayBlankLine
-    End If
+	BlinkEffect = True
+	If ((DispEffectCountT1 MOD DispEffectBlinkSlowRate) = 0) Then
+	  DispEffectBlinkCycleT1 = DispEffectBlinkCycleT1 xor 1
+	End If
+	If (DispEffectBlinkCycleT1 = 0) Then
+	  TempTopStr = DispQueueText1(DispQueueHead)
+	Else
+	  TempTopStr = DisplayBlankLine
+	End If
 
   case eScrollOut:
-    TempLeftStr  = Mid(DispCurrentTopLine, 2, (dcCHARSPERLINE/2)-1)
-    TempLeftStr  = TempLeftStr & Mid(DispQueueText1(DispQueueHead), DispEffectCountT1, 1)
-    TempRightStr = Mid(DispQueueText1(DispQueueHead), (dcCHARSPERLINE+1)-DispEffectCountT1, 1)
-    TempRightStr = TempRightStr & Mid(DispCurrentTopLine, (dcCHARSPERLINE/2)+1, (dcCHARSPERLINE/2)-1)
-    TempTopStr   = TempLeftStr & TempRightStr
+	TempLeftStr  = Mid(DispCurrentTopLine, 2, (dcCHARSPERLINE/2)-1)
+	TempLeftStr  = TempLeftStr & Mid(DispQueueText1(DispQueueHead), DispEffectCountT1, 1)
+	TempRightStr = Mid(DispQueueText1(DispQueueHead), (dcCHARSPERLINE+1)-DispEffectCountT1, 1)
+	TempRightStr = TempRightStr & Mid(DispCurrentTopLine, (dcCHARSPERLINE/2)+1, (dcCHARSPERLINE/2)-1)
+	TempTopStr   = TempLeftStr & TempRightStr
 
   case eScrollIn:
-    TempLeftStr  = Mid(DispQueueText1(DispQueueHead), ((dcCHARSPERLINE/2)+1)-DispEffectCountT1, 1)
-    TempLeftStr  = TempLeftStr & Left(DispCurrentTopLine, (dcCHARSPERLINE/2)-1)
-    TempRightStr = Right(DispCurrentTopLine, (dcCHARSPERLINE/2)-1)
-    TempRightStr = TempRightStr & Mid(DispQueueText1(DispQueueHead), (dcCHARSPERLINE/2)+DispEffectCountT1, 1)
-    TempTopStr   = TempLeftStr & TempRightStr
+	TempLeftStr  = Mid(DispQueueText1(DispQueueHead), ((dcCHARSPERLINE/2)+1)-DispEffectCountT1, 1)
+	TempLeftStr  = TempLeftStr & Left(DispCurrentTopLine, (dcCHARSPERLINE/2)-1)
+	TempRightStr = Right(DispCurrentTopLine, (dcCHARSPERLINE/2)-1)
+	TempRightStr = TempRightStr & Mid(DispQueueText1(DispQueueHead), (dcCHARSPERLINE/2)+DispEffectCountT1, 1)
+	TempTopStr   = TempLeftStr & TempRightStr
 
   case eScrollLeftOver:
-    TempTopStr = Left(DispCurrentTopLine, dcCHARSPERLINE-DispEffectCountT1)
-    TempTopStr = TempTopStr & Left(DispQueueText1(DispQueueHead), DispEffectCountT1)
+	TempTopStr = Left(DispCurrentTopLine, dcCHARSPERLINE-DispEffectCountT1)
+	TempTopStr = TempTopStr & Left(DispQueueText1(DispQueueHead), DispEffectCountT1)
 
   case eScrollRightOver:
-    TempTopStr = Right(DispQueueText1(DispQueueHead), DispEffectCountT1)
-    TempTopStr = TempTopStr & Right(DispCurrentTopLine, dcCHARSPERLINE-DispEffectCountT1)
+	TempTopStr = Right(DispQueueText1(DispQueueHead), DispEffectCountT1)
+	TempTopStr = TempTopStr & Right(DispCurrentTopLine, dcCHARSPERLINE-DispEffectCountT1)
 
   case eBlinkFast:
-    BlinkEffect = True
-    If ((DispEffectCountT1 MOD DispEffectBlinkFastRate) = 0) Then
-      DispEffectBlinkCycleT1 = DispEffectBlinkCycleT1 xor 1
-    End If
-    If (DispEffectBlinkCycleT1 = 0) Then
-      TempTopStr = DispQueueText1(DispQueueHead)
-    Else
-      TempTopStr = DisplayBlankLine
-    End If
+	BlinkEffect = True
+	If ((DispEffectCountT1 MOD DispEffectBlinkFastRate) = 0) Then
+	  DispEffectBlinkCycleT1 = DispEffectBlinkCycleT1 xor 1
+	End If
+	If (DispEffectBlinkCycleT1 = 0) Then
+	  TempTopStr = DispQueueText1(DispQueueHead)
+	Else
+	  TempTopStr = DisplayBlankLine
+	End If
 
   case eTrailIn:
-    TempLeftStr = left(DispCurrentTopLine, DispEffectCountT1-1)
-    TempLeftStr = TempLeftStr & Mid(DispQueueText1(DispQueueHead), (dcCHARSPERLINE/2), 1)
-    TempLeftStr = TempLeftStr & Mid(DispCurrentTopLine, DispEffectCountT1+1, (dcCHARSPERLINE/2)-DispEffectCountT1)
-    TempRightStr = Mid(DispCurrentTopLine, (dcCHARSPERLINE/2)+1, (dcCHARSPERLINE/2)-DispEffectCountT1)
-    TempRightStr = TempRightStr & Mid(DispQueueText1(DispQueueHead), (dcCHARSPERLINE/2)+1, 1)
-    TempRightStr = TempRightStr & right(DispCurrentTopLine, DispEffectCountT1-1)
-    TempTopStr = TempLeftStr & TempRightStr
+	TempLeftStr = left(DispCurrentTopLine, DispEffectCountT1-1)
+	TempLeftStr = TempLeftStr & Mid(DispQueueText1(DispQueueHead), (dcCHARSPERLINE/2), 1)
+	TempLeftStr = TempLeftStr & Mid(DispCurrentTopLine, DispEffectCountT1+1, (dcCHARSPERLINE/2)-DispEffectCountT1)
+	TempRightStr = Mid(DispCurrentTopLine, (dcCHARSPERLINE/2)+1, (dcCHARSPERLINE/2)-DispEffectCountT1)
+	TempRightStr = TempRightStr & Mid(DispQueueText1(DispQueueHead), (dcCHARSPERLINE/2)+1, 1)
+	TempRightStr = TempRightStr & right(DispCurrentTopLine, DispEffectCountT1-1)
+	TempTopStr = TempLeftStr & TempRightStr
 
   case eBlinkMask
-    TempTopStr = ""
-    BlinkEffect = True
-    If ((DispEffectCountT1 MOD DispEffectBlinkSlowRate) = 0) Then
-      DispEffectBlinkCycleT1 = DispEffectBlinkCycleT1 xor 1
-    End If
-    For i = 1 To dcCHARSPERLINE
-      MaskCharacter = Mid(DispQueueText1(DispQueueHead), i, 1)
-      If (MaskCharacter <> " ") Then
-        If (DispEffectBlinkCycleT1 = 0) Then
-          TempTopStr = TempTopStr & MaskCharacter
-        Else
-          TempTopStr = TempTopStr & " "
-        End If
-      Else
-        TempTopStr = TempTopStr & Mid(DispCurrentTopLine, i, 1)
-      End If
-    next
+	TempTopStr = ""
+	BlinkEffect = True
+	If ((DispEffectCountT1 MOD DispEffectBlinkSlowRate) = 0) Then
+	  DispEffectBlinkCycleT1 = DispEffectBlinkCycleT1 xor 1
+	End If
+	For i = 1 To dcCHARSPERLINE
+	  MaskCharacter = Mid(DispQueueText1(DispQueueHead), i, 1)
+	  If (MaskCharacter <> " ") Then
+		If (DispEffectBlinkCycleT1 = 0) Then
+		  TempTopStr = TempTopStr & MaskCharacter
+		Else
+		  TempTopStr = TempTopStr & " "
+		End If
+	  Else
+		TempTopStr = TempTopStr & Mid(DispCurrentTopLine, i, 1)
+	  End If
+	next
 
   case eBlinkMaskFast
-    TempTopStr = ""
-    BlinkEffect = True
-    If ((DispEffectCountT1 MOD DispEffectBlinkFastRate) = 0) Then
-      DispEffectBlinkCycleT1 = DispEffectBlinkCycleT1 xor 1
-    End If
-    For i = 1 To dcCHARSPERLINE
-      MaskCharacter = Mid(DispQueueText1(DispQueueHead), i, 1)
-      If (MaskCharacter <> " ") Then
-        If (DispEffectBlinkCycleT1 = 0) Then
-          TempTopStr = TempTopStr & MaskCharacter
-        Else
-          TempTopStr = TempTopStr & " "
-        End If
-      Else
-        TempTopStr = TempTopStr & Mid(DispCurrentTopLine, i, 1)
-      End If
-    Next
+	TempTopStr = ""
+	BlinkEffect = True
+	If ((DispEffectCountT1 MOD DispEffectBlinkFastRate) = 0) Then
+	  DispEffectBlinkCycleT1 = DispEffectBlinkCycleT1 xor 1
+	End If
+	For i = 1 To dcCHARSPERLINE
+	  MaskCharacter = Mid(DispQueueText1(DispQueueHead), i, 1)
+	  If (MaskCharacter <> " ") Then
+		If (DispEffectBlinkCycleT1 = 0) Then
+		  TempTopStr = TempTopStr & MaskCharacter
+		Else
+		  TempTopStr = TempTopStr & " "
+		End If
+	  Else
+		TempTopStr = TempTopStr & Mid(DispCurrentTopLine, i, 1)
+	  End If
+	Next
 
 End Select
 
@@ -6622,117 +6741,117 @@ TempLeftStr = "":TempRightStr = ""
 
 ' manipulate the line according to the effect
   select case (DispQueueEffectOnT2(DispQueueHead))
-    case eNone:
-      TempBottomStr = DispQueueText2(DispQueueHead)
+	case eNone:
+	  TempBottomStr = DispQueueText2(DispQueueHead)
 
-    case eScrollLeft:
-      TempBottomStr = Right(DispCurrentBottomLine, dcCHARSPERLINE-1)
-      TempBottomStr = TempBottomStr & Mid(DispQueueText2(DispQueueHead), DispEffectCountT2 ,1)
+	case eScrollLeft:
+	  TempBottomStr = Right(DispCurrentBottomLine, dcCHARSPERLINE-1)
+	  TempBottomStr = TempBottomStr & Mid(DispQueueText2(DispQueueHead), DispEffectCountT2 ,1)
 
-    case eScrollRight:
-      TempBottomStr = Mid(DispQueueText2(DispQueueHead), (dcCHARSPERLINE+1)-DispEffectCountT2 ,1)
-      TempBottomStr = TempBottomStr & Left(DispCurrentBottomLine, dcCHARSPERLINE-1)
+	case eScrollRight:
+	  TempBottomStr = Mid(DispQueueText2(DispQueueHead), (dcCHARSPERLINE+1)-DispEffectCountT2 ,1)
+	  TempBottomStr = TempBottomStr & Left(DispCurrentBottomLine, dcCHARSPERLINE-1)
 
-    case eBlink:
-      BlinkEffect = True
-      If ((DispEffectCountT2 MOD DispEffectBlinkSlowRate) = 0) Then
-        DispEffectBlinkCycleT2 = DispEffectBlinkCycleT2 xor 1
-      End If
-      If (DispEffectBlinkCycleT2 = 0) Then
-        TempBottomStr = DispQueueText2(DispQueueHead)
-      Else
-        TempBottomStr = DisplayBlankLine
-      End If
+	case eBlink:
+	  BlinkEffect = True
+	  If ((DispEffectCountT2 MOD DispEffectBlinkSlowRate) = 0) Then
+		DispEffectBlinkCycleT2 = DispEffectBlinkCycleT2 xor 1
+	  End If
+	  If (DispEffectBlinkCycleT2 = 0) Then
+		TempBottomStr = DispQueueText2(DispQueueHead)
+	  Else
+		TempBottomStr = DisplayBlankLine
+	  End If
 
-    case eScrollOut:
-      TempLeftStr  = Mid(DispCurrentBottomLine, 2, (dcCHARSPERLINE/2)-1)
-      TempLeftStr  = TempLeftStr & Mid(DispQueueText2(DispQueueHead), DispEffectCountT2, 1)
-      TempRightStr = Mid(DispQueueText2(DispQueueHead), (dcCHARSPERLINE+1)-DispEffectCountT2, 1)
-      TempRightStr = TempRightStr & Mid(DispCurrentBottomLine, (dcCHARSPERLINE/2)+1, (dcCHARSPERLINE/2)-1)
-      TempBottomStr = TempLeftStr & TempRightStr
+	case eScrollOut:
+	  TempLeftStr  = Mid(DispCurrentBottomLine, 2, (dcCHARSPERLINE/2)-1)
+	  TempLeftStr  = TempLeftStr & Mid(DispQueueText2(DispQueueHead), DispEffectCountT2, 1)
+	  TempRightStr = Mid(DispQueueText2(DispQueueHead), (dcCHARSPERLINE+1)-DispEffectCountT2, 1)
+	  TempRightStr = TempRightStr & Mid(DispCurrentBottomLine, (dcCHARSPERLINE/2)+1, (dcCHARSPERLINE/2)-1)
+	  TempBottomStr = TempLeftStr & TempRightStr
 
-    case eScrollIn:
-      TempLeftStr  = Mid(DispQueueText2(DispQueueHead), ((dcCHARSPERLINE/2)+1)-DispEffectCountT2, 1)
-      TempLeftStr  = TempLeftStr & Left(DispCurrentBottomLine, (dcCHARSPERLINE/2)-1)
-      TempRightStr = Right(DispCurrentBottomLine, (dcCHARSPERLINE/2)-1)
-      TempRightStr = TempRightStr & Mid(DispQueueText2(DispQueueHead), (dcCHARSPERLINE/2)+DispEffectCountT2, 1)
-      TempBottomStr = TempLeftStr & TempRightStr
+	case eScrollIn:
+	  TempLeftStr  = Mid(DispQueueText2(DispQueueHead), ((dcCHARSPERLINE/2)+1)-DispEffectCountT2, 1)
+	  TempLeftStr  = TempLeftStr & Left(DispCurrentBottomLine, (dcCHARSPERLINE/2)-1)
+	  TempRightStr = Right(DispCurrentBottomLine, (dcCHARSPERLINE/2)-1)
+	  TempRightStr = TempRightStr & Mid(DispQueueText2(DispQueueHead), (dcCHARSPERLINE/2)+DispEffectCountT2, 1)
+	  TempBottomStr = TempLeftStr & TempRightStr
 
-    case eScrollLeftOver:
-      TempBottomStr = Left(DispCurrentBottomLine, dcCHARSPERLINE-DispEffectCountT2)
-      TempBottomStr = TempBottomStr & Left(DispQueueText2(DispQueueHead), DispEffectCountT2)
+	case eScrollLeftOver:
+	  TempBottomStr = Left(DispCurrentBottomLine, dcCHARSPERLINE-DispEffectCountT2)
+	  TempBottomStr = TempBottomStr & Left(DispQueueText2(DispQueueHead), DispEffectCountT2)
 
-    case eScrollRightOver:
-      TempBottomStr = Right(DispQueueText2(DispQueueHead), DispEffectCountT2)
-      TempBottomStr = TempBottomStr & Right(DispCurrentBottomLine, dcCHARSPERLINE-DispEffectCountT2)
+	case eScrollRightOver:
+	  TempBottomStr = Right(DispQueueText2(DispQueueHead), DispEffectCountT2)
+	  TempBottomStr = TempBottomStr & Right(DispCurrentBottomLine, dcCHARSPERLINE-DispEffectCountT2)
 
-    case eBlinkFast:
-      BlinkEffect = True
-      If ((DispEffectCountT2 MOD DispEffectBlinkFastRate) = 0) Then
-        DispEffectBlinkCycleT2 = DispEffectBlinkCycleT2 xor 1
-      End If
-      If (DispEffectBlinkCycleT2 = 0) Then
-        TempBottomStr = DispQueueText2(DispQueueHead)
-      Else
-        TempBottomStr = DisplayBlankLine
-      End If
+	case eBlinkFast:
+	  BlinkEffect = True
+	  If ((DispEffectCountT2 MOD DispEffectBlinkFastRate) = 0) Then
+		DispEffectBlinkCycleT2 = DispEffectBlinkCycleT2 xor 1
+	  End If
+	  If (DispEffectBlinkCycleT2 = 0) Then
+		TempBottomStr = DispQueueText2(DispQueueHead)
+	  Else
+		TempBottomStr = DisplayBlankLine
+	  End If
 
-    case eTrailIn:
-      TempLeftStr = left(DispCurrentBottomLine, DispEffectCountT2-1)
-      TempLeftStr = TempLeftStr & Mid(DispQueueText2(DispQueueHead), (dcCHARSPERLINE/2), 1)
-      TempLeftStr = TempLeftStr & Mid(DispCurrentBottomLine, DispEffectCountT2+1, (dcCHARSPERLINE/2)-DispEffectCountT2)
-      TempRightStr = Mid(DispCurrentBottomLine, (dcCHARSPERLINE/2)+1, (dcCHARSPERLINE/2)-DispEffectCountT2)
-      TempRightStr = TempRightStr & Mid(DispQueueText2(DispQueueHead), (dcCHARSPERLINE/2)+1, 1)
-      TempRightStr = TempRightStr & right(DispCurrentBottomLine, DispEffectCountT2-1)
-      TempBottomStr = TempLeftStr & TempRightStr
+	case eTrailIn:
+	  TempLeftStr = left(DispCurrentBottomLine, DispEffectCountT2-1)
+	  TempLeftStr = TempLeftStr & Mid(DispQueueText2(DispQueueHead), (dcCHARSPERLINE/2), 1)
+	  TempLeftStr = TempLeftStr & Mid(DispCurrentBottomLine, DispEffectCountT2+1, (dcCHARSPERLINE/2)-DispEffectCountT2)
+	  TempRightStr = Mid(DispCurrentBottomLine, (dcCHARSPERLINE/2)+1, (dcCHARSPERLINE/2)-DispEffectCountT2)
+	  TempRightStr = TempRightStr & Mid(DispQueueText2(DispQueueHead), (dcCHARSPERLINE/2)+1, 1)
+	  TempRightStr = TempRightStr & right(DispCurrentBottomLine, DispEffectCountT2-1)
+	  TempBottomStr = TempLeftStr & TempRightStr
 
-    case eBlinkMask
-      TempBottomStr = ""
-      BlinkEffect = True
-      If ((DispEffectCountT2 MOD DispEffectBlinkSlowRate) = 0) Then
-        DispEffectBlinkCycleT2 = DispEffectBlinkCycleT2 xor 1
-      End If
-      For i = 1 To dcCHARSPERLINE
-        MaskCharacter = Mid(DispQueueText2(DispQueueHead), i, 1)
-        If (MaskCharacter <> " ") Then
-          If (DispEffectBlinkCycleT2 = 0) Then
-            TempBottomStr = TempBottomStr & MaskCharacter
-          Else
-            TempBottomStr = TempBottomStr & " "
-          End If
-        Else
-          TempBottomStr = TempBottomStr & Mid(DispCurrentBottomLine, i, 1)
-        End If
-      next
+	case eBlinkMask
+	  TempBottomStr = ""
+	  BlinkEffect = True
+	  If ((DispEffectCountT2 MOD DispEffectBlinkSlowRate) = 0) Then
+		DispEffectBlinkCycleT2 = DispEffectBlinkCycleT2 xor 1
+	  End If
+	  For i = 1 To dcCHARSPERLINE
+		MaskCharacter = Mid(DispQueueText2(DispQueueHead), i, 1)
+		If (MaskCharacter <> " ") Then
+		  If (DispEffectBlinkCycleT2 = 0) Then
+			TempBottomStr = TempBottomStr & MaskCharacter
+		  Else
+			TempBottomStr = TempBottomStr & " "
+		  End If
+		Else
+		  TempBottomStr = TempBottomStr & Mid(DispCurrentBottomLine, i, 1)
+		End If
+	  next
 
-    case eBlinkMaskFast
-      TempBottomStr = ""
-      BlinkEffect = True
-      If ((DispEffectCountT2 MOD DispEffectBlinkFastRate) = 0) Then
-        DispEffectBlinkCycleT2 = DispEffectBlinkCycleT2 xor 1
-      End If
-      For i = 1 To dcCHARSPERLINE
-        MaskCharacter = Mid(DispQueueText2(DispQueueHead), i, 1)
-        If (MaskCharacter <> " ") Then
-          If (DispEffectBlinkCycleT2 = 0) Then
-            TempBottomStr = TempBottomStr & MaskCharacter
-          Else
-            TempBottomStr = TempBottomStr & " "
-          End If
-        Else
-          TempBottomStr = TempBottomStr & Mid(DispCurrentBottomLine, i, 1)
-        End If
-      next
+	case eBlinkMaskFast
+	  TempBottomStr = ""
+	  BlinkEffect = True
+	  If ((DispEffectCountT2 MOD DispEffectBlinkFastRate) = 0) Then
+		DispEffectBlinkCycleT2 = DispEffectBlinkCycleT2 xor 1
+	  End If
+	  For i = 1 To dcCHARSPERLINE
+		MaskCharacter = Mid(DispQueueText2(DispQueueHead), i, 1)
+		If (MaskCharacter <> " ") Then
+		  If (DispEffectBlinkCycleT2 = 0) Then
+			TempBottomStr = TempBottomStr & MaskCharacter
+		  Else
+			TempBottomStr = TempBottomStr & " "
+		  End If
+		Else
+		  TempBottomStr = TempBottomStr & Mid(DispCurrentBottomLine, i, 1)
+		End If
+	  next
 
   End Select
 
 ' if the text is "-" Then leave this line alone
   If (DispQueueText2(DispQueueHead) <> "-") Then
-    If (Len(TempBottomStr) <> dcCHARSPERLINE) and (Len(TempBottomStr) <> 0) Then
+	If (Len(TempBottomStr) <> dcCHARSPERLINE) and (Len(TempBottomStr) <> 0) Then
 'MsgBox "DISPLAY PROBLEM" & vbNewLine & vbNewLine & "INTERNAL ERROR: STRING TOO LONG" & vbNewLine & "TempBottomStr '" & TempBottomStr & "' Len=" & Len(TempBottomStr), 0, "Black Display Driver Error"
-    End If
-    DispCurrentBottomLine = TempBottomStr
-    TextBoxBottom.Text = TempBottomStr
+	End If
+	DispCurrentBottomLine = TempBottomStr
+	TextBoxBottom.Text = TempBottomStr
   End If
 		Else
 			DispEffectCountT2Dly = DispEffectCountT2Dly - 1
@@ -6750,9 +6869,9 @@ TempLeftStr = "":TempRightStr = ""
 ' start the display timer for 'TimeOn' (the exception to this is 'Blink' effects as they
 			' uses TimeOn for the Blink Length)
   If (BlinkEffect = True) Then
-    DisplayTimer.Interval  = 10 ' display expires basically immediatly
+	DisplayTimer.Interval  = 10 ' display expires basically immediatly
   Else
-    DisplayTimer.Interval  = DispQueueTimeOn(DispQueueHead)
+	DisplayTimer.Interval  = DispQueueTimeOn(DispQueueHead)
   End If
 
 ' and start the timer
@@ -6911,7 +7030,7 @@ Sub HighScoreEntryInit()
 	' letter display starts with the first character (space)
 	hsCurrentLetter = 1
 	' flush any other display's queued up and call the display name function
-	DisplayFlushQueue()	
+	DisplayFlushQueue()
 	HighScoreDisplayNameNow()
 	' set the flash rate/update rate of the high score entry
 	HighScoreFlashTimer.Interval = 250: HighScoreFlashTimer.Enabled = True
@@ -6942,7 +7061,7 @@ Sub HighScoreProcessKey(keycode)
 			hsCurrentDigit = hsCurrentDigit + 1
 ' if that was the last digit, Then commit the name
 			If (hsCurrentDigit = 3) Then
-				HighScoreCommitName()				
+				HighScoreCommitName()
 			Else
 				HighScoreDisplayNameNow()
 			End If
@@ -6961,7 +7080,7 @@ Sub HighScoreProcessKey(keycode)
 			hsCurrentDigit = hsCurrentDigit + 1
 ' if that was the last digit, Then commit the name
 			If (hsCurrentDigit = 3) Then
-				HighScoreCommitName()				
+				HighScoreCommitName()
 			Else
 				HighScoreDisplayNameNow()
 			End If
@@ -6988,7 +7107,7 @@ Sub HighScoreDisplayNameNow()
 End Sub
 
 rem Display the Currenly entered name on the screen, with the current letter flashing
-rem 
+rem
 rem 	1234567890123456
 rem 	ENTER YOUR NAME
 rem 	    > AAA <
@@ -7024,7 +7143,7 @@ Sub HighScoreDisplayName()
 	If (hsCurrentDigit < 1) Then TempBotStr = TempBotStr & hsEnteredDigits(1)
 	If (hsCurrentDigit < 2) Then TempBotStr = TempBotStr & hsEnteredDigits(2)
 	TempBotStr = TempBotStr & " <    "
-' write it to the display	
+' write it to the display
 	DispCurrentBottomLine = TempBotStr
 	TextBoxBottom.Text 	  = TempBotStr
 End Sub
@@ -7058,7 +7177,7 @@ Sub HighScoreCommitName()
 	Else
 		If (Score > gsHighScore(1)) Then
 			x=2: MoveScores
-' award 1 extra credit if not in free play			
+' award 1 extra credit if not in free play
 			If Freeplay=0 Then
 				Credits=Credits+1
 				PlaySound "knocker"
@@ -7092,7 +7211,7 @@ Sub HighScoreCommitName()
 	If (MaxLoopsThisGame > gsLoopChamp) Then
 		gsLoopChamp= MaxLoopsThisGame: gsLoopChampName=hsEnteredName
 		DisplayQueueScreen "  *** "&hsEnteredName&" ***  "," LOOP  CHAMPION ",3,4,0,1000,False,"thumb"
-		DisplayQueueScreen "  *** "&hsEnteredName&" ***  "," WITH "&MaxLoopsThisGame&" LOOPS  ",8,8,0,1000,False,""   		
+		DisplayQueueScreen "  *** "&hsEnteredName&" ***  "," WITH "&MaxLoopsThisGame&" LOOPS  ",8,8,0,1000,False,""
 	End If
 	If Credits=0 Then
 		DisplayQueueScreen "     INSERT     ","      COINS     ",3,3,0,1500,False,""
@@ -7111,7 +7230,7 @@ End Sub
 
 Sub MoveScores()	'move the scores down and put in the new one
 	Dim i
-	For i= 4 to x Step -1: gsHighScore(i)=gsHighScore(i-1): gsHighScoreName(i) = gsHighScoreName(i-1): Next 
+	For i= 4 to x Step -1: gsHighScore(i)=gsHighScore(i-1): gsHighScoreName(i) = gsHighScoreName(i-1): Next
 	gsHighScore(x-1)= Score: gsHighScoreName(x-1)=hsEnteredName
 End Sub
 
@@ -7138,22 +7257,22 @@ Sub DisplayHurryUp() 'bonus = the time left
 End Sub
 
 Sub HurryUpTimer_Timer()
-	HurryUpTimer.Enabled=False	
+	HurryUpTimer.Enabled=False
 	HurryUp=1
 	DisplayFlushQueue
 	DisplayHurryUp
 	PlaySound "meterplink"
 	HurryUpBonus=HurryUpBonus-1
 	If HurryUpBonus=-1 Then
-		HurryUp=0		
+		HurryUp=0
 		LightArray(50, 1) = 0
 		LightArray(31, 1) = 0
 		DisplayFlushQueue
-		DisplayQueueScreen "      ITEM      ","      LOST      ",1,2,0,1500,False,"muhaha"	
+		DisplayQueueScreen "      ITEM      ","      LOST      ",1,2,0,1500,False,"muhaha"
 		DisplayQueueScreen "      ITEM      ","      LOST      ",3,3,0,1500,False,""
 		HurryUpEndTimer.Enabled=True
 	Else
-		HurryUpTimer.Enabled=True	 
+		HurryUpTimer.Enabled=True
 	End If
 End Sub
 
