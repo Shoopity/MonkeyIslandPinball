@@ -5,7 +5,7 @@ Welcome to the Monkey Island Pinball wiki! This wiki is a place to document the 
 
 To start, this is my first Github... anything. I've also never worked in an environment like this. I understand the concept of a place like Github, but I have zero experience actually doing something like this. Point is, this may be a poop show and this whole project blows up in my face.
 
-This is a place for people to contribute to the Visual Pinball original table, Monkey Island. This amazing table was originally created by Ian T. and can be found here. This was one of the few "original" tables I enjoyed when I first got into VP, and I felt it deserved a VPX treatment. So I started working on it.
+This is a place for people to contribute to the Visual Pinball original table, Monkey Island. This amazing table was originally created by Ian T.. This was one of the few "original" tables I enjoyed when I first got into VP, and I felt it deserved a VPX treatment. So I started working on it.
 
 Here is the thread where work was being done. As you can see, it started way back in 2016. Life happened and I pretty much fell out of the community as a whole, and work on the table definitely stopped. Here in 2021, I was surprised to see the thread still alive, so I figured I could at least try to make a place where people with the skills, time, and gumption to make this an actual table that people would be proud to put in their cabs. I'm not sure how much I can contribute to the table anymore, but at least I can work on this place.
 
