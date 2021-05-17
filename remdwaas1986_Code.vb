@@ -2782,23 +2782,23 @@ End Sub
 'Dail a pirate
 '*****************
 Sub spinningwheel_Timer
-countr = countr + 1 : If Countr > 15 then Countr = 1 : end If 
-select case countr
-	case 1 : wheel1.RotZ=0
-	case 2 : wheel1.RotZ=24
-	case 3 : wheel1.RotZ=48
-	case 4 : wheel1.RotZ=72
-	case 5 : wheel1.RotZ=98
-	case 6 : wheel1.RotZ=122
-	case 7 : wheel1.RotZ=146
-	case 8 : wheel1.RotZ=168
-	case 9 : wheel1.RotZ=192
-	case 10 : wheel1.RotZ=216
-	case 11 : wheel1.RotZ=240
-	case 12 : wheel1.RotZ=264
-	case 13 : wheel1.RotZ=288
-	case 14 : wheel1.RotZ=312
-	case 15 : wheel1.RotZ=336
+	countr = countr + 1 : If Countr > 15 then Countr = 1 : end If 
+	select case countr
+		case 1 : wheel1.RotZ=0
+		case 2 : wheel1.RotZ=24
+		case 3 : wheel1.RotZ=48
+		case 4 : wheel1.RotZ=72
+		case 5 : wheel1.RotZ=98
+		case 6 : wheel1.RotZ=122
+		case 7 : wheel1.RotZ=146
+		case 8 : wheel1.RotZ=168
+		case 9 : wheel1.RotZ=192
+		case 10 : wheel1.RotZ=216
+		case 11 : wheel1.RotZ=240
+		case 12 : wheel1.RotZ=264
+		case 13 : wheel1.RotZ=288
+		case 14 : wheel1.RotZ=312
+		case 15 : wheel1.RotZ=336
 	end Select
 End Sub
 
