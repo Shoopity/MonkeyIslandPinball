@@ -2834,4 +2834,3 @@ sub resetsmoke
 smokeytimer.enabled = 0
 Countr1 = 0
 end sub
-
