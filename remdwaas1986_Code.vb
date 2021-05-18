@@ -1,8 +1,12 @@
 ' ****************************************************************
 '                       VISUAL PINBALL X
-'                		PINBALL_TABLE_NAME
+'                		Escape from monkey island
+'						first version by ianski
+'						second version by Popotte
+'						vpx version by Shoopity and Remdwaas1986
+'						images and 3d objects provided by ianski, hauntfreaks, Shoopity and Remdwaas1986
 '                       Version 1.0.0
-'						started 
+'						started 10-5-2021
 ' ****************************************************************
 
 Option Explicit
@@ -34,8 +38,8 @@ Sub startB2S(aB2S)
 End Sub
 
 ' Define any Constants
-Const cGameName = "PINBALL_TABLE_NAME"
-Const TableName = "PINBALL_TABLE_NAME"
+Const cGameName = "monkeyisland"
+Const TableName = "monkeyisland"
 Const myVersion = "1.0.0"
 Const MaxPlayers = 4     ' from 1 to 4
 Const BallSaverTime = 20 ' in seconds
@@ -99,6 +103,7 @@ Dim plungerIM
 Dim LastSwitchHit
 dim countr
 dim countr1
+dim monkeybattle
 
 
 ' core.vbs variables
@@ -229,8 +234,9 @@ Sub Table1_KeyDown(ByVal Keycode)
 	If keycode = PlungerKey Then
 		shootkanon
 		Plunger.Pullback
-		PlaySoundAt "fx_plungerpull", plunger
-		PlaySoundAt "fx_reload", plunger
+		Playsound "plungerpull2"
+		'PlaySoundAt "fx_plungerpull", plunger
+		'PlaySoundAt "fx_reload", plunger
 	End If
 
 	If hsbModeActive Then
@@ -304,7 +310,8 @@ Sub Table1_KeyUp(ByVal keycode)
 		kanonnormal
 		smokeytimer.enabled = 1
 		Plunger.Fire
-		PlaySoundAt "fx_plunger", plunger
+		Playsound "Fire"
+		'PlaySoundAt "fx_plunger", plunger
 		'If bBallInPlungerLane Then PlaySoundAt "fx_fire", plunger
 	End If
 
@@ -930,6 +937,7 @@ Sub ResetForNewPlayerBall()
 	MulitballBonus = 0
 	Countr = 0
 	Countr = 1
+	monkeybattle = 0
 	ResetNewBallVariables
 	ResetNewBallLights()
 	'Multiball=false	
@@ -2767,6 +2775,121 @@ End Function
 '*****************
 'Targets
 '*****************
+'*****************
+'monkey battles
+'*****************
+sub Target003_hit()
+'If li001.State=1 then 
+'	AddScore 1000
+'	bonusyscorechecker = bonusyscorechecker + 500
+'	end if
+'	If li002.State=1 then 
+'	AddScore 2000
+'	bonusyscorechecker = bonusyscorechecker + 1000
+'	end if
+plank3Shaker
+TargetBonus = TargetBonus + 1
+PlaySound "monkeyhit"
+addscore 1000
+li003.state = 1
+CheckMonkeyBattle
+end sub
+
+sub Target002_hit()
+'If li001.State=1 then 
+'	AddScore 1000
+'	bonusyscorechecker = bonusyscorechecker + 500
+'	end if
+'	If li002.State=1 then 
+'	AddScore 2000
+'	bonusyscorechecker = bonusyscorechecker + 1000
+'	end if
+plank2Shaker
+TargetBonus = TargetBonus + 1
+PlaySound "monkeyhit"
+addscore 1000
+li005.state = 1
+CheckMonkeyBattle
+end sub
+
+sub Target001_hit()
+'If li001.State=1 then 
+'	AddScore 1000
+'	bonusyscorechecker = bonusyscorechecker + 500
+'	end if
+'	If li002.State=1 then 
+'	AddScore 2000
+'	bonusyscorechecker = bonusyscorechecker + 1000
+'	end if
+plank1Shaker
+TargetBonus = TargetBonus + 1
+PlaySound "monkeyhit"
+addscore 1000
+li004.state = 1
+CheckMonkeyBattle
+end sub
+
+Sub CheckMonkeyBattle
+    If(li003.State = 1) And(li004.State = 1) And(li005.State = 1) Then
+	'Playsound "po_fanfare5"
+    AddScore 25000
+	li004.State=0
+	li005.state=0
+	li003.state=0
+	monkeybattle = monkeybattle + 1
+	End If
+End Sub
+
+'***********plank shakers*************
+Dim plank1Shake
+Dim plank2Shake
+Dim plank3Shake
+
+Sub plank1Shaker()
+    plank1Shake = 6
+    plank1Timer.Enabled = True
+End Sub
+
+Sub plank1Timer_Timer()
+    plank1.Transz = plank1Shake / 2
+    If plank1Shake = 0 Then Me.Enabled = False:Exit Sub
+    If plank1Shake <0 Then
+        plank1Shake = ABS(plank1Shake)- 0.1
+    Else
+        plank1Shake = - plank1Shake + 0.1
+    End If
+End Sub
+
+Sub plank2Shaker()
+    plank2Shake = 6
+    plank2Timer.Enabled = True
+End Sub
+
+Sub plank2Timer_Timer()
+    plank2.Transz = plank2Shake / 2
+    If plank2Shake = 0 Then Me.Enabled = False:Exit Sub
+    If plank2Shake <0 Then
+        plank2Shake = ABS(plank2Shake)- 0.1
+    Else
+        plank2Shake = - plank2Shake + 0.1
+    End If
+End Sub
+
+Sub plank3Shaker()
+    plank3Shake = 6
+    plank3Timer.Enabled = True
+End Sub
+
+Sub plank3Timer_Timer()
+    plank3.Transz = plank3Shake / 2
+    If plank3Shake = 0 Then Me.Enabled = False:Exit Sub
+    If plank3Shake <0 Then
+        plank3Shake = ABS(plank3Shake)- 0.1
+    Else
+        plank3Shake = - plank3Shake + 0.1
+    End If
+End Sub
+
 
 '*****************
 'Gates
