@@ -187,6 +187,33 @@ End Sub
 '******
 
 Sub Table1_KeyDown(ByVal Keycode)
+
+	'Test Kicker Stuff
+	If Keycode = 20 Then															'EP- T  "Pick up" the ball
+		If NOT (BallMoverHold is Nothing) Then
+			BallMoverHold.X = KiHold.X
+			BallMoverHold.Y = KiHold.Y
+		End If
+	End If
+	If Keycode = 30 Then KiTest1.CreateBall.ID= 21:KiTest1.Kick -35, 30, 0			'EP- A	Eek shot
+	If Keycode = 31 Then KiTest1.CreateBall.ID= 21:KiTest1.Kick -29, 50, 0			'EP- S	Left Loop
+	If Keycode = 18 Then KiTest1.CreateBall.ID= 21:KiTest1.Kick -20, 30, 0			'EP- E	"I" target
+	If Keycode = 33 Then KiTest1.CreateBall.ID= 21:KiTest1.Kick -15, 28, 0			'EP- F	Scumm Shot
+	If Keycode = 34 Then KiTest1.CreateBall.ID= 21:KiTest1.Kick -11, 25, 0			'EP- G	"N" target
+	If Keycode = 35 Then KiTest1.CreateBall.ID= 21:KiTest1.Kick -8, 40, 0			'EP- H	Scumm Ramp
+	If Keycode = 36 Then KiTest1.CreateBall.ID= 21:KiTest1.Kick -3, 25, 0			'EP- J	"S" target
+	If Keycode = 37 Then KiTest1.CreateBall.ID= 21:KiTest1.Kick -0.5, 40, 0			'EP- K	Le Chuck
+	If Keycode = 38 Then KiTest1.CreateBall.ID= 21:KiTest1.Kick 5, 25, 0			'EP- L	Ack shot
+	If Keycode = 39 Then KiTest1.CreateBall.ID= 21:KiTest1.Kick 12, 40, 0			'EP- ;	Monkey Head
+	If Keycode = 40 Then KiTest1.CreateBall.ID= 21:KiTest1.Kick 19, 30, 0			'EP- '	Voodoo lady
+	'If Keycode = 44 Then KiTest1.CreateBall.ID= 21:KiTest1.Kick 21, 30, 0			'EP- Z	"U" target
+	If Keycode = 45 Then KiTest1.CreateBall.ID= 21:KiTest1.Kick 27, 60, 0			'EP- X	Banana ramp
+	If Keycode = 46 Then KiTest1.CreateBall.ID= 21:KiTest1.Kick 31, 60, 0			'EP- C	"L" target
+	If Keycode = 47 Then KiTest1.CreateBall.ID= 21:KiTest1.Kick 35, 60, 0			'EP- V	Grog/right loop
+	If Keycode = 48 Then KiTest1.CreateBall.ID= 21:KiTest1.Kick 48, 30, 0			'EP- B	"T" target
+	'If Keycode = 49 Then KiTest1.CreateBall.ID= 21:KiTest1.Kick 42, 30, 0			'EP- N	Ook shot
+	'***********************************************
+
 	If Keycode = AddCreditKey Then
 		Credits = Credits + 1
 		if bFreePlay = False Then
@@ -297,13 +324,19 @@ Sub Table1_KeyUp(ByVal keycode)
 End Sub
 
 sub shootkanon
-kanon.TransX = 40
-'vpmTimer.AddTimer 250, "kanonnormal '" 
+	'kanon.TransX = 40
+	'vpmTimer.AddTimer 250, "kanonnormal '" 
+	TiKanon.enabled = 1
 end sub
 
 sub kanonnormal
-kanon.TransX = 0
+	kanon.TransX = 0
+	TiKanon.enabled = 0
 end sub
+
+Sub TiKanon_Timer()
+	kanon.TransX = Plunger.Position
+End Sub
 
 '*************
 ' Pause Table
@@ -1186,6 +1219,7 @@ End Function
 ' a new one
 '
 Sub Drain_Hit()
+	If ActiveBall.ID = 21 Then Drain.DestroyBall:Exit Sub
 	' Destroy the ball
 	Drain.DestroyBall
 	BallsOnPlayfield = BallsOnPlayfield - 1 
@@ -2781,59 +2815,37 @@ End Sub
 '*****************
 'Dail a pirate
 '*****************
+Dim WheelSpeed : WheelSpeed = 0.10
 Sub spinningwheel_Timer
-'	countr = countr + 1 : If Countr > 15 then Countr = 1 : end If 
-'	select case countr
-'		case 1 : wheel1.RotZ=0
-'		case 2 : wheel1.RotZ=24
-'		case 3 : wheel1.RotZ=48
-'		case 4 : wheel1.RotZ=72
-'		case 5 : wheel1.RotZ=98
-'		case 6 : wheel1.RotZ=122
-'		case 7 : wheel1.RotZ=146
-'		case 8 : wheel1.RotZ=168
-'		case 9 : wheel1.RotZ=192
-'		case 10 : wheel1.RotZ=216
-'		case 11 : wheel1.RotZ=240
-'		case 12 : wheel1.RotZ=264
-'		case 13 : wheel1.RotZ=288
-'		case 14 : wheel1.RotZ=312
-'		case 15 : wheel1.RotZ=336
-'	end Select
 	Me.Interval = 1
-	Wheel1.Rotz = Wheel1.Rotz + 0.24
+	Wheel1.Rotz = Wheel1.Rotz + WheelSpeed
 	If Wheel1.Rotz >= 360 Then Wheel1.Rotz = 1
 End Sub
 
 '*****************
 'smoke animation
 '*****************
-Sub smokeytimer_Timer
-	countr1 = countr1 + 1 : If Countr1 > 18 then resetsmoke : end If 
-	select case countr1
-		case 1 : canonsmoke.visible = 1
-		case 2 : canonsmoke.ImageA = "smoke1"
-		case 3 : canonsmoke.ImageA = "smoke2"
-		case 4 : canonsmoke.ImageA = "smoke3"
-		case 5 : canonsmoke.ImageA = "smoke4"
-		case 6 : canonsmoke.ImageA = "smoke5"
-		case 7 : canonsmoke.ImageA = "smoke6"
-		case 8 : canonsmoke.ImageA = "smoke7"
-		case 9 : canonsmoke.ImageA = "smoke8"
-		case 10 : canonsmoke.ImageA = "smoke9"
-		case 11 : canonsmoke.ImageA = "smoke10"
-		case 12 : canonsmoke.ImageA = "smoke11"
-		case 13 : canonsmoke.ImageA = "smoke12"
-		case 14 : canonsmoke.ImageA = "smoke13"
-		case 15 : canonsmoke.ImageA = "smoke14"
-		case 16 : canonsmoke.ImageA = "smoke15"
-		case 17 : canonsmoke.ImageA = "smoke16"
-		case 18 : canonsmoke.visible = 0
-	end Select
+Dim CanonSmokeAnim:CanonSmokeAnim = Array("smoke1", "smoke2", "smoke3", "smoke4", "smoke5", "smoke6", "smoke6", "smoke7", "smoke8", "smoke9", "smoke10", "smoke11", "smoke12", "smoke13", "smoke14", "smoke15""smoke16")
+Dim CanonSmokeAnimKey:CanonSmokeAnimKey = 0
+Dim SmokePositionYOrig:SmokePositionYOrig = canonsmoke.y
+Dim FadeAmount:FadeAmount = 1/UBound(CanonSmokeAnim)
+Sub smokeytimer_Timer()
+	canonsmoke.visible = 1
+	canonsmoke.ImageA = CanonSmokeAnim(CanonSmokeAnimKey)
+	CanonSmokeAnimKey = CanonSmokeAnimKey + 1
+	canonsmoke.height = canonsmoke.height + 5
+	canonsmoke.y = canonsmoke.y - 2
+	canonsmoke.IntensityScale = canonsmoke.IntensityScale - FadeAmount
+	If CanonSmokeAnimKey > UBound(CanonSmokeAnim) Then
+		ResetSmoke()
+	End If
 End Sub
 
-
-sub resetsmoke
-smokeytimer.enabled = 0
-Countr1 = 0
+sub resetsmoke()
+	smokeytimer.enabled = False
+	canonsmoke.visible = 0
+	CanonSmokeAnimKey = 0
+	canonsmoke.height = 200
+	canonsmoke.y = SmokePositionYOrig
+	canonsmoke.IntensityScale = 1
 end sub
