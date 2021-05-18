@@ -212,6 +212,7 @@ Sub Table1_KeyDown(ByVal Keycode)
 	If Keycode = 47 Then KiTest1.CreateBall.ID= 21:KiTest1.Kick 35, 60, 0			'EP- V	Grog/right loop
 	If Keycode = 48 Then KiTest1.CreateBall.ID= 21:KiTest1.Kick 48, 30, 0			'EP- B	"T" target
 	'If Keycode = 49 Then KiTest1.CreateBall.ID= 21:KiTest1.Kick 42, 30, 0			'EP- N	Ook shot
+	If Keycode = 25 Then SpinningWheel.enabled = 1:	WheelSpeed = 2					'EP- T	spin that wheel
 	'***********************************************
 
 	If Keycode = AddCreditKey Then
@@ -323,13 +324,13 @@ Sub Table1_KeyUp(ByVal keycode)
 	End If
 End Sub
 
-sub shootkanon
+sub shootkanon()
 	'kanon.TransX = 40
 	'vpmTimer.AddTimer 250, "kanonnormal '" 
 	TiKanon.enabled = 1
 end sub
 
-sub kanonnormal
+sub kanonnormal()
 	kanon.TransX = 0
 	TiKanon.enabled = 0
 end sub
@@ -1283,25 +1284,26 @@ End Sub
 
 ' The Ball has rolled out of the Plunger Lane and it is pressing down the trigger in the shooters lane
 ' Check to see if a ball saver mechanism is needed and if so fire it up.
-
+Dim BallMoverHold
 Sub Trigger1_Hit()
-If bAutoPlunger Then
+	If bAutoPlunger Then
 		'debug.print "autofire the ball"
 		PlungerIM.AutoFire
 		DOF 121, DOFPulse
 		PlaySoundAt "fx_fire", Trigger1
 		bAutoPlunger = False
 	End If	
-'StopSong
+	'StopSong
 	DMDScoreNow
 	bBallInPlungerLane = True
 	DMD "_", CL(1, "SHOOT THE BALL"), "", eNone, eBlink, eNone, 1000, True, ""
 	If(bBallSaverReady = True) AND(BallSaverTime <> 0) And(bBallSaverActive = False) Then
 		EnableBallSaver BallSaverTime
-		Else
+	Else
 		' show the message to shoot the ball in case the player has fallen sleep
 		Trigger1.TimerEnabled = 1
 	End If
+	Set ballmoverhold = ActiveBall
 End Sub
 
 ' The ball is released from the plunger
@@ -2253,7 +2255,9 @@ Sub ShowTableInfo
 	DMD Space(dCharsPerLine(0) ), Space(dCharsPerLine(1) ), "", eScrollLeft, eScrollLeft, eNone, 500, False, ""
 End Sub
 
+Dim InAttract:InAttract = 0
 Sub StartAttractMode
+	InAttract = 1
 	spinningwheel.enabled = 1
 	ChangeSong
 	StartLightSeq
@@ -2262,6 +2266,7 @@ Sub StartAttractMode
 End Sub
 
 Sub StopAttractMode
+	InAttract = 0
 	LightSeqAttract.StopPlay
 	DMDScoreNow
 End Sub
@@ -2810,16 +2815,63 @@ End Sub
 Sub FireTimer2_Timer
 	magma.ImageA = Flames2(Fire2Pos)
 	Fire2Pos = (Fire2Pos + 1) MOD 32
+	textbox001.text = spinningwheel.enabled
 End Sub
 
 '*****************
 'Dail a pirate
 '*****************
 Dim WheelSpeed : WheelSpeed = 0.10
+Dim SlowSpeed : SlowSpeed = 0.0005
 Sub spinningwheel_Timer
-	Me.Interval = 1
-	Wheel1.Rotz = Wheel1.Rotz + WheelSpeed
-	If Wheel1.Rotz >= 360 Then Wheel1.Rotz = 1
+	Select Case InAttract
+		Case 1
+			Me.Interval = 1
+			Wheel1.Rotz = (Wheel1.Rotz + WheelSpeed)
+			WheelSpeed = WheelSpeed - SlowSpeed
+			If WheelSpeed <= 0.10 Then WheelSpeed = 0.10
+			If Wheel1.Rotz >= 360 Then Wheel1.Rotz = 1
+		Case 0
+			Me.Interval = 1
+			Wheel1.Rotz = (Wheel1.Rotz + WheelSpeed)
+			If Wheel1.Rotz >= 360 Then Wheel1.Rotz = 1
+			WheelSpeed = WheelSpeed - SlowSpeed
+			If WheelSpeed <= 0.005 Then
+				Me.Enabled = False
+				Select Case True
+					Case (Wheel1.Rotz <= 36 AND Wheel1.Rotz > 12)
+						Wheel1.Rotz = 24
+					Case (Wheel1.Rotz <= 60 AND Wheel1.Rotz > 36)
+						Wheel1.Rotz = 48
+					Case (Wheel1.Rotz <= 84 AND Wheel1.Rotz > 60)
+						Wheel1.Rotz = 72
+					Case (Wheel1.Rotz <= 108 AND Wheel1.Rotz > 84)
+						Wheel1.Rotz = 98
+					Case (Wheel1.Rotz <= 132 AND Wheel1.Rotz > 108)
+						Wheel1.Rotz = 128
+					Case (Wheel1.Rotz <= 156 AND Wheel1.Rotz > 132)
+						Wheel1.Rotz = 146
+					Case (Wheel1.Rotz <= 180 AND Wheel1.Rotz > 156)
+						Wheel1.Rotz = 168
+					Case (Wheel1.Rotz <= 204 AND Wheel1.Rotz > 180)
+						Wheel1.Rotz = 192
+					Case (Wheel1.Rotz <= 228 AND Wheel1.Rotz > 204)
+						Wheel1.Rotz = 216
+					Case (Wheel1.Rotz <= 252 AND Wheel1.Rotz > 228)
+						Wheel1.Rotz = 240
+					Case (Wheel1.Rotz <= 276 AND Wheel1.Rotz > 252)
+						Wheel1.Rotz = 264
+					Case (Wheel1.Rotz <= 300 AND Wheel1.Rotz > 276)
+						Wheel1.Rotz = 288
+					Case (Wheel1.Rotz <= 324 AND Wheel1.Rotz > 300)
+						Wheel1.Rotz = 312
+					Case (Wheel1.Rotz <= 348 AND Wheel1.Rotz > 324)
+						Wheel1.Rotz = 336
+					Case (Wheel1.Rotz <= 12 AND Wheel1.Rotz > 348)
+						Wheel1.Rotz = 0
+				End Select
+			End If
+	End Select
 End Sub
 
 '*****************
