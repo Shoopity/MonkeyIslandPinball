@@ -2810,7 +2810,6 @@ End Sub
 Sub FireTimer2_Timer
 	magma.ImageA = Flames2(Fire2Pos)
 	Fire2Pos = (Fire2Pos + 1) MOD 32
-	textbox001.text = plunger.Position
 End Sub
 
 '*****************
