@@ -2841,23 +2841,43 @@ Sub CheckMonkeyBattle
 End Sub
 
 '***********plank shakers*************
-Dim plank1Shake
+'Dim plank1Shake
 Dim plank2Shake
 Dim plank3Shake
 
 Sub plank1Shaker()
-    plank1Shake = 6
+'    plank1Shake = 6
     plank1Timer.Enabled = True
 End Sub
 
+'A number between 1 and 360 to calculate Sin on
+Dim PlankShake1:PlankShake1 = 1
+'How far to move the plank; bigger numbers will increase how far away from the center it moves, smaller numbers means smaller movement
+'We could get the velocity of the ball when it hits the plank to dynamically change this.  Harder hits = bigger shakes (and longer since it has to move farther)
+Dim PlankShakeDist1:PlankShakeDist1 = 12
+'How fast the plank shakes; bigger numbers will make it vibrate, smaller numbers will make it move in slow motion
+Dim PlankShakeSpeed1:PlankShakeSpeed1 = 4
+'How stiff the plank is; bigger numbers will make it wobble less as if it were connect to stiff rod, smaller numbers make it wobble longer like it was on a loose spring
+Dim PlankStiff1:PlankStiff1 = 0.5
 Sub plank1Timer_Timer()
-    plank1.Transz = plank1Shake / 2
-    If plank1Shake = 0 Then Me.Enabled = False:Exit Sub
-    If plank1Shake <0 Then
-        plank1Shake = ABS(plank1Shake)- 0.1
-    Else
-        plank1Shake = - plank1Shake + 0.1
-    End If
+	me.Interval = 1
+	'Use the same math as on the barrells to shake the planks
+	plank1.TransZ = dSin(PlankShake1)*PlankShakeDist1
+	'Increase the number the math does work on at a rate we have control over
+	PlankShake1 = PlankShake1 + PlankShakeSpeed1
+	'We don't want this number to increment indefinitely since 361 is the same as 1 when it comes to calculating Sin
+	If PlankShake1 > 360 Then
+		PlankShake1 = 1
+		'Decrease the distance it moves from center each time it moves left and right so the next time it moves left and right, it doesn't move as far
+		PlankShakeDist1 = PlankShakeDist1 - PlankStiff1
+	End If
+	'If it's shaken back and forth the specified number of times (PlankShakeDist1), then we're done
+	If PlankShakeDist1 <= 0 Then
+		'Turn off the animation
+		me.Enabled = 0
+		'Reset the shake amount for next time
+		PlankShakeDist1 = 12
+	End If
 End Sub
 
 Sub plank2Shaker()
