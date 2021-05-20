@@ -2921,6 +2921,116 @@ End Sub
 '*****************
 'Kickers
 '*****************
+Dim BallInHole1
+Dim dBall
+
+'*****************Lechuck**************************
+sub Kicker001_hit()
+	BallInHole1 = BallInHole1 + 1
+    Set dBall = ActiveBall:Me.TimerEnabled = 1
+	Playsound "portalsound2"
+    Me.Enabled = 0
+	'If bMultiBallMode = true Then
+	'SuperVukAddBall1
+	'exit Sub
+    'end if
+	SuperVukAddBall2
+'vpmTimer.AddTimer 500, "StartSlotmachine'"
+end sub
+
+Sub SuperVukAddBall1()
+	If BallInHole1> 0 Then
+        BallInHole1 = BallInHole1 - 1
+	Kicker003.CreateSizedball BallSize / 2
+	'ChangeBallImage
+	kickoutkick2
+ vpmtimer.addtimer 1000, "SuperVukAddBall1 '" 
+end If
+End Sub
+
+Sub SuperVukAddBall2()
+	If BallInHole1> 0 Then
+        BallInHole1 = BallInHole1 - 1
+	Kicker003.CreateSizedball BallSize / 2
+	'ChangeBallImage
+	kickoutkick3
+ vpmtimer.addtimer 1000, "SuperVukAddBall2 '" 
+end If
+End Sub
+
+Sub Kicker001_Timer
+    Do While dBall.Z > 0
+        dBall.Z = dBall.Z -5
+        Exit Sub
+    Loop
+    Me.DestroyBall
+    Me.TimerEnabled = 0
+	Me.Enabled = 1
+End Sub
+
+sub kickoutkick2
+Playsound "fx_popper"
+Kicker003.Kick 270, 7, 14
+end sub
+
+sub kickoutkick3
+Playsound "fx_popper"
+Kicker003.Kick 90, 7, 14
+end sub
+
+'***************** Vulcano**************************
+sub Kicker004_hit()
+Playsound "portalsound2"
+vulcanokick
+end sub
+
+sub vulcanokick
+Kicker004.Kick 0,35,1.56
+end sub
+
+'*****************Bar kicker**************************
+sub barkick_hit()
+barkickout
+end sub
+
+sub barkickout
+barkick.Kick 190, 7, 1
+end sub
+
+'*****************Voodoo kicker**************************
+
+sub voodookick_hit()
+voodookickout
+end Sub
+
+sub voodookickout
+voodookick.Kick 190, 7, 1
+end sub
+
+
+'***************** kright lower kicker**************************
+sub kickteleport3
+Playsound "fx_popperteleport"
+Kicker007.Kick 80, 7, 14
+end sub
+
+sub openydoor
+FlashForMs Flasher010, 1000, 50, 0
+PlaySound "dooropen2"
+Target013.IsDropped = True
+vpmTimer.AddTimer 1000, "SuperVukAddBall4'"
+end Sub
+
+Sub SuperVukAddBall4()
+	If BallInHole1> 0 Then
+        BallInHole1 = BallInHole1 - 1
+	Kicker006.CreateSizedball BallSize / 2
+	'ChangeBallImage
+	kickteleport2
+	vpmtimer.addtimer 1100, "resettarget13 '"
+ vpmtimer.addtimer 1000, "SuperVukAddBall4 '" 
+end If
+End Sub
 
 '*****************
 'lava animation
@@ -3043,4 +3153,48 @@ sub resetsmoke()
 	canonsmoke.height = 200
 	canonsmoke.y = SmokePositionYOrig
 	canonsmoke.IntensityScale = 1
+end sub
+
+
+'*****************
+'beard and palmtrees
+'*****************
+Dim Sway
+
+sub beardtreetimer_Timer()
+'Palm Trees
+	tree001.RotY = dSin(Sway)*2
+	tree002.RotY = tree001.RotY
+	tree003.RotY = tree001.RotY
+	tree004.RotY = tree001.RotY
+	tree005.RotY = tree001.RotY
+	tree006.RotY = tree001.RotY
+	tree007.RotY = tree001.RotY
+	tree008.RotY = tree001.RotY
+	Leaves001.RotY = tree001.RotY
+	Leaves002.RotY = tree001.RotY
+	Leaves003.RotY = tree001.RotY
+	Leaves004.RotY = tree001.RotY
+	Leaves005.RotY = tree001.RotY
+	Leaves006.RotY = tree001.RotY
+	Leaves007.RotY = tree001.RotY
+	Leaves008.RotY = tree001.RotY
+	Sway = Sway + 0.05
+	If Sway > 360 Then Sway = 1
+	'******
+	'Le chuck's Beard matches the gate
+	Beard.RotX = -Gate002.CurrentAngle
+	'******
+	'Rotate and move the magic dust
+	'For Each X in Magic
+	'	X.RotZ = X.RotZ + 0.1
+'	'	X.Height = X.Height + 0.1
+	'	If X.Height >= 60 Then
+	'		X.Height = 0
+	'		If MotorTimer.Enabled = True Then
+	'			X.X = RovingMagnet.X
+	'			X.Y = RovingMagnet.Y
+	'		End If
+	'	End If
+	'Next
 end sub
