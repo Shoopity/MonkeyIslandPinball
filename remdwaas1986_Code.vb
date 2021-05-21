@@ -81,6 +81,34 @@ Dim TotalGamesPlayed
 Dim bAttractMode
 Dim mBalls2Eject
 Dim bAutoPlunger
+Dim Insult
+Dim Status
+'0 = Not playing, or a mode is ready
+'1 = Normal, not in any other mode
+'2 = Voodoo Magic
+'4 = Voodoo Chicken
+'8 = High Dive
+'16 = Swords Master
+'32 = Dainty Lady
+'64	= Grave Digger
+'128 = Monkey Combat
+'256 = Spitting Competition
+'512 = Treasure Hunt
+'1024 = Coin Frenzy
+'2048 = Bar Hunt
+'4096 = Taunt Duels
+'8192 = Escape Mode
+'*************
+'Look at these numbers as bits. 2 = 00000000000010, 2048 = 00100000000000
+'Set the first bit to either 1 for normal, or 0 that a mode is ready.
+'So some examples of possible states are:
+'1 = normal (this would 00000000000001 in bit form)
+'2 = Voodoo mode is ready to start, but it hasn't started yet (this would be 00000000000010 in bit form)
+'3 = We are in voodoo mode (this would be 00000000000011 in bit form)
+'16 = Swords Master is ready to start, but it hasn't started yet (this would be 00000000010000 in bit form)
+'17 = We are in Swords Master  mode (this would be 00000000010001 in bit form)
+'Doing things this way could allows for multiple modes to be ready
+'**************
 
 ' Define Game Control Variables
 Dim BallsOnPlayfield
@@ -173,6 +201,7 @@ Sub Table1_Init()
 	GiOff
 	StartAttractMode
 	'EndOfGame()
+	Status = 0
 End Sub
 
 '****************************************
@@ -230,7 +259,6 @@ Sub Table1_KeyDown(ByVal Keycode)
 			End If
 		End If
 	End If
-
 	If keycode = PlungerKey Then
 		shootkanon
 		Plunger.Pullback
@@ -238,26 +266,19 @@ Sub Table1_KeyDown(ByVal Keycode)
 		'PlaySoundAt "fx_plungerpull", plunger
 		'PlaySoundAt "fx_reload", plunger
 	End If
-
 	If hsbModeActive Then
 		EnterHighScoreKey(keycode)
 		Exit Sub
 	End If
-
 	' Normal flipper action
-
 	If bGameInPlay AND NOT Tilted Then
-
 		If keycode = LeftTiltKey Then Nudge 90, 8:PlaySound "fx_nudge", 0, 1, -0.1, 0.25:CheckTilt
 		If keycode = RightTiltKey Then Nudge 270, 8:PlaySound "fx_nudge", 0, 1, 0.1, 0.25:CheckTilt
 		If keycode = CenterTiltKey Then Nudge 0, 9:PlaySound "fx_nudge", 0, 1, 1, 0.25:CheckTilt
-
 		If keycode = LeftFlipperKey Then SolLFlipper 1
 		If keycode = RightFlipperKey Then SolRFlipper 1
-
 		If keycode = StartGameKey Then
 			If((PlayersPlayingGame <MaxPlayers) AND(bOnTheFirstBall = True) ) Then
-
 				If(bFreePlay = True) Then
 					PlayersPlayingGame = PlayersPlayingGame + 1
 					TotalGamesPlayed = TotalGamesPlayed + 1
@@ -276,28 +297,27 @@ Sub Table1_KeyDown(ByVal Keycode)
 				End If
 			End If
 		End If
-		Else ' If (GameInPlay)
-
-			If keycode = StartGameKey Then
-				If(bFreePlay = True) Then
+	Else ' If (GameInPlay)
+		If keycode = StartGameKey Then
+			If(bFreePlay = True) Then
+				If(BallsOnPlayfield = 0) Then
+					ResetForNewGame()
+					UpdateMusicNow()
+				End If
+			Else
+				If(Credits> 0) Then
 					If(BallsOnPlayfield = 0) Then
+						Credits = Credits - 1
+						If Credits <1 And bFreePlay = False Then DOF 125, DOFOff
 						ResetForNewGame()
-						UpdateMusicNow
+						UpdateMusicNow()
 					End If
 				Else
-					If(Credits> 0) Then
-						If(BallsOnPlayfield = 0) Then
-							Credits = Credits - 1
-							If Credits <1 And bFreePlay = False Then DOF 125, DOFOff
-							ResetForNewGame()
-							UpdateMusicNow
-						End If
-					Else
-						' Not Enough Credits to start a game.
-						DMD CL(0, "CREDITS " & Credits), CL(1, "INSERT COIN"), "", eNone, eBlink, eNone, 500, True, "so_nocredits"
-					End If
+					' Not Enough Credits to start a game.
+					DMD CL(0, "CREDITS " & Credits), CL(1, "INSERT COIN"), "", eNone, eBlink, eNone, 500, True, "so_nocredits"
 				End If
 			End If
+		End If
 	End If ' If (GameInPlay)
 
 'table keys
@@ -854,13 +874,10 @@ End Sub
 '
 Sub ResetForNewGame()
 	Dim i
-
 	bGameInPLay = True
-
 	'resets the score display, and turn off attract mode
 	StopAttractMode
 	GiOn
-
 	TotalGamesPlayed = TotalGamesPlayed + 1
 	CurrentPlayer = 1
 	PlayersPlayingGame = 1
@@ -877,25 +894,18 @@ Sub ResetForNewGame()
 		Special2Awarded(i) = False
 		Special3Awarded(i) = False
 	Next
-
 	' initialise any other flags
 	Tilt = 0
-
 	'reset variables
 	bumperHits = 100
-
 	UpdateMusic = 0
 	'UpdateMusic = UpdateMusic + 6
 	UpdateMusicNow
-
 	' initialise Game variables
 	Game_Init()
-	
 	' you may wish to start some music, play a sound, do whatever at this point
-StopSong
-PlaySound ""
-
-
+	StopSong()
+	PlaySound ""
 	vpmtimer.addtimer 1500, "FirstBall '"
 End Sub
 
@@ -2435,6 +2445,7 @@ Sub Game_Init() 'called at the start of a new game
 	MulitballBonus = 0
 	'BallInHole = 0
 	TurnOffPlayfieldLights()
+	Status = 1	
 End Sub
 
 Sub StopEndOfBallMode()     'this sub is called after the last ball is drained
@@ -2756,77 +2767,137 @@ Sub ResetBumpers()
 End Sub
 
 '*****************
-'* Maths
-'*****************
-Dim Pi
-Pi = Round(4 * Atn(1), 6)
-Function dSin(degrees)
-	dsin = sin(degrees * Pi/180)
-	if ABS(dSin) < 0.000001 Then dSin = 0
-	if ABS(dSin) > 0.999999 Then dSin = 1' * sgn(dSin)
-End Function
-
-Function dCos(degrees)
-	dcos = cos(degrees * Pi/180)
-	if ABS(dCos) < 0.000001 Then dCos = 0
-	if ABS(dCos) > 0.999999 Then dCos = 1' * sgn(dCos)
-End Function
-
-'*****************
 'Targets
 '*****************
+'*****************
+'INSULT
+'*****************
+Sub Target005_hit()
+	PlaySound "fx_target", 0, 0.2, Pan(ActiveBall) * 10
+	Select Case Status
+		Case 1 'Normal
+			'Play random insult quote
+			'Set the Insult flag for both I and N turned on
+			Insult = Insult OR 48
+			'Turn on appropriate lights for spelling INSULT
+			'Check if Insult has been spelled
+			CheckInsult()
+		'Create Cases for how this target should react, depending on which state we're in
+		'Case 2
+			'...
+		'Case 3
+			'...
+	End Select
+End Sub
+
+Sub Target007_hit()
+	PlaySound "fx_target", 0, 0.2, Pan(ActiveBall) * 100
+	Select Case Status
+	Case 1 'Normal
+		'Play random insult quote
+		'Set the Insult flag for both S and U turned on
+		Insult = Insult OR 12
+		'Turn on appropriate lights for spelling INSULT
+		'Check if Insult has been spelled
+		CheckInsult()
+	'Create Cases for how this target should react, depending on which state we're in
+		'Case 2
+			'...
+		'Case 3
+			'...
+	End Select
+End Sub
+
+Sub Target006_hit()
+	PlaySound "fx_target", 0, 0.2, Pan(ActiveBall) * 100
+	Select Case Status
+	Case 1 'Normal
+		'Play random insult quote
+		'Set the Insult flag for both L and T turned on
+		Insult = Insult OR 3
+		'Turn on appropriate lights for spelling INSULT
+		'Check if Insult has been spelled
+		CheckInsult()
+	'Create Cases for how this target should react, depending on which state we're in
+		'Case 2
+			'...
+		'Case 3
+			'...
+	End Select
+End Sub
+
+Sub CheckInsult()
+	'If INSULT hasn't been spelled
+	If Insult <> 63 Then
+		'Play some random insult quote
+		'Give points
+	'Otherwise INSULT has been spelled
+	Else
+		PlaySound "fire"	'Change this, it's just for testing
+		'Light the Voodoo shot
+		li011.BlinkInterval = 50
+		li011.State = 2
+		'Play a sound to let the player know to shoot the voodoo shot, hopefully multiple quotes as this will play every time these targets get hit while the voodoo lady is lit
+		'Give points, probably more than normal because you've opened a mode
+		'Set the status to be in "mode ready" state
+		Status = Status AND 16382
+		'Set the status that Voodoo mode is a mode that's ready
+		Status = Status OR 2	'We're in a state where a mode is set to start, and that mode is voodoo mode
+	End If
+End Sub
+
 '*****************
 'monkey battles
 '*****************
 sub Target003_hit()
-'If li001.State=1 then 
-'	AddScore 1000
-'	bonusyscorechecker = bonusyscorechecker + 500
-'	end if
-'	If li002.State=1 then 
-'	AddScore 2000
-'	bonusyscorechecker = bonusyscorechecker + 1000
-'	end if
-plank3Shaker
-TargetBonus = TargetBonus + 1
-PlaySound "monkeyhit"
-addscore 1000
-li003.state = 1
-CheckMonkeyBattle
+	'If li001.State=1 then 
+	'	AddScore 1000
+	'	bonusyscorechecker = bonusyscorechecker + 500
+	'	end if
+	'	If li002.State=1 then 
+	'	AddScore 2000
+	'	bonusyscorechecker = bonusyscorechecker + 1000
+	'	end if
+	plank3Shaker
+	TargetBonus = TargetBonus + 1
+	PlaySound "monkeyhit"
+	addscore 1000
+	li003.state = 1
+	CheckMonkeyBattle
 end sub
 
 sub Target002_hit()
-'If li001.State=1 then 
-'	AddScore 1000
-'	bonusyscorechecker = bonusyscorechecker + 500
-'	end if
-'	If li002.State=1 then 
-'	AddScore 2000
-'	bonusyscorechecker = bonusyscorechecker + 1000
-'	end if
-plank2Shaker
-TargetBonus = TargetBonus + 1
-PlaySound "monkeyhit"
-addscore 1000
-li005.state = 1
-CheckMonkeyBattle
+	'If li001.State=1 then 
+	'	AddScore 1000
+	'	bonusyscorechecker = bonusyscorechecker + 500
+	'	end if
+	'	If li002.State=1 then 
+	'	AddScore 2000
+	'	bonusyscorechecker = bonusyscorechecker + 1000
+	'	end if
+	plank2Shaker
+	TargetBonus = TargetBonus + 1
+	PlaySound "monkeyhit"
+	addscore 1000
+	li005.state = 1
+	CheckMonkeyBattle
 end sub
 
 sub Target001_hit()
-'If li001.State=1 then 
-'	AddScore 1000
-'	bonusyscorechecker = bonusyscorechecker + 500
-'	end if
-'	If li002.State=1 then 
-'	AddScore 2000
-'	bonusyscorechecker = bonusyscorechecker + 1000
-'	end if
-plank1Shaker
-TargetBonus = TargetBonus + 1
-PlaySound "monkeyhit"
-addscore 1000
-li004.state = 1
-CheckMonkeyBattle
+	'If li001.State=1 then 
+	'	AddScore 1000
+	'	bonusyscorechecker = bonusyscorechecker + 500
+	'	end if
+	'	If li002.State=1 then 
+	'	AddScore 2000
+	'	bonusyscorechecker = bonusyscorechecker + 1000
+	'	end if
+	plank1Shaker
+	TargetBonus = TargetBonus + 1
+	PlaySound "monkeyhit"
+	addscore 1000
+	li004.state = 1
+	CheckMonkeyBattle
 end sub
 
 Sub CheckMonkeyBattle
@@ -2885,14 +2956,22 @@ Sub plank2Shaker()
     plank2Timer.Enabled = True
 End Sub
 
+Dim PlankShake2:PlankShake2 = 1
+Dim PlankShakeDist2:PlankShakeDist2 = 12
+Dim PlankShakeSpeed2:PlankShakeSpeed2 = 4
+Dim PlankStiff2:PlankStiff2 = 0.5
 Sub plank2Timer_Timer()
-    plank2.Transz = plank2Shake / 2
-    If plank2Shake = 0 Then Me.Enabled = False:Exit Sub
-    If plank2Shake <0 Then
-        plank2Shake = ABS(plank2Shake)- 0.1
-    Else
-        plank2Shake = - plank2Shake + 0.1
-    End If
+	me.Interval = 1
+	plank2.TransZ = dSin(PlankShake2)*PlankShakeDist2
+	PlankShake2 = PlankShake2 + PlankShakeSpeed2
+	If PlankShake2 > 360 Then
+		PlankShake2 = 1
+		PlankShakeDist2 = PlankShakeDist2 - PlankStiff2
+	End If
+	If PlankShakeDist2 <= 0 Then
+		me.Enabled = 0
+		PlankShakeDist2 = 12
+	End If
 End Sub
 
 Sub plank3Shaker()
@@ -2908,6 +2987,24 @@ Sub plank3Timer_Timer()
     Else
         plank3Shake = - plank3Shake + 0.1
     End If
+End Sub
+
+Dim PlankShake3:PlankShake3 = 1
+Dim PlankShakeDist3:PlankShakeDist3 = 12
+Dim PlankShakeSpeed3:PlankShakeSpeed3 = 4
+Dim PlankStiff3:PlankStiff3 = 0.5
+Sub plank3Timer_Timer()
+	me.Interval = 1
+	plank3.TransZ = dSin(PlankShake3)*PlankShakeDist3
+	PlankShake3 = PlankShake3 + PlankShakeSpeed3
+	If PlankShake3 > 360 Then
+		PlankShake3 = 1
+		PlankShakeDist3 = PlankShakeDist3 - PlankStiff3
+	End If
+	If PlankShakeDist3 <= 0 Then
+		me.Enabled = 0
+		PlankShakeDist3 = 12
+	End If
 End Sub
 
 
@@ -2980,56 +3077,87 @@ end sub
 
 '***************** Vulcano**************************
 sub Kicker004_hit()
-Playsound "portalsound2"
-vulcanokick
+	Playsound "portalsound2"
+	vulcanokick
 end sub
 
 sub vulcanokick
-Kicker004.Kick 0,35,1.56
+	Kicker004.Kick 0,35,1.56
 end sub
 
 '*****************Bar kicker**************************
 sub barkick_hit()
-barkickout
+	barkickout
 end sub
 
 sub barkickout
-barkick.Kick 190, 7, 1
+	barkick.Kick 190, 7, 1
 end sub
 
 '*****************Voodoo kicker**************************
-
+Dim TempBall
 sub voodookick_hit()
-voodookickout
+	PlaySound "fx_kicker_enter", 0, 0.2, Pan(ActiveBall)
+	Set TempBall = ActiveBall
+	Select Case Status
+		Case 1 'Normal
+			'Play some voodoo lady quote
+			'award points
+			'play lighting effect
+			me.TimerInterval = 1000
+			me.TimerEnabled = 1
+		Case 2 'Voodoo Magic is ready to start, so start it
+			'Play Voodoo Magic intro sound
+			'Start Voodoo magic music (or do this down in the timer)
+			StopSong()
+			PlaySound "3"
+			'points
+			'lights
+			li011.state = 0
+			'Set my timer interval to be however long you want to be to spin the wheel and do an intro
+			me.TimerInterval = 5000
+			me.TimerEnabled = 1
+			'Set status to being in Voodoo magic
+			Status = 3
+		Case 3 'We're in Voodoo Magic mode
+			'Do whatever you want to do while in Voodoo magic mode
+		'Make case statements for whatever else you want to do when you hit this
+	End Select
 end Sub
 
-sub voodookickout
-voodookick.Kick 190, 7, 1
+Sub voodookick_timer()
+	voodookickout()
+End Sub
+
+sub voodookickout()
+	PlaySound "fx_kicker", 0, 0.2, Pan(TempBall) * 100
+	voodookick.Kick 190, 7, 1
+	voodookick.TimerEnabled = 0
 end sub
 
 
 '***************** kright lower kicker**************************
 sub kickteleport3
-Playsound "fx_popperteleport"
-Kicker007.Kick 80, 7, 14
+	Playsound "fx_popperteleport"
+	Kicker007.Kick 80, 7, 14
 end sub
 
 sub openydoor
-FlashForMs Flasher010, 1000, 50, 0
-PlaySound "dooropen2"
-Target013.IsDropped = True
-vpmTimer.AddTimer 1000, "SuperVukAddBall4'"
+	FlashForMs Flasher010, 1000, 50, 0
+	PlaySound "dooropen2"
+	Target013.IsDropped = True
+	vpmTimer.AddTimer 1000, "SuperVukAddBall4'"
 end Sub
 
 Sub SuperVukAddBall4()
 	If BallInHole1> 0 Then
         BallInHole1 = BallInHole1 - 1
-	Kicker006.CreateSizedball BallSize / 2
-	'ChangeBallImage
-	kickteleport2
-	vpmtimer.addtimer 1100, "resettarget13 '"
- vpmtimer.addtimer 1000, "SuperVukAddBall4 '" 
-end If
+		Kicker006.CreateSizedball BallSize / 2
+		'ChangeBallImage
+		kickteleport2
+		vpmtimer.addtimer 1100, "resettarget13 '"
+		vpmtimer.addtimer 1000, "SuperVukAddBall4 '" 
+	end If
 End Sub
 
 '*****************
@@ -3068,7 +3196,6 @@ End Sub
 Sub FireTimer2_Timer
 	magma.ImageA = Flames2(Fire2Pos)
 	Fire2Pos = (Fire2Pos + 1) MOD 32
-'	textbox001.text = spinningwheel.enabled
 End Sub
 
 '*****************
@@ -3198,3 +3325,20 @@ sub beardtreetimer_Timer()
 	'	End If
 	'Next
 end sub
+
+'*****************
+'* Maths
+'*****************
+Dim Pi
+Pi = Round(4 * Atn(1), 6)
+Function dSin(degrees)
+	dsin = sin(degrees * Pi/180)
+	if ABS(dSin) < 0.000001 Then dSin = 0
+	if ABS(dSin) > 0.999999 Then dSin = 1' * sgn(dSin)
+End Function
+
+Function dCos(degrees)
+	dcos = cos(degrees * Pi/180)
+	if ABS(dCos) < 0.000001 Then dCos = 0
+	if ABS(dCos) > 0.999999 Then dCos = 1' * sgn(dCos)
+End Function
