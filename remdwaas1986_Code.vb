@@ -3108,25 +3108,36 @@ sub voodookick_hit()
 			me.TimerEnabled = 1
 		Case 2 'Voodoo Magic is ready to start, so start it
 			'Play Voodoo Magic intro sound
-			'Start Voodoo magic music (or do this down in the timer)
+			'Stop any song playing
 			StopSong()
-			PlaySound "3"
 			'points
 			'lights
 			li011.state = 0
 			'Set my timer interval to be however long you want to be to spin the wheel and do an intro
-			me.TimerInterval = 5000
+			me.TimerInterval = 10
 			me.TimerEnabled = 1
-			'Set status to being in Voodoo magic
-			Status = 3
+			'Pick which voodoo mode we're doing
+			VoodooPicker()
 		Case 3 'We're in Voodoo Magic mode
 			'Do whatever you want to do while in Voodoo magic mode
+			VoodooAward()
 		'Make case statements for whatever else you want to do when you hit this
 	End Select
 end Sub
 
 Sub voodookick_timer()
-	voodookickout()
+	Select Case Status
+	Case 2  'Voodoo mode is just starting
+		'If the wheel is still spinning don't do anything
+		If SpinningWheel.enabled then
+			Exit Sub
+		'If the wheel has stopped, start the mode
+		Else
+			VoodooModeStart()
+		End If
+	Case Else	'just kick it out
+		voodookickout()
+	End Select
 End Sub
 
 sub voodookickout()
@@ -3134,6 +3145,49 @@ sub voodookickout()
 	voodookick.Kick 190, 7, 1
 	voodookick.TimerEnabled = 0
 end sub
+
+Sub VoodooPicker()
+	WheelSpeed = Int(2.5*Rnd+1)
+	SpinningWheel.enabled = 1
+End Sub
+
+Sub VoodooModeStart()
+	Select Case True
+	Case (Wheel1.RotZ = 24 OR Wheel1.RotZ = 48 OR Wheel1.RotZ = 72)
+		'Start voodoo mode 1
+		PlaySound "knocker"
+		TextBox001.Text = 1
+	Case (Wheel1.RotZ = 98 OR Wheel1.RotZ = 128 OR Wheel1.RotZ = 146)
+		'Start voodoo mode 2
+		PlaySound "Fire"
+		TextBox001.Text = 2
+	Case (Wheel1.RotZ = 168 OR Wheel1.RotZ = 192 OR Wheel1.RotZ = 216)
+		'Start voodoo mode 3
+		PlaySound "Drain"
+		TextBox001.Text = 3
+	Case (Wheel1.RotZ = 240 OR Wheel1.RotZ = 264 OR Wheel1.RotZ = 288)
+		'Start voodoo mode 4
+		PlaySound "ShakeGrog"
+		TextBox001.Text = 4
+	Case (Wheel1.RotZ = 312 OR Wheel1.RotZ = 336 OR Wheel1.RotZ = 0)
+		'Start voodoo mode 5
+		PlaySound "popper_ball"
+		TextBox001.Text = 5
+	End Select
+	'Set status to being in Voodoo magic
+	Status = 3
+	'Set the timer to give the player a moment to take in what mode what chosen
+	voodookick.TimerInterval = 2000
+	'Start the music
+	PlaySound "3"
+End Sub
+
+Sub VoodooAward()
+	'Do whatever you want to do when you hit the voodoo lady while in voodoo mode
+	'Kick out the ball
+	VoodooKick.TimerInterval = 2000
+	VoodooKick.TimerEnabled = 1
+End Sub
 
 
 '***************** kright lower kicker**************************
