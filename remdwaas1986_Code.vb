@@ -30,9 +30,89 @@ End Sub
 
 Sub startB2S(aB2S)
 	If B2SOn Then
-		Controller.B2SSetData 1,0
-		Controller.B2SSetData 2,0
-		Controller.B2SSetData 3,0
+  Controller.B2SSetData 1,0
+  Controller.B2SSetData 2,0
+  Controller.B2SSetData 3,0
+  Controller.B2SSetData 20,0
+  Controller.B2SSetData 21,0
+  Controller.B2SSetData 22,0
+  Controller.B2SSetData 23,0
+  Controller.B2SSetData 24,0
+  Controller.B2SSetData 25,0
+  Controller.B2SSetData 26,0
+  Controller.B2SSetData 27,0
+  Controller.B2SSetData 28,0
+  Controller.B2SSetData 29,0
+  Controller.B2SSetData 30,0
+  Controller.B2SSetData 31,0
+  Controller.B2SSetData 32,0
+  Controller.B2SSetData 33,0
+  Controller.B2SSetData 34,0
+  Controller.B2SSetData 35,0
+  Controller.B2SSetData 36,0
+  Controller.B2SSetData 37,0
+  Controller.B2SSetData 38,0
+  Controller.B2SSetData 39,0
+  Controller.B2SSetData 40,0
+  Controller.B2SSetData 41,0
+  Controller.B2SSetData 42,0
+  Controller.B2SSetData 43,0
+  Controller.B2SSetData 44,0
+  Controller.B2SSetData 45,0
+  Controller.B2SSetData 46,0
+  Controller.B2SSetData 47,0
+  Controller.B2SSetData 48,0
+  Controller.B2SSetData 49,0
+  Controller.B2SSetData 50,0
+  Controller.B2SSetData 51,0
+  Controller.B2SSetData 52,0
+  Controller.B2SSetData 53,0
+  Controller.B2SSetData 54,0
+  Controller.B2SSetData 55,0
+  Controller.B2SSetData 56,0
+  Controller.B2SSetData 57,0
+  Controller.B2SSetData 58,0
+  Controller.B2SSetData 59,0
+  Controller.B2SSetData 60,0
+  Controller.B2SSetData 61,0
+  Controller.B2SSetData 62,0
+  Controller.B2SSetData 63,0
+  Controller.B2SSetData 64,0
+  Controller.B2SSetData 65,0
+  Controller.B2SSetData 66,0
+  Controller.B2SSetData 67,0
+  Controller.B2SSetData 68,0
+  Controller.B2SSetData 69,0
+  Controller.B2SSetData 70,0
+  Controller.B2SSetData 71,0
+  Controller.B2SSetData 72,0
+  Controller.B2SSetData 73,0
+  Controller.B2SSetData 74,0
+  Controller.B2SSetData 75,0
+  Controller.B2SSetData 76,0
+  Controller.B2SSetData 77,0
+  Controller.B2SSetData 78,0
+  Controller.B2SSetData 79,0
+  Controller.B2SSetData 80,0
+  Controller.B2SSetData 81,0
+  Controller.B2SSetData 82,0
+  Controller.B2SSetData 83,0
+  Controller.B2SSetData 84,0
+  Controller.B2SSetData 85,0
+  Controller.B2SSetData 86,0
+  Controller.B2SSetData 87,0
+  Controller.B2SSetData 88,0
+  Controller.B2SSetData 89,0
+  Controller.B2SSetData 90,0
+  Controller.B2SSetData 91,0
+  Controller.B2SSetData 92,0
+  Controller.B2SSetData 93,0
+  Controller.B2SSetData 94,0
+  Controller.B2SSetData 95,0
+  Controller.B2SSetData 96,0
+  Controller.B2SSetData 97,0
+  Controller.B2SSetData 98,0
+  Controller.B2SSetData 99,0
 		Controller.B2SSetData aB2S,1
 	End If
 End Sub
@@ -131,8 +211,11 @@ Dim plungerIM
 Dim LastSwitchHit
 dim countr
 dim countr1
+dim countr2
 dim monkeybattle
-
+dim PFMultiplier
+dim barunlocked
+dim voodoounlocked
 
 ' core.vbs variables
 
@@ -221,6 +304,8 @@ End Sub
 '******
 
 Sub Table1_KeyDown(ByVal Keycode)
+
+'dim Kihold
 
 	'Test Kicker Stuff
 	If Keycode = 20 Then															'EP- T  "Pick up" the ball
@@ -333,6 +418,8 @@ Sub Table1_KeyUp(ByVal keycode)
 		Playsound "Fire"
 		'PlaySoundAt "fx_plunger", plunger
 		'If bBallInPlungerLane Then PlaySoundAt "fx_fire", plunger
+		pirateshipDir = 30
+		PirateShipTimer.enabled = true
 	End If
 
 	If hsbModeActive Then
@@ -899,6 +986,14 @@ Sub ResetForNewGame()
 	'reset variables
 	bumperHits = 100
 	UpdateMusic = 0
+	BallInHole1 = 0
+	BallInHole2 = 0
+	BallInHole3 = 0
+'	BallInHoles = 0
+	PFMultiplier = 2
+	monkeybattle = 0
+	barunlocked = 1
+	voodoounlocked = 1
 	'UpdateMusic = UpdateMusic + 6
 	UpdateMusicNow
 	' initialise Game variables
@@ -946,8 +1041,8 @@ Sub ResetForNewPlayerBall()
 	RampBonus3 = 0
 	MulitballBonus = 0
 	Countr = 0
-	Countr = 1
-	monkeybattle = 0
+	Countr1 = 0
+	Countr2 = 0
 	ResetNewBallVariables
 	ResetNewBallLights()
 	'Multiball=false	
@@ -1009,7 +1104,6 @@ Sub CreateMultiballTimer_Timer()
 		End If
 	End If
 End Sub
-
 
 ' The Player has lost his ball (there are no more balls on the playfield).
 ' Handle any bonus points awarded
@@ -2275,6 +2369,9 @@ End Sub
 
 Dim InAttract:InAttract = 0
 Sub StartAttractMode
+	monkey1btimer.enabled = 1
+	monkey2btimer.enabled = 1
+	monkey3btimer.enabled = 1
 	InAttract = 1
 	spinningwheel.enabled = 1
 	ChangeSong
@@ -2496,18 +2593,13 @@ End Sub
 Dim RStep, Lstep
 
 Sub RightSlingShot_Slingshot
-'    If li001.State=1 then 
-'	AddScore 210
-'	end if
-'	If li002.State=1 then 
-'	AddScore 420
-'	end if
+
 	PlaySound SoundFX("right_slingshot",DOFContactors), 0,1, 0.05,0.05 '0,1, AudioPan(RightSlingShot), 0.05,0,0,1,AudioFade(RightSlingShot)
 	RSling.Visible = 0:RSling1.Visible = 1
 	sling1.rotx = 20
 	RStep = 0
 	RightSlingShot.TimerEnabled = 1
-	AddScore 210
+	Score(CurrentPlayer) = Score(CurrentPlayer) + (210*PFMultiplier)
 	gi1.State = 0
 	Gi2.State = 0	
 End Sub
@@ -2522,18 +2614,12 @@ Sub RightSlingShot_Timer
 End Sub
 
 Sub LeftSlingShot_Slingshot
-'	If li001.State=1 then 
-'	AddScore 210
-'	end if
-'	If li002.State=1 then 
-'	AddScore 420
-'	end if
 	PlaySound SoundFX("left_slingshot",DOFContactors), 0,1, -0.05,0.05 '0,1, AudioPan(LeftSlingShot), 0.05,0,0,1,AudioFade(LeftSlingShot)
 	LSling.Visible = 0:LSling1.Visible = 1
 	sling2.rotx = 20
 	 LStep = 0
 	LeftSlingShot.TimerEnabled = 1
-	AddScore 210
+	Score(CurrentPlayer) = Score(CurrentPlayer) + (1000*PFMultiplier)
 	gi3.State = 0
 	Gi4.State = 0
 End Sub
@@ -2546,10 +2632,6 @@ Sub LeftSlingShot_Timer
 	End Select
 	LStep = LStep + 1
 End Sub
-
-
-
-
 
 '*****************
 'triggers
@@ -2625,16 +2707,8 @@ End Sub
 Dim bumperHits
 
 sub scorebumpers
-'If li001.State=1 then 
-'	AddScore 2500
-'	bonusyscorechecker = bonusyscorechecker + 500
-'	end if
-'	If li002.State=1 then 
-'	AddScore 5000
-'	bonusyscorechecker = bonusyscorechecker + 1000
-'	end if
 PlaySound "shakegrog"
-addscore 2500
+	Score(CurrentPlayer) = Score(CurrentPlayer) + (2500*PFMultiplier)
 end sub	
 
 Sub Bumper001_hit()
@@ -2752,7 +2826,6 @@ Sub Bumper003tim_Timer()
 	End If
 End Sub
 
-
 Sub CheckBumpers()
 	If bumperHits <= 0 Then
 		BumperBonus = BumperBonus + 1
@@ -2850,52 +2923,31 @@ End Sub
 'monkey battles
 '*****************
 sub Target003_hit()
-	'If li001.State=1 then 
-	'	AddScore 1000
-	'	bonusyscorechecker = bonusyscorechecker + 500
-	'	end if
-	'	If li002.State=1 then 
-	'	AddScore 2000
-	'	bonusyscorechecker = bonusyscorechecker + 1000
-	'	end if
 	plank3Shaker
 	TargetBonus = TargetBonus + 1
 	PlaySound "monkeyhit"
-	addscore 1000
+	'addscore 1000
+	Score(CurrentPlayer) = Score(CurrentPlayer) + (1000*PFMultiplier)
 	li003.state = 1
 	CheckMonkeyBattle
 end sub
 
 sub Target002_hit()
-	'If li001.State=1 then 
-	'	AddScore 1000
-	'	bonusyscorechecker = bonusyscorechecker + 500
-	'	end if
-	'	If li002.State=1 then 
-	'	AddScore 2000
-	'	bonusyscorechecker = bonusyscorechecker + 1000
-	'	end if
 	plank2Shaker
 	TargetBonus = TargetBonus + 1
 	PlaySound "monkeyhit"
-	addscore 1000
+	'addscore 1000
+	Score(CurrentPlayer) = Score(CurrentPlayer) + (1000*PFMultiplier)
 	li005.state = 1
 	CheckMonkeyBattle
 end sub
 
 sub Target001_hit()
-	'If li001.State=1 then 
-	'	AddScore 1000
-	'	bonusyscorechecker = bonusyscorechecker + 500
-	'	end if
-	'	If li002.State=1 then 
-	'	AddScore 2000
-	'	bonusyscorechecker = bonusyscorechecker + 1000
-	'	end if
 	plank1Shaker
 	TargetBonus = TargetBonus + 1
 	PlaySound "monkeyhit"
-	addscore 1000
+	'addscore 1000
+	Score(CurrentPlayer) = Score(CurrentPlayer) + (1000*PFMultiplier)
 	li004.state = 1
 	CheckMonkeyBattle
 end sub
@@ -2908,6 +2960,7 @@ Sub CheckMonkeyBattle
 	li005.state=0
 	li003.state=0
 	monkeybattle = monkeybattle + 1
+	Updatemonkeycountr
 	End If
 End Sub
 
@@ -3007,7 +3060,6 @@ Sub plank3Timer_Timer()
 	End If
 End Sub
 
-
 '*****************
 'Gates
 '*****************
@@ -3023,6 +3075,7 @@ Dim dBall
 
 '*****************Lechuck**************************
 sub Kicker001_hit()
+	Score(CurrentPlayer) = Score(CurrentPlayer) + (1000*PFMultiplier)
 	BallInHole1 = BallInHole1 + 1
     Set dBall = ActiveBall:Me.TimerEnabled = 1
 	Playsound "portalsound2"
@@ -3031,7 +3084,8 @@ sub Kicker001_hit()
 	'SuperVukAddBall1
 	'exit Sub
     'end if
-	SuperVukAddBall2
+	'SuperVukAddBall2
+	StartSlotmachine
 'vpmTimer.AddTimer 500, "StartSlotmachine'"
 end sub
 
@@ -3086,133 +3140,138 @@ sub vulcanokick
 end sub
 
 '*****************Bar kicker**************************
-sub barkick_hit()
-	barkickout
+Dim BallInHole2
+Dim eBall
+
+sub Kicker006_hit()
+	Score(CurrentPlayer) = Score(CurrentPlayer) + (1000*PFMultiplier)
+	BallInHole2 = BallInHole2 + 1
+    Set eBall = ActiveBall:Me.TimerEnabled = 1
+	Playsound "portalsound2"
+    Me.Enabled = 0
+    if barunlocked = 0 Then
+	SuperVukAddBall5
+	exit Sub
+	end if
+	StartBarSlotmachine
 end sub
 
+Sub Kicker006_Timer
+    Do While eBall.Z > 0
+        eBall.Z = eBall.Z -5
+        Exit Sub
+    Loop
+    Me.DestroyBall
+    Me.TimerEnabled = 0
+	Me.Enabled = 1
+End Sub
+
+Sub SuperVukAddBall3()
+	If BallInHole2 > 0 Then
+        BallInHole2 = BallInHole2 - 1
+	Kicker006.CreateSizedball BallSize / 2
+	'ChangeBallImage
+	barkickout
+ vpmtimer.addtimer 1000, "SuperVukAddBall3 '" 
+end If
+End Sub
+
 sub barkickout
-	barkick.Kick 190, 7, 1
+	Playsound "fx_popper"
+	Kicker006.Kick 190, 7, 1
 end sub
 
 '*****************Voodoo kicker**************************
-Dim TempBall
-sub voodookick_hit()
-	PlaySound "fx_kicker_enter", 0, 0.2, Pan(ActiveBall)
-	Set TempBall = ActiveBall
-	Select Case Status
-		Case 1 'Normal
-			'Play some voodoo lady quote
-			'award points
-			'play lighting effect
-			me.TimerInterval = 1000
-			me.TimerEnabled = 1
-		Case 2 'Voodoo Magic is ready to start, so start it
-			'Play Voodoo Magic intro sound
-			'Stop any song playing
-			StopSong()
-			'points
-			'lights
-			li011.state = 0
-			'Set my timer interval to be however long you want to be to spin the wheel and do an intro
-			me.TimerInterval = 10
-			me.TimerEnabled = 1
-			'Pick which voodoo mode we're doing
-			VoodooPicker()
-		Case 3 'We're in Voodoo Magic mode
-			'Do whatever you want to do while in Voodoo magic mode
-			VoodooAward()
-		'Make case statements for whatever else you want to do when you hit this
-	End Select
-end Sub
+Dim BallInHole3
+Dim cBall
 
-Sub voodookick_timer()
-	Select Case Status
-	Case 2  'Voodoo mode is just starting
-		'If the wheel is still spinning don't do anything
-		If SpinningWheel.enabled then
-			Exit Sub
-		'If the wheel has stopped, start the mode
-		Else
-			VoodooModeStart()
-		End If
-	Case Else	'just kick it out
-		voodookickout()
-	End Select
-End Sub
-
-sub voodookickout()
-	PlaySound "fx_kicker", 0, 0.2, Pan(TempBall) * 100
-	voodookick.Kick 190, 7, 1
-	voodookick.TimerEnabled = 0
+sub Kicker005_hit()
+	Score(CurrentPlayer) = Score(CurrentPlayer) + (1000*PFMultiplier)
+	BallInHole3 = BallInHole3 + 1
+    Set cBall = ActiveBall:Me.TimerEnabled = 1
+	Playsound "portalsound2"
+    Me.Enabled = 0
+    if voodoounlocked = 0 Then
+	SuperVukAddBall6
+	exit Sub
+	end if
+	StartVoodooSlotmachine
 end sub
 
-Sub VoodooPicker()
-	WheelSpeed = Int(2.5*Rnd+1)
-	SpinningWheel.enabled = 1
+Sub Kicker005_Timer
+    Do While cBall.Z > 0
+        cBall.Z = cBall.Z -5
+        Exit Sub
+    Loop
+    Me.DestroyBall
+    Me.TimerEnabled = 0
+	Me.Enabled = 1
 End Sub
-
-Sub VoodooModeStart()
-	Select Case True
-	Case (Wheel1.RotZ = 24 OR Wheel1.RotZ = 48 OR Wheel1.RotZ = 72)
-		'Start voodoo mode 1
-		PlaySound "knocker"
-		TextBox001.Text = 1
-	Case (Wheel1.RotZ = 98 OR Wheel1.RotZ = 128 OR Wheel1.RotZ = 146)
-		'Start voodoo mode 2
-		PlaySound "Fire"
-		TextBox001.Text = 2
-	Case (Wheel1.RotZ = 168 OR Wheel1.RotZ = 192 OR Wheel1.RotZ = 216)
-		'Start voodoo mode 3
-		PlaySound "Drain"
-		TextBox001.Text = 3
-	Case (Wheel1.RotZ = 240 OR Wheel1.RotZ = 264 OR Wheel1.RotZ = 288)
-		'Start voodoo mode 4
-		PlaySound "ShakeGrog"
-		TextBox001.Text = 4
-	Case (Wheel1.RotZ = 312 OR Wheel1.RotZ = 336 OR Wheel1.RotZ = 0)
-		'Start voodoo mode 5
-		PlaySound "popper_ball"
-		TextBox001.Text = 5
-	End Select
-	'Set status to being in Voodoo magic
-	Status = 3
-	'Set the timer to give the player a moment to take in what mode what chosen
-	voodookick.TimerInterval = 2000
-	'Start the music
-	PlaySound "3"
-End Sub
-
-Sub VoodooAward()
-	'Do whatever you want to do when you hit the voodoo lady while in voodoo mode
-	'Kick out the ball
-	VoodooKick.TimerInterval = 2000
-	VoodooKick.TimerEnabled = 1
-End Sub
-
-
-'***************** kright lower kicker**************************
-sub kickteleport3
-	Playsound "fx_popperteleport"
-	Kicker007.Kick 80, 7, 14
-end sub
-
-sub openydoor
-	FlashForMs Flasher010, 1000, 50, 0
-	PlaySound "dooropen2"
-	Target013.IsDropped = True
-	vpmTimer.AddTimer 1000, "SuperVukAddBall4'"
-end Sub
 
 Sub SuperVukAddBall4()
-	If BallInHole1> 0 Then
-        BallInHole1 = BallInHole1 - 1
-		Kicker006.CreateSizedball BallSize / 2
+	If BallInHole3 > 0 Then
+        BallInHole3 = BallInHole3 - 1
+	Kicker005.CreateSizedball BallSize / 2
+	'ChangeBallImage
+	voodookickout
+ vpmtimer.addtimer 1000, "SuperVukAddBall4 '" 
+end If
+End Sub
+
+sub voodookickout
+	Playsound "fx_popper"
+	Kicker005.Kick 190, 7, 1
+end sub
+
+'*****************right lower kicker/drop target**************************
+
+sub Kicker002_hit()
+Score(CurrentPlayer) = Score(CurrentPlayer) + (1000*PFMultiplier)
+PlaySound ""
+Target013.IsDropped = True
+vpmtimer.addtimer 500, "kickrightbelow '"
+vpmtimer.addtimer 1600, "resettarget13 '"
+end sub
+
+Sub SuperVukAddBall5()
+	If BallInHole2> 0 Then
+        BallInHole2 = BallInHole2 - 1
+		Kicker002.CreateSizedball BallSize / 2
 		'ChangeBallImage
-		kickteleport2
+		kickrightbelow
 		vpmtimer.addtimer 1100, "resettarget13 '"
-		vpmtimer.addtimer 1000, "SuperVukAddBall4 '" 
+		vpmtimer.addtimer 1000, "SuperVukAddBall5 '" 
 	end If
 End Sub
+
+Sub SuperVukAddBall6()
+	If BallInHole3> 0 Then
+        BallInHole3 = BallInHole3 - 1
+		Kicker002.CreateSizedball BallSize / 2
+		'ChangeBallImage
+		kickrightbelow
+		vpmtimer.addtimer 1100, "resettarget13 '"
+		vpmtimer.addtimer 1000, "SuperVukAddBall6 '" 
+	end If
+End Sub
+
+sub kickrightbelow
+Playsound "fx_popper"
+Kicker006.Kick 280, 7, 14
+end sub
+
+Sub Target013_Hit()
+	PlaySound ""
+    If Tilted Then Exit Sub
+	Score(CurrentPlayer) = Score(CurrentPlayer) + (1000*PFMultiplier)
+    TargetBonus = TargetBonus + 1
+	vpmtimer.addtimer 1000, "resettarget13 '"
+End Sub
+
+sub resettarget13
+	PlaySound ""
+	Target013.IsDropped = False
+end sub
 
 '*****************
 'lava animation
@@ -3235,12 +3294,9 @@ Sub FireTimer_Timer
 	Fire1Pos = (Fire1Pos + 1) MOD 102
 End Sub
 
-
 Dim Fire2Pos,Flames2
-'Flames2 = Array("magma16", "magma17", "magma18", "magma19", "magma20", "magma21", "magma22", "magma23", "magma24", "magma25", "magma26", "magma27", "magma28", "magma29", "magma30", "magma31")
 Flames2 = Array("magma00", "magma01", "magma02", "magma03", "magma04", "magma05", "magma06", "magma07", "magma08", "magma09", "magma10", "magma11", "magma12", "magma13", "magma14", "magma15", "magma16",_
 "magma17", "magma18", "magma19", "magma20", "magma21", "magma22", "magma23", "magma24", "magma25", "magma26", "magma27", "magma28", "magma29", "magma30", "magma31")
-
 
 Sub StartFire2
 	Fire2Pos = 0
@@ -3336,7 +3392,6 @@ sub resetsmoke()
 	canonsmoke.IntensityScale = 1
 end sub
 
-
 '*****************
 'beard and palmtrees
 '*****************
@@ -3396,3 +3451,540 @@ Function dCos(degrees)
 	if ABS(dCos) < 0.000001 Then dCos = 0
 	if ABS(dCos) > 0.999999 Then dCos = 1' * sgn(dCos)
 End Function
+
+'*****************
+' pirateship animation
+'*****************
+
+Dim pirateshipDir
+pirateshipDir = 30 'this is both the direction, if + goes up, if - goes down, and also the speed
+
+Sub PirateShipTimer_Timer
+    pirateship.TransX = pirateship.TransX - pirateshipDir
+    If pirateship.TransX < -600 Then pirateshipDir = -30 'goes down
+    If pirateship.TransX > 2 Then PirateShipTimer.Enabled = 0
+End Sub
+
+'**************
+' SlotMachine le chuck
+'**************
+
+Dim SlotAward, SlotValue
+
+SlotAward = Array("dmd1", "dmd1")
+
+Sub StartSlotmachine()
+    Dim i
+    DMDFlush
+    For i = 0 to 1
+        DMD "", "", SlotAward(i), eNone, eNone, eNone, 50, False, ""
+    Next
+    vpmtimer.AddTimer 500, "GiveSlotAward '"
+End Sub
+
+Sub GiveSlotAward()
+	'LightSeq001.StopPlay
+    DMDFlush
+    SlotValue = INT(RND * 2)
+    DMD "", "", SlotAward(SlotValue), eNone, eNone, eNone, 500, True, ""
+
+    Select Case SlotValue
+        Case 0:SuperVukAddBall1
+        Case 1:SuperVukAddBall2
+    End Select
+End Sub
+
+'**************
+' SlotMachine Bar
+'**************
+
+Dim SlotAward1, SlotValue1
+
+SlotAward1 = Array("dmd1", "dmd2", "dmd3", "dmd4", "dmd5")
+
+Sub StartBarSlotmachine()
+    Dim i
+    DMDFlush
+    For i = 0 to 4
+        DMD "", "", SlotAward1(i), eNone, eNone, eNone, 50, False, ""
+    Next
+    vpmtimer.AddTimer 500, "GiveSlotAward1 '"
+End Sub
+
+Sub GiveSlotAward1()
+	'LightSeq001.StopPlay
+    DMDFlush
+    SlotValue1 = INT(RND * 5)
+    DMD "", "", SlotAward1(SlotValue1), eNone, eNone, eNone, 500, True, ""
+
+    Select Case SlotValue1
+        Case 0:Spitting
+        Case 1:Treasure
+        Case 2:BarFight
+        Case 3:CoinFrenzy
+        Case 4:TauntDuels
+    End Select
+End Sub
+
+sub Spitting
+SuperVukAddBall3
+end sub
+
+sub Treasure
+SuperVukAddBall3
+end sub
+
+sub BarFight
+SuperVukAddBall3
+end sub
+
+sub CoinFrenzy
+SuperVukAddBall3
+end sub
+
+sub TauntDuels
+SuperVukAddBall3
+end sub
+
+'**************
+' SlotMachine Voodoo Lady
+'**************
+'Dim TempBall
+Dim SlotAward2, SlotValue2
+
+SlotAward2 = Array("dmd1", "dmd2", "dmd3", "dmd4", "dmd5")
+
+Sub StartVoodooSlotmachine()
+    Dim i
+    DMDFlush
+    For i = 0 to 4
+        DMD "", "", SlotAward2(i), eNone, eNone, eNone, 50, False, ""
+    Next
+    vpmtimer.AddTimer 500, "GiveSlotAward2 '"
+End Sub
+
+Sub GiveSlotAward2()
+	'LightSeq001.StopPlay
+    DMDFlush
+    SlotValue2 = INT(RND * 4)
+    DMD "", "", SlotAward2(SlotValue2), eNone, eNone, eNone, 500, True, ""
+
+    Select Case SlotValue2
+        Case 0:VoodooMagic
+        Case 1:VoodooChicken
+        Case 2:VoodooMushroom
+        Case 3:VoodooDolls
+        Case 4:VoodooEars
+    End Select
+End Sub
+
+sub VoodooMagic2
+	PlaySound "fx_kicker_enter", 0, 0.2, Pan(ActiveBall)
+	Set TempBall = ActiveBall
+	Select Case Status
+		Case 1 'Normal
+			'Play some voodoo lady quote
+			'award points
+			'play lighting effect
+			me.TimerInterval = 1000
+			me.TimerEnabled = 1
+		Case 2 'Voodoo Magic is ready to start, so start it
+			'Play Voodoo Magic intro sound
+			'Stop any song playing
+			StopSong()
+			'points
+			'lights
+			li011.state = 0
+			'Set my timer interval to be however long you want to be to spin the wheel and do an intro
+			me.TimerInterval = 10
+			me.TimerEnabled = 1
+			'Pick which voodoo mode we're doing
+			VoodooPicker()
+		Case 3 'We're in Voodoo Magic mode
+			'Do whatever you want to do while in Voodoo magic mode
+			VoodooAward()
+		'Make case statements for whatever else you want to do when you hit this
+	End Select
+end Sub
+
+'Sub voodookick2_timer()
+'	Select Case Status
+'	Case 2  'Voodoo mode is just starting
+'		'If the wheel is still spinning don't do anything
+'		If SpinningWheel.enabled then
+'			Exit Sub
+'		'If the wheel has stopped, start the mode
+'		Else
+'			VoodooModeStart()
+'		End If
+'	Case Else	'just kick it out
+'		voodookickout()
+'	End Select
+'End Sub
+
+'sub voodookickout()
+'	PlaySound "fx_kicker", 0, 0.2, Pan(TempBall) * 100
+'	voodookick.Kick 190, 7, 1
+'	voodookick.TimerEnabled = 0
+'end sub
+
+Sub VoodooPicker()
+	WheelSpeed = Int(2.5*Rnd+1)
+	SpinningWheel.enabled = 1
+End Sub
+
+Sub VoodooModeStart()
+	Select Case True
+	Case (Wheel1.RotZ = 24 OR Wheel1.RotZ = 48 OR Wheel1.RotZ = 72)
+		'Start voodoo mode 1
+		PlaySound "knocker"
+		TextBox001.Text = 1
+	Case (Wheel1.RotZ = 98 OR Wheel1.RotZ = 128 OR Wheel1.RotZ = 146)
+		'Start voodoo mode 2
+		PlaySound "Fire"
+		TextBox001.Text = 2
+	Case (Wheel1.RotZ = 168 OR Wheel1.RotZ = 192 OR Wheel1.RotZ = 216)
+		'Start voodoo mode 3
+		PlaySound "Drain"
+		TextBox001.Text = 3
+	Case (Wheel1.RotZ = 240 OR Wheel1.RotZ = 264 OR Wheel1.RotZ = 288)
+		'Start voodoo mode 4
+		PlaySound "ShakeGrog"
+		TextBox001.Text = 4
+	Case (Wheel1.RotZ = 312 OR Wheel1.RotZ = 336 OR Wheel1.RotZ = 0)
+		'Start voodoo mode 5
+		PlaySound "popper_ball"
+		TextBox001.Text = 5
+	End Select
+	'Set status to being in Voodoo magic
+	Status = 3
+	'Set the timer to give the player a moment to take in what mode what chosen
+	voodookick.TimerInterval = 2000
+	'Start the music
+	PlaySound "3"
+End Sub
+
+Sub VoodooAward()
+	'Do whatever you want to do when you hit the voodoo lady while in voodoo mode
+	'Kick out the ball
+	VoodooKick.TimerInterval = 2000
+	VoodooKick.TimerEnabled = 1
+End Sub
+
+sub VoodooMagic
+SuperVukAddBall4
+end sub
+
+sub VoodooChicken
+SuperVukAddBall4
+end sub
+
+sub VoodooMushroom
+SuperVukAddBall4
+end sub
+
+sub VoodooDolls
+SuperVukAddBall4
+end sub
+
+sub VoodooEars
+SuperVukAddBall4
+end sub
+
+'********************************
+'        Digital clock
+'********************************
+
+Dim ClockDigits(4), ClockChars(10)
+
+ClockDigits(0) = Array(a00, a02, a05, a06, a04, a01, a03) 'clock left digit
+ClockDigits(1) = Array(a10, a12, a15, a16, a14, a11, a13)
+ClockChars(0) = Array(1, 1, 1, 1, 1, 1, 0)                '0
+ClockChars(1) = Array(0, 1, 1, 0, 0, 0, 0)                '1
+ClockChars(2) = Array(1, 1, 0, 1, 1, 0, 1)                '2
+ClockChars(3) = Array(1, 1, 1, 1, 0, 0, 1)                '3
+ClockChars(4) = Array(0, 1, 1, 0, 0, 1, 1)                '4
+ClockChars(5) = Array(1, 0, 1, 1, 0, 1, 1)                '5
+ClockChars(6) = Array(1, 0, 1, 1, 1, 1, 1)                '6
+ClockChars(7) = Array(1, 1, 1, 0, 0, 0, 0)                '7
+ClockChars(8) = Array(1, 1, 1, 1, 1, 1, 1)                '8
+ClockChars(9) = Array(1, 1, 1, 1, 0, 1, 1)                '9
+
+Sub UpdateClock(myTime)
+    Dim a, b, i
+    a = myTime \ 10
+    b = myTime MOD 10
+    For i = 0 to 6
+        ClockDigits(0)(i).State = ClockChars(a)(i)
+        ClockDigits(1)(i).State = ClockChars(b)(i)
+    Next
+End Sub
+
+Sub TurnOffClock
+    Dim i
+    For i = 0 to 6
+        ClockDigits(0)(i).State = 0
+        ClockDigits(1)(i).State = 0
+    Next
+End Sub
+
+'clocktimer
+Sub mode1timer_Timer
+	PlaySong "missionmusic"
+	missionmodes = 1
+    mode1TimerCount = mode1TimerCount - 1
+    UpdateClock mode1TimerCount
+    If mode1TimerCount = 30 Then PlaySound "30s2"
+    If mode1TimerCount = 10 Then PlaySound "10s"
+    If mode1TimerCount = 0 Then
+	DMD "", "", "dmdmf", eNone, eNone, eNone, 1000, True, ""
+        PlaySound "obj_failed"
+		stopidlchiefke
+		chmfRtimer.enabled = 1
+		chmfLtimer.enabled = 1
+		stopmissions
+        Stopmode1
+    End If
+End Sub
+
+Sub mode2timer_Timer
+	'PlaySong ""
+    mode2TimerCount = mode2TimerCount - 1
+    UpdateClock mode2TimerCount
+    'If mode2TimerCount = 30 Then PlaySound "30s2"
+    'If mode1TimerCount = 10 Then PlaySound "10s"
+    If mode2TimerCount = 0 Then
+	DMD "", "", "dmdbf", eNone, eNone, eNone, 1000, True, ""
+        PlaySound "brf"
+		stopidlchiefke
+		chmfRtimer.enabled = 1
+		chmfLtimer.enabled = 1
+        Stopmode2
+		disablebonusgames
+    End If
+End Sub
+
+Sub Stopmode1
+flashplaat1.ImageA = "flshalopin"
+mode1timer.Enabled = 0
+changelights2
+StopSong
+UpdateMusicNow
+TurnOffClock
+missionmodes = 0
+enemylft = 0
+End Sub
+
+Sub Stopmode2
+flashplaat1.ImageA = "flshalopin"
+changelights2
+RightFlipper001.RotatetoStart
+LeftFlipper001.RotatetoStart
+LowerFlippersActive = False
+mode2timer.Enabled = 0
+'changelights3
+StopSong
+UpdateMusicNow
+TurnOffClock
+disablebonusgames
+enemylft = 0
+End Sub
+
+Sub StopmodeEndofBall
+changelights2
+mode1timer.Enabled = 0
+StopSong
+'UpdateMusicNow
+TurnOffClock
+missionmodes = 0
+End Sub
+
+
+'************************************************
+'**************3d animations*****************
+'************************************************
+
+Sub monkey3btimer_Timer
+countr = countr + 1 : If Countr > 19 then Countr = 1 : end If 
+select case countr
+				case 1 : monkey3b001.z=90:monkey3b002.z=-200:monkey3b003.z=-200:monkey3b004.z=-200:monkey3b005.z=-200:monkey3b006.z=-200:monkey3b007.z=-200:monkey3b008.z=-200:monkey3b009.z=-200:monkey3b010.z=-200
+				case 2 : monkey3b001.z=-200:monkey3b002.z=90:monkey3b003.z=-200:monkey3b004.z=-200:monkey3b005.z=-200:monkey3b006.z=-200:monkey3b007.z=-200:monkey3b008.z=-200:monkey3b009.z=-200:monkey3b010.z=-200
+				case 3 : monkey3b001.z=-200:monkey3b002.z=-200:monkey3b003.z=90:monkey3b004.z=-200:monkey3b005.z=-200:monkey3b006.z=-200:monkey3b007.z=-200:monkey3b008.z=-200:monkey3b009.z=-200:monkey3b010.z=-200
+				case 4 : monkey3b001.z=-200:monkey3b002.z=-200:monkey3b003.z=-200:monkey3b004.z=90:monkey3b005.z=-200:monkey3b006.z=-200:monkey3b007.z=-200:monkey3b008.z=-200:monkey3b009.z=-200:monkey3b010.z=-200
+				case 5 : monkey3b001.z=-200:monkey3b002.z=-200:monkey3b003.z=-200:monkey3b004.z=-200:monkey3b005.z=90:monkey3b006.z=-200:monkey3b007.z=-200:monkey3b008.z=-200:monkey3b009.z=-200:monkey3b010.z=-200
+				case 6 : monkey3b001.z=-200:monkey3b002.z=-200:monkey3b003.z=-200:monkey3b004.z=-200:monkey3b005.z=-200:monkey3b006.z=90:monkey3b007.z=-200:monkey3b008.z=-200:monkey3b009.z=-200:monkey3b010.z=-200
+				case 7 : monkey3b001.z=-200:monkey3b002.z=-200:monkey3b003.z=-200:monkey3b004.z=-200:monkey3b005.z=-200:monkey3b006.z=-200:monkey3b007.z=90:monkey3b008.z=-200:monkey3b009.z=-200:monkey3b010.z=-200
+				case 8 : monkey3b001.z=-200:monkey3b002.z=-200:monkey3b003.z=-200:monkey3b004.z=-200:monkey3b005.z=-200:monkey3b006.z=-200:monkey3b007.z=-200:monkey3b008.z=90:monkey3b009.z=-200:monkey3b010.z=-200
+				case 9 : monkey3b001.z=-200:monkey3b002.z=-200:monkey3b003.z=-200:monkey3b004.z=-200:monkey3b005.z=-200:monkey3b006.z=-200:monkey3b007.z=-200:monkey3b008.z=-200:monkey3b009.z=90:monkey3b010.z=-200
+				case 10 : monkey3b001.z=-200:monkey3b002.z=-200:monkey3b003.z=-200:monkey3b004.z=-200:monkey3b005.z=-200:monkey3b006.z=-200:monkey3b007.z=-200:monkey3b008.z=-200:monkey3b009.z=-200:monkey3b010.z=90
+				case 11 : monkey3b001.z=-200:monkey3b002.z=-200:monkey3b003.z=-200:monkey3b004.z=-200:monkey3b005.z=-200:monkey3b006.z=-200:monkey3b007.z=-200:monkey3b008.z=-200:monkey3b009.z=90:monkey3b010.z=-200
+				case 12 : monkey3b001.z=-200:monkey3b002.z=-200:monkey3b003.z=-200:monkey3b004.z=-200:monkey3b005.z=-200:monkey3b006.z=-200:monkey3b007.z=-200:monkey3b008.z=90:monkey3b009.z=-200:monkey3b010.z=-200
+				case 13 : monkey3b001.z=-200:monkey3b002.z=-200:monkey3b003.z=-200:monkey3b004.z=-200:monkey3b005.z=-200:monkey3b006.z=-200:monkey3b007.z=90:monkey3b008.z=-200:monkey3b009.z=-200:monkey3b010.z=-200
+				case 14 : monkey3b001.z=-200:monkey3b002.z=-200:monkey3b003.z=-200:monkey3b004.z=-200:monkey3b005.z=-200:monkey3b006.z=90:monkey3b007.z=-200:monkey3b008.z=-200:monkey3b009.z=-200:monkey3b010.z=-200
+				case 15 : monkey3b001.z=-200:monkey3b002.z=-200:monkey3b003.z=-200:monkey3b004.z=-200:monkey3b005.z=90:monkey3b006.z=-200:monkey3b007.z=-200:monkey3b008.z=-200:monkey3b009.z=-200:monkey3b010.z=-200
+				case 16 : monkey3b001.z=-200:monkey3b002.z=-200:monkey3b003.z=-200:monkey3b004.z=90:monkey3b005.z=-200:monkey3b006.z=-200:monkey3b007.z=-200:monkey3b008.z=-200:monkey3b009.z=-200:monkey3b010.z=-200
+				case 17 : monkey3b001.z=-200:monkey3b002.z=-200:monkey3b003.z=90:monkey3b004.z=-200:monkey3b005.z=-200:monkey3b006.z=-200:monkey3b007.z=-200:monkey3b008.z=-200:monkey3b009.z=-200:monkey3b010.z=-200
+				case 18 : monkey3b001.z=-200:monkey3b002.z=90:monkey3b003.z=-200:monkey3b004.z=-200:monkey3b005.z=-200:monkey3b006.z=-200:monkey3b007.z=-200:monkey3b008.z=-200:monkey3b009.z=-200:monkey3b010.z=-200
+				case 19 : monkey3b001.z=90:monkey3b002.z=-200:monkey3b003.z=-200:monkey3b004.z=-200:monkey3b005.z=-200:monkey3b006.z=-200:monkey3b007.z=-200:monkey3b008.z=-200:monkey3b009.z=-200:monkey3b010.z=-200
+			end Select
+End Sub
+
+Sub monkey1btimer_Timer
+countr1 = countr1 + 1 : If Countr1 > 19 then Countr1 = 1 : end If 
+select case countr1
+				case 1 : monkey1b001.z=90:monkey1b002.z=-200:monkey1b003.z=-200:monkey1b004.z=-200:monkey1b005.z=-200:monkey1b006.z=-200:monkey1b007.z=-200:monkey1b008.z=-200:monkey1b009.z=-200:monkey1b010.z=-200
+				case 2 : monkey1b001.z=-200:monkey1b002.z=90:monkey1b003.z=-200:monkey1b004.z=-200:monkey1b005.z=-200:monkey1b006.z=-200:monkey1b007.z=-200:monkey1b008.z=-200:monkey1b009.z=-200:monkey1b010.z=-200
+				case 3 : monkey1b001.z=-200:monkey1b002.z=-200:monkey1b003.z=90:monkey1b004.z=-200:monkey1b005.z=-200:monkey1b006.z=-200:monkey1b007.z=-200:monkey1b008.z=-200:monkey1b009.z=-200:monkey1b010.z=-200
+				case 4 : monkey1b001.z=-200:monkey1b002.z=-200:monkey1b003.z=-200:monkey1b004.z=90:monkey1b005.z=-200:monkey1b006.z=-200:monkey1b007.z=-200:monkey1b008.z=-200:monkey1b009.z=-200:monkey1b010.z=-200
+				case 5 : monkey1b001.z=-200:monkey1b002.z=-200:monkey1b003.z=-200:monkey1b004.z=-200:monkey1b005.z=90:monkey1b006.z=-200:monkey1b007.z=-200:monkey1b008.z=-200:monkey1b009.z=-200:monkey1b010.z=-200
+				case 6 : monkey1b001.z=-200:monkey1b002.z=-200:monkey1b003.z=-200:monkey1b004.z=-200:monkey1b005.z=-200:monkey1b006.z=90:monkey1b007.z=-200:monkey1b008.z=-200:monkey1b009.z=-200:monkey1b010.z=-200
+				case 7 : monkey1b001.z=-200:monkey1b002.z=-200:monkey1b003.z=-200:monkey1b004.z=-200:monkey1b005.z=-200:monkey1b006.z=-200:monkey1b007.z=90:monkey1b008.z=-200:monkey1b009.z=-200:monkey1b010.z=-200
+				case 8 : monkey1b001.z=-200:monkey1b002.z=-200:monkey1b003.z=-200:monkey1b004.z=-200:monkey1b005.z=-200:monkey1b006.z=-200:monkey1b007.z=-200:monkey1b008.z=90:monkey1b009.z=-200:monkey1b010.z=-200
+				case 9 : monkey1b001.z=-200:monkey1b002.z=-200:monkey1b003.z=-200:monkey1b004.z=-200:monkey1b005.z=-200:monkey1b006.z=-200:monkey1b007.z=-200:monkey1b008.z=-200:monkey1b009.z=90:monkey1b010.z=-200
+				case 10 : monkey1b001.z=-200:monkey1b002.z=-200:monkey1b003.z=-200:monkey1b004.z=-200:monkey1b005.z=-200:monkey1b006.z=-200:monkey1b007.z=-200:monkey1b008.z=-200:monkey1b009.z=-200:monkey1b010.z=90
+				case 11 : monkey1b001.z=-200:monkey1b002.z=-200:monkey1b003.z=-200:monkey1b004.z=-200:monkey1b005.z=-200:monkey1b006.z=-200:monkey1b007.z=-200:monkey1b008.z=-200:monkey1b009.z=90:monkey1b010.z=-200
+				case 12 : monkey1b001.z=-200:monkey1b002.z=-200:monkey1b003.z=-200:monkey1b004.z=-200:monkey1b005.z=-200:monkey1b006.z=-200:monkey1b007.z=-200:monkey1b008.z=90:monkey1b009.z=-200:monkey1b010.z=-200
+				case 13 : monkey1b001.z=-200:monkey1b002.z=-200:monkey1b003.z=-200:monkey1b004.z=-200:monkey1b005.z=-200:monkey1b006.z=-200:monkey1b007.z=90:monkey1b008.z=-200:monkey1b009.z=-200:monkey1b010.z=-200
+				case 14 : monkey1b001.z=-200:monkey1b002.z=-200:monkey1b003.z=-200:monkey1b004.z=-200:monkey1b005.z=-200:monkey1b006.z=90:monkey1b007.z=-200:monkey1b008.z=-200:monkey1b009.z=-200:monkey1b010.z=-200
+				case 15 : monkey1b001.z=-200:monkey1b002.z=-200:monkey1b003.z=-200:monkey1b004.z=-200:monkey1b005.z=90:monkey1b006.z=-200:monkey1b007.z=-200:monkey1b008.z=-200:monkey1b009.z=-200:monkey1b010.z=-200
+				case 16 : monkey1b001.z=-200:monkey1b002.z=-200:monkey1b003.z=-200:monkey1b004.z=90:monkey1b005.z=-200:monkey1b006.z=-200:monkey1b007.z=-200:monkey1b008.z=-200:monkey1b009.z=-200:monkey1b010.z=-200
+				case 17 : monkey1b001.z=-200:monkey1b002.z=-200:monkey1b003.z=90:monkey1b004.z=-200:monkey1b005.z=-200:monkey1b006.z=-200:monkey1b007.z=-200:monkey1b008.z=-200:monkey1b009.z=-200:monkey1b010.z=-200
+				case 18 : monkey1b001.z=-200:monkey1b002.z=90:monkey1b003.z=-200:monkey1b004.z=-200:monkey1b005.z=-200:monkey1b006.z=-200:monkey1b007.z=-200:monkey1b008.z=-200:monkey1b009.z=-200:monkey1b010.z=-200
+				case 19 : monkey1b001.z=90:monkey1b002.z=-200:monkey1b003.z=-200:monkey1b004.z=-200:monkey1b005.z=-200:monkey1b006.z=-200:monkey1b007.z=-200:monkey1b008.z=-200:monkey1b009.z=-200:monkey1b010.z=-200
+			end Select
+End Sub
+
+Sub monkey2btimer_Timer
+countr2 = countr2 + 1 : If Countr2 > 19 then Countr2 = 1 : end If 
+select case countr2
+				case 1 : monkey2b001.z=90:monkey2b002.z=-200:monkey2b003.z=-200:monkey2b004.z=-200:monkey2b005.z=-200:monkey2b006.z=-200:monkey2b007.z=-200:monkey2b008.z=-200:monkey2b009.z=-200:monkey2b010.z=-200
+				case 2 : monkey2b001.z=-200:monkey2b002.z=90:monkey2b003.z=-200:monkey2b004.z=-200:monkey2b005.z=-200:monkey2b006.z=-200:monkey2b007.z=-200:monkey2b008.z=-200:monkey2b009.z=-200:monkey2b010.z=-200
+				case 3 : monkey2b001.z=-200:monkey2b002.z=-200:monkey2b003.z=90:monkey2b004.z=-200:monkey2b005.z=-200:monkey2b006.z=-200:monkey2b007.z=-200:monkey2b008.z=-200:monkey2b009.z=-200:monkey2b010.z=-200
+				case 4 : monkey2b001.z=-200:monkey2b002.z=-200:monkey2b003.z=-200:monkey2b004.z=90:monkey2b005.z=-200:monkey2b006.z=-200:monkey2b007.z=-200:monkey2b008.z=-200:monkey2b009.z=-200:monkey2b010.z=-200
+				case 5 : monkey2b001.z=-200:monkey2b002.z=-200:monkey2b003.z=-200:monkey2b004.z=-200:monkey2b005.z=90:monkey2b006.z=-200:monkey2b007.z=-200:monkey2b008.z=-200:monkey2b009.z=-200:monkey2b010.z=-200
+				case 6 : monkey2b001.z=-200:monkey2b002.z=-200:monkey2b003.z=-200:monkey2b004.z=-200:monkey2b005.z=-200:monkey2b006.z=90:monkey2b007.z=-200:monkey2b008.z=-200:monkey2b009.z=-200:monkey2b010.z=-200
+				case 7 : monkey2b001.z=-200:monkey2b002.z=-200:monkey2b003.z=-200:monkey2b004.z=-200:monkey2b005.z=-200:monkey2b006.z=-200:monkey2b007.z=90:monkey2b008.z=-200:monkey2b009.z=-200:monkey2b010.z=-200
+				case 8 : monkey2b001.z=-200:monkey2b002.z=-200:monkey2b003.z=-200:monkey2b004.z=-200:monkey2b005.z=-200:monkey2b006.z=-200:monkey2b007.z=-200:monkey2b008.z=90:monkey2b009.z=-200:monkey2b010.z=-200
+				case 9 : monkey2b001.z=-200:monkey2b002.z=-200:monkey2b003.z=-200:monkey2b004.z=-200:monkey2b005.z=-200:monkey2b006.z=-200:monkey2b007.z=-200:monkey2b008.z=-200:monkey2b009.z=90:monkey2b010.z=-200
+				case 10 : monkey2b001.z=-200:monkey2b002.z=-200:monkey2b003.z=-200:monkey2b004.z=-200:monkey2b005.z=-200:monkey2b006.z=-200:monkey2b007.z=-200:monkey2b008.z=-200:monkey2b009.z=-200:monkey2b010.z=90
+				case 11 : monkey2b001.z=-200:monkey2b002.z=-200:monkey2b003.z=-200:monkey2b004.z=-200:monkey2b005.z=-200:monkey2b006.z=-200:monkey2b007.z=-200:monkey2b008.z=-200:monkey2b009.z=90:monkey2b010.z=-200
+				case 12 : monkey2b001.z=-200:monkey2b002.z=-200:monkey2b003.z=-200:monkey2b004.z=-200:monkey2b005.z=-200:monkey2b006.z=-200:monkey2b007.z=-200:monkey2b008.z=90:monkey2b009.z=-200:monkey2b010.z=-200
+				case 13 : monkey2b001.z=-200:monkey2b002.z=-200:monkey2b003.z=-200:monkey2b004.z=-200:monkey2b005.z=-200:monkey2b006.z=-200:monkey2b007.z=90:monkey2b008.z=-200:monkey2b009.z=-200:monkey2b010.z=-200
+				case 14 : monkey2b001.z=-200:monkey2b002.z=-200:monkey2b003.z=-200:monkey2b004.z=-200:monkey2b005.z=-200:monkey2b006.z=90:monkey2b007.z=-200:monkey2b008.z=-200:monkey2b009.z=-200:monkey2b010.z=-200
+				case 15 : monkey2b001.z=-200:monkey2b002.z=-200:monkey2b003.z=-200:monkey2b004.z=-200:monkey2b005.z=90:monkey2b006.z=-200:monkey2b007.z=-200:monkey2b008.z=-200:monkey2b009.z=-200:monkey2b010.z=-200
+				case 16 : monkey2b001.z=-200:monkey2b002.z=-200:monkey2b003.z=-200:monkey2b004.z=90:monkey2b005.z=-200:monkey2b006.z=-200:monkey2b007.z=-200:monkey2b008.z=-200:monkey2b009.z=-200:monkey2b010.z=-200
+				case 17 : monkey2b001.z=-200:monkey2b002.z=-200:monkey2b003.z=90:monkey2b004.z=-200:monkey2b005.z=-200:monkey2b006.z=-200:monkey2b007.z=-200:monkey2b008.z=-200:monkey2b009.z=-200:monkey2b010.z=-200
+				case 18 : monkey2b001.z=-200:monkey2b002.z=90:monkey2b003.z=-200:monkey2b004.z=-200:monkey2b005.z=-200:monkey2b006.z=-200:monkey2b007.z=-200:monkey2b008.z=-200:monkey2b009.z=-200:monkey2b010.z=-200
+				case 19 : monkey2b001.z=90:monkey2b002.z=-200:monkey2b003.z=-200:monkey2b004.z=-200:monkey2b005.z=-200:monkey2b006.z=-200:monkey2b007.z=-200:monkey2b008.z=-200:monkey2b009.z=-200:monkey2b010.z=-200
+			end Select
+End Sub
+
+
+'************************************************
+'**************b2s counters*****************
+'************************************************
+
+sub Updatemonkeycountr
+select case monkeybattle
+				case 0 : Controller.B2SSetData 40,0:Controller.B2SSetData 50,0
+				case 1 : Controller.B2SSetData 51,0
+				case 2 : Controller.B2SSetData 52,0
+				case 3 : Controller.B2SSetData 53,0
+				case 4 : Controller.B2SSetData 54,0
+				case 5 : Controller.B2SSetData 55,0
+				case 6 : Controller.B2SSetData 56,0
+				case 7 : Controller.B2SSetData 57,0
+				case 8 : Controller.B2SSetData 58,0
+				case 9 : Controller.B2SSetData 59,0
+				case 10 : Controller.B2SSetData 41,0:Controller.B2SSetData 50,0
+				case 11 : Controller.B2SSetData 51,0
+				case 12 : Controller.B2SSetData 52,0
+				case 13 : Controller.B2SSetData 53,0
+				case 14 : Controller.B2SSetData 54,0
+				case 15 : Controller.B2SSetData 55,0
+				case 16 : Controller.B2SSetData 56,0
+				case 17 : Controller.B2SSetData 57,0
+				case 18 : Controller.B2SSetData 58,0
+				case 19 : Controller.B2SSetData 59,0
+				case 20 : Controller.B2SSetData 42,0:Controller.B2SSetData 50,0
+				case 21 : Controller.B2SSetData 51,0
+				case 22 : Controller.B2SSetData 52,0
+				case 23 : Controller.B2SSetData 53,0
+				case 24 : Controller.B2SSetData 54,0
+				case 25 : Controller.B2SSetData 55,0
+				case 26 : Controller.B2SSetData 56,0
+				case 27 : Controller.B2SSetData 57,0
+				case 28 : Controller.B2SSetData 58,0
+				case 29 : Controller.B2SSetData 59,0
+				case 30 : Controller.B2SSetData 43,0:Controller.B2SSetData 50,0
+				case 31 : Controller.B2SSetData 51,0
+				case 32 : Controller.B2SSetData 52,0
+				case 33 : Controller.B2SSetData 53,0
+				case 34 : Controller.B2SSetData 54,0
+				case 35 : Controller.B2SSetData 55,0
+				case 36 : Controller.B2SSetData 56,0
+				case 37 : Controller.B2SSetData 57,0
+				case 38 : Controller.B2SSetData 58,0
+				case 39 : Controller.B2SSetData 59,0
+				case 40 : Controller.B2SSetData 44,0:Controller.B2SSetData 50,0
+				case 41 : Controller.B2SSetData 51,0
+				case 42 : Controller.B2SSetData 52,0
+				case 43 : Controller.B2SSetData 53,0
+				case 44 : Controller.B2SSetData 54,0
+				case 45 : Controller.B2SSetData 55,0
+				case 46 : Controller.B2SSetData 56,0
+				case 47 : Controller.B2SSetData 57,0
+				case 48 : Controller.B2SSetData 58,0
+				case 49 : Controller.B2SSetData 59,0
+				case 50 : Controller.B2SSetData 45,0:Controller.B2SSetData 50,0
+				case 51 : Controller.B2SSetData 51,0
+				case 52 : Controller.B2SSetData 52,0
+				case 53 : Controller.B2SSetData 53,0
+				case 54 : Controller.B2SSetData 54,0
+				case 55 : Controller.B2SSetData 55,0
+				case 56 : Controller.B2SSetData 56,0
+				case 57 : Controller.B2SSetData 57,0
+				case 58 : Controller.B2SSetData 58,0
+				case 59 : Controller.B2SSetData 59,0
+				case 60 : Controller.B2SSetData 46,0:Controller.B2SSetData 50,0
+				case 61 : Controller.B2SSetData 51,0
+				case 62 : Controller.B2SSetData 52,0
+				case 63 : Controller.B2SSetData 53,0
+				case 64 : Controller.B2SSetData 54,0
+				case 65 : Controller.B2SSetData 55,0
+				case 66 : Controller.B2SSetData 56,0
+				case 67 : Controller.B2SSetData 57,0
+				case 68 : Controller.B2SSetData 58,0
+				case 69 : Controller.B2SSetData 59,0
+				case 70 : Controller.B2SSetData 47,0:Controller.B2SSetData 50,0
+				case 71 : Controller.B2SSetData 51,0
+				case 72 : Controller.B2SSetData 52,0
+				case 73 : Controller.B2SSetData 53,0
+				case 74 : Controller.B2SSetData 54,0
+				case 75 : Controller.B2SSetData 55,0
+				case 76 : Controller.B2SSetData 56,0
+				case 77 : Controller.B2SSetData 57,0
+				case 78 : Controller.B2SSetData 58,0
+				case 79 : Controller.B2SSetData 59,0
+				case 80 : Controller.B2SSetData 48,0:Controller.B2SSetData 50,0
+				case 81 : Controller.B2SSetData 51,0
+				case 82 : Controller.B2SSetData 52,0
+				case 83 : Controller.B2SSetData 53,0
+				case 84 : Controller.B2SSetData 54,0
+				case 85 : Controller.B2SSetData 55,0
+				case 86 : Controller.B2SSetData 56,0
+				case 87 : Controller.B2SSetData 57,0
+				case 88 : Controller.B2SSetData 58,0
+				case 89 : Controller.B2SSetData 59,0
+				case 90 : Controller.B2SSetData 48,0:Controller.B2SSetData 50,0
+				case 91 : Controller.B2SSetData 51,0
+				case 92 : Controller.B2SSetData 52,0
+				case 93 : Controller.B2SSetData 53,0
+				case 94 : Controller.B2SSetData 54,0
+				case 95 : Controller.B2SSetData 55,0
+				case 96 : Controller.B2SSetData 56,0
+				case 97 : Controller.B2SSetData 57,0
+				case 98 : Controller.B2SSetData 58,0
+				case 99 : Controller.B2SSetData 59,0
+			end Select
+End Sub
