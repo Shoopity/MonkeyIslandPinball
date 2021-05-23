@@ -213,6 +213,7 @@ dim countr
 dim countr1
 dim countr2
 dim monkeybattle
+dim treasuresfound
 dim PFMultiplier
 dim barunlocked
 dim voodoounlocked
@@ -709,10 +710,16 @@ end sub
 ' Play random quotes
 '********************
 
+Sub PlayLechuckQuote
+	Dim tmp
+	tmp = INT(RND * 74) + 1
+	PlaySound "Lechuck_" &tmp
+End Sub
+
 Sub PlayQuote
 	Dim tmp
-	tmp = INT(RND * 123) + 1
-	PlaySound "HIT_" &tmp
+	tmp = INT(RND * 74) + 1
+	PlaySound "Lechuck_" &tmp
 End Sub
 
 '**********************
@@ -992,10 +999,13 @@ Sub ResetForNewGame()
 '	BallInHoles = 0
 	PFMultiplier = 2
 	monkeybattle = 0
+	treasuresfound = 0
 	barunlocked = 1
 	voodoounlocked = 1
 	'UpdateMusic = UpdateMusic + 6
 	UpdateMusicNow
+	'Updatemonkeycountr
+	'Updatetreasurecountr
 	' initialise Game variables
 	Game_Init()
 	' you may wish to start some music, play a sound, do whatever at this point
@@ -2369,6 +2379,7 @@ End Sub
 
 Dim InAttract:InAttract = 0
 Sub StartAttractMode
+	startB2S(1)
 	monkey1btimer.enabled = 1
 	monkey2btimer.enabled = 1
 	monkey3btimer.enabled = 1
@@ -2961,6 +2972,7 @@ Sub CheckMonkeyBattle
 	li003.state=0
 	monkeybattle = monkeybattle + 1
 	Updatemonkeycountr
+vpmtimer.addtimer 250, "startB2S(3) '"
 	End If
 End Sub
 
@@ -3077,6 +3089,7 @@ Dim dBall
 Dim LeChuckBallID
 
 sub Kicker001_hit()
+	PlayLechuckQuote
 	Score(CurrentPlayer) = Score(CurrentPlayer) + (1000*PFMultiplier)
 	BallInHole1 = BallInHole1 + 1
     Set dBall = ActiveBall:Me.TimerEnabled = 1
@@ -3197,6 +3210,9 @@ Dim cBall
 Dim VoodooBallID
 
 sub Kicker005_hit()
+	treasuresfound = treasuresfound + 1
+	Updatetreasurecountr
+vpmtimer.addtimer 250, "startB2S(3) '"
 	Score(CurrentPlayer) = Score(CurrentPlayer) + (1000*PFMultiplier)
 	BallInHole3 = BallInHole3 + 1
     Set cBall = ActiveBall:Me.TimerEnabled = 1
@@ -3815,7 +3831,6 @@ TurnOffClock
 missionmodes = 0
 End Sub
 
-
 '************************************************
 '**************3d animations*****************
 '************************************************
@@ -3895,112 +3910,216 @@ select case countr2
 			end Select
 End Sub
 
-
 '************************************************
 '**************b2s counters*****************
 '************************************************
 
 sub Updatemonkeycountr
 select case monkeybattle
-				case 0 : Controller.B2SSetData 40,0:Controller.B2SSetData 50,0
-				case 1 : Controller.B2SSetData 51,0
-				case 2 : Controller.B2SSetData 52,0
-				case 3 : Controller.B2SSetData 53,0
-				case 4 : Controller.B2SSetData 54,0
-				case 5 : Controller.B2SSetData 55,0
-				case 6 : Controller.B2SSetData 56,0
-				case 7 : Controller.B2SSetData 57,0
-				case 8 : Controller.B2SSetData 58,0
-				case 9 : Controller.B2SSetData 59,0
-				case 10 : Controller.B2SSetData 41,0:Controller.B2SSetData 50,0
-				case 11 : Controller.B2SSetData 51,0
-				case 12 : Controller.B2SSetData 52,0
-				case 13 : Controller.B2SSetData 53,0
-				case 14 : Controller.B2SSetData 54,0
-				case 15 : Controller.B2SSetData 55,0
-				case 16 : Controller.B2SSetData 56,0
-				case 17 : Controller.B2SSetData 57,0
-				case 18 : Controller.B2SSetData 58,0
-				case 19 : Controller.B2SSetData 59,0
-				case 20 : Controller.B2SSetData 42,0:Controller.B2SSetData 50,0
-				case 21 : Controller.B2SSetData 51,0
-				case 22 : Controller.B2SSetData 52,0
-				case 23 : Controller.B2SSetData 53,0
-				case 24 : Controller.B2SSetData 54,0
-				case 25 : Controller.B2SSetData 55,0
-				case 26 : Controller.B2SSetData 56,0
-				case 27 : Controller.B2SSetData 57,0
-				case 28 : Controller.B2SSetData 58,0
-				case 29 : Controller.B2SSetData 59,0
-				case 30 : Controller.B2SSetData 43,0:Controller.B2SSetData 50,0
-				case 31 : Controller.B2SSetData 51,0
-				case 32 : Controller.B2SSetData 52,0
-				case 33 : Controller.B2SSetData 53,0
-				case 34 : Controller.B2SSetData 54,0
-				case 35 : Controller.B2SSetData 55,0
-				case 36 : Controller.B2SSetData 56,0
-				case 37 : Controller.B2SSetData 57,0
-				case 38 : Controller.B2SSetData 58,0
-				case 39 : Controller.B2SSetData 59,0
-				case 40 : Controller.B2SSetData 44,0:Controller.B2SSetData 50,0
-				case 41 : Controller.B2SSetData 51,0
-				case 42 : Controller.B2SSetData 52,0
-				case 43 : Controller.B2SSetData 53,0
-				case 44 : Controller.B2SSetData 54,0
-				case 45 : Controller.B2SSetData 55,0
-				case 46 : Controller.B2SSetData 56,0
-				case 47 : Controller.B2SSetData 57,0
-				case 48 : Controller.B2SSetData 58,0
-				case 49 : Controller.B2SSetData 59,0
-				case 50 : Controller.B2SSetData 45,0:Controller.B2SSetData 50,0
-				case 51 : Controller.B2SSetData 51,0
-				case 52 : Controller.B2SSetData 52,0
-				case 53 : Controller.B2SSetData 53,0
-				case 54 : Controller.B2SSetData 54,0
-				case 55 : Controller.B2SSetData 55,0
-				case 56 : Controller.B2SSetData 56,0
-				case 57 : Controller.B2SSetData 57,0
-				case 58 : Controller.B2SSetData 58,0
-				case 59 : Controller.B2SSetData 59,0
-				case 60 : Controller.B2SSetData 46,0:Controller.B2SSetData 50,0
-				case 61 : Controller.B2SSetData 51,0
-				case 62 : Controller.B2SSetData 52,0
-				case 63 : Controller.B2SSetData 53,0
-				case 64 : Controller.B2SSetData 54,0
-				case 65 : Controller.B2SSetData 55,0
-				case 66 : Controller.B2SSetData 56,0
-				case 67 : Controller.B2SSetData 57,0
-				case 68 : Controller.B2SSetData 58,0
-				case 69 : Controller.B2SSetData 59,0
-				case 70 : Controller.B2SSetData 47,0:Controller.B2SSetData 50,0
-				case 71 : Controller.B2SSetData 51,0
-				case 72 : Controller.B2SSetData 52,0
-				case 73 : Controller.B2SSetData 53,0
-				case 74 : Controller.B2SSetData 54,0
-				case 75 : Controller.B2SSetData 55,0
-				case 76 : Controller.B2SSetData 56,0
-				case 77 : Controller.B2SSetData 57,0
-				case 78 : Controller.B2SSetData 58,0
-				case 79 : Controller.B2SSetData 59,0
-				case 80 : Controller.B2SSetData 48,0:Controller.B2SSetData 50,0
-				case 81 : Controller.B2SSetData 51,0
-				case 82 : Controller.B2SSetData 52,0
-				case 83 : Controller.B2SSetData 53,0
-				case 84 : Controller.B2SSetData 54,0
-				case 85 : Controller.B2SSetData 55,0
-				case 86 : Controller.B2SSetData 56,0
-				case 87 : Controller.B2SSetData 57,0
-				case 88 : Controller.B2SSetData 58,0
-				case 89 : Controller.B2SSetData 59,0
-				case 90 : Controller.B2SSetData 48,0:Controller.B2SSetData 50,0
-				case 91 : Controller.B2SSetData 51,0
-				case 92 : Controller.B2SSetData 52,0
-				case 93 : Controller.B2SSetData 53,0
-				case 94 : Controller.B2SSetData 54,0
-				case 95 : Controller.B2SSetData 55,0
-				case 96 : Controller.B2SSetData 56,0
-				case 97 : Controller.B2SSetData 57,0
-				case 98 : Controller.B2SSetData 58,0
-				case 99 : Controller.B2SSetData 59,0
+				case 0 : startB2S(40):startB2S(50)
+				case 1 : startB2S(51)
+				case 2 : startB2S(52)
+				case 3 : startB2S(53)
+				case 4 : startB2S(54)
+				case 5 : startB2S(55)
+				case 6 : startB2S(56)
+				case 7 : startB2S(57)
+				case 8 : startB2S(58)
+				case 9 : startB2S(59)
+				case 10 : startB2S(41):startB2S(50)
+				case 11 : startB2S(51)
+				case 12 : startB2S(52)
+				case 13 : startB2S(53)
+				case 14 : startB2S(54)
+				case 15 : startB2S(55)
+				case 16 : startB2S(56)
+				case 17 : startB2S(57)
+				case 18 : startB2S(58)
+				case 19 : startB2S(59)
+				case 20 : startB2S(42):startB2S(50)
+				case 21 : startB2S(51)
+				case 22 : startB2S(52)
+				case 23 : startB2S(53)
+				case 24 : startB2S(54)
+				case 25 : startB2S(55)
+				case 26 : startB2S(56)
+				case 27 : startB2S(57)
+				case 28 : startB2S(58)
+				case 29 : startB2S(59)
+				case 30 : startB2S(43):startB2S(50)
+				case 31 : startB2S(51)
+				case 32 : startB2S(52)
+				case 33 : startB2S(53)
+				case 34 : startB2S(54)
+				case 35 : startB2S(55)
+				case 36 : startB2S(56)
+				case 37 : startB2S(57)
+				case 38 : startB2S(58)
+				case 39 : startB2S(59)
+				case 40 : startB2S(44):startB2S(50)
+				case 41 : startB2S(51)
+				case 42 : startB2S(52)
+				case 43 : startB2S(53)
+				case 44 : startB2S(54)
+				case 45 : startB2S(55)
+				case 46 : startB2S(56)
+				case 47 : startB2S(57)
+				case 48 : startB2S(58)
+				case 49 : startB2S(59)
+				case 50 : startB2S(45):startB2S(50)
+				case 51 : startB2S(51)
+				case 52 : startB2S(52)
+				case 53 : startB2S(53)
+				case 54 : startB2S(54)
+				case 55 : startB2S(55)
+				case 56 : startB2S(56)
+				case 57 : startB2S(57)
+				case 58 : startB2S(58)
+				case 59 : startB2S(59)
+				case 60 : startB2S(46):startB2S(50)
+				case 61 : startB2S(51)
+				case 62 : startB2S(52)
+				case 63 : startB2S(53)
+				case 64 : startB2S(54)
+				case 65 : startB2S(55)
+				case 66 : startB2S(56)
+				case 67 : startB2S(57)
+				case 68 : startB2S(58)
+				case 69 : startB2S(59)
+				case 70 : startB2S(47):startB2S(50)
+				case 71 : startB2S(51)
+				case 72 : startB2S(52)
+				case 73 : startB2S(53)
+				case 74 : startB2S(54)
+				case 75 : startB2S(55)
+				case 76 : startB2S(56)
+				case 77 : startB2S(57)
+				case 78 : startB2S(58)
+				case 79 : startB2S(59)
+				case 80 : startB2S(48):startB2S(50)
+				case 81 : startB2S(51)
+				case 82 : startB2S(52)
+				case 83 : startB2S(53)
+				case 84 : startB2S(54)
+				case 85 : startB2S(55)
+				case 86 : startB2S(56)
+				case 87 : startB2S(57)
+				case 88 : startB2S(58)
+				case 89 : startB2S(59)
+				case 90 : startB2S(49):startB2S(50)
+				case 91 : startB2S(51)
+				case 92 : startB2S(52)
+				case 93 : startB2S(53)
+				case 94 : startB2S(54)
+				case 95 : startB2S(55)
+				case 96 : startB2S(56)
+				case 97 : startB2S(57)
+				case 98 : startB2S(58)
+				case 99 : startB2S(59)
+			end Select
+End Sub
+
+sub Updatetreasurecountr
+select case treasuresfound
+				case 0 : startB2S(20):startB2S(30)
+				case 1 : startB2S(31)
+				case 2 : startB2S(32)
+				case 3 : startB2S(33)
+				case 4 : startB2S(34)
+				case 5 : startB2S(35)
+				case 6 : startB2S(36)
+				case 7 : startB2S(37)
+				case 8 : startB2S(38)
+				case 9 : startB2S(39)
+				case 10 : startB2S(21):startB2S(30)
+				case 11 : startB2S(31)
+				case 12 : startB2S(32)
+				case 13 : startB2S(33)
+				case 14 : startB2S(34)
+				case 15 : startB2S(35)
+				case 16 : startB2S(36)
+				case 17 : startB2S(37)
+				case 18 : startB2S(38)
+				case 19 : startB2S(39)
+				case 20 : startB2S(22):startB2S(30)
+				case 21 : startB2S(31)
+				case 22 : startB2S(32)
+				case 23 : startB2S(33)
+				case 24 : startB2S(34)
+				case 25 : startB2S(35)
+				case 26 : startB2S(36)
+				case 27 : startB2S(37)
+				case 28 : startB2S(38)
+				case 29 : startB2S(39)
+				case 30 : startB2S(23):startB2S(30)
+				case 31 : startB2S(31)
+				case 32 : startB2S(32)
+				case 33 : startB2S(33)
+				case 34 : startB2S(34)
+				case 35 : startB2S(35)
+				case 36 : startB2S(36)
+				case 37 : startB2S(37)
+				case 38 : startB2S(38)
+				case 39 : startB2S(39)
+				case 40 : startB2S(24):startB2S(30)
+				case 41 : startB2S(31)
+				case 42 : startB2S(32)
+				case 43 : startB2S(33)
+				case 44 : startB2S(34)
+				case 45 : startB2S(35)
+				case 46 : startB2S(36)
+				case 47 : startB2S(37)
+				case 48 : startB2S(38)
+				case 49 : startB2S(39)
+				case 50 : startB2S(25):startB2S(30)
+				case 51 : startB2S(31)
+				case 52 : startB2S(32)
+				case 53 : startB2S(33)
+				case 54 : startB2S(34)
+				case 55 : startB2S(35)
+				case 56 : startB2S(36)
+				case 57 : startB2S(37)
+				case 58 : startB2S(38)
+				case 59 : startB2S(39)
+				case 60 : startB2S(26):startB2S(30)
+				case 61 : startB2S(31)
+				case 62 : startB2S(32)
+				case 63 : startB2S(33)
+				case 64 : startB2S(34)
+				case 65 : startB2S(35)
+				case 66 : startB2S(36)
+				case 67 : startB2S(37)
+				case 68 : startB2S(38)
+				case 69 : startB2S(39)
+				case 70 : startB2S(27):startB2S(30)
+				case 71 : startB2S(31)
+				case 72 : startB2S(32)
+				case 73 : startB2S(33)
+				case 74 : startB2S(34)
+				case 75 : startB2S(35)
+				case 76 : startB2S(36)
+				case 77 : startB2S(37)
+				case 78 : startB2S(38)
+				case 79 : startB2S(39)
+				case 80 : startB2S(28):startB2S(30)
+				case 81 : startB2S(31)
+				case 82 : startB2S(32)
+				case 83 : startB2S(33)
+				case 84 : startB2S(34)
+				case 85 : startB2S(35)
+				case 86 : startB2S(36)
+				case 87 : startB2S(37)
+				case 88 : startB2S(38)
+				case 89 : startB2S(39)
+				case 90 : startB2S(29):startB2S(30)
+				case 91 : startB2S(31)
+				case 92 : startB2S(32)
+				case 93 : startB2S(33)
+				case 94 : startB2S(34)
+				case 95 : startB2S(35)
+				case 96 : startB2S(36)
+				case 97 : startB2S(37)
+				case 98 : startB2S(38)
+				case 99 : startB2S(39)
 			end Select
 End Sub
