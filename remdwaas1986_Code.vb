@@ -354,6 +354,9 @@ Sub Table1_KeyDown(ByVal Keycode)
 		Playsound "plungerpull2"
 		'PlaySoundAt "fx_plungerpull", plunger
 		'PlaySoundAt "fx_reload", plunger
+		pirateshipDir = 0.6
+		PirateShipTimer.Interval = 1
+		PirateShipTimer.enabled = true
 	End If
 	If hsbModeActive Then
 		EnterHighScoreKey(keycode)
@@ -422,8 +425,7 @@ Sub Table1_KeyUp(ByVal keycode)
 		Playsound "Fire"
 		'PlaySoundAt "fx_plunger", plunger
 		'If bBallInPlungerLane Then PlaySoundAt "fx_fire", plunger
-		pirateshipDir = 30
-		PirateShipTimer.enabled = true
+		SinkPirateShip = 1
 	End If
 
 	If hsbModeActive Then
@@ -3503,13 +3505,31 @@ End Function
 ' pirateship animation
 '*****************
 
-Dim pirateshipDir
+Dim pirateshipDir, SinkPirateShip
 pirateshipDir = 30 'this is both the direction, if + goes up, if - goes down, and also the speed
+SinkPirateShip = 0
 
 Sub PirateShipTimer_Timer
-    pirateship.TransX = pirateship.TransX - pirateshipDir
-    If pirateship.TransX < -600 Then pirateshipDir = -30 'goes down
-    If pirateship.TransX > 2 Then PirateShipTimer.Enabled = 0
+	Select Case SinkPirateShip
+		Case 0
+			pirateship.Y = pirateship.Y + pirateshipDir
+			If pirateship.Y > 1167.221 + 600 Then pirateshipDir = pirateshipDir * -1'goes down
+			If pirateship.Y < 1167.221 - 2 Then PirateShipTimer.Enabled = 0
+		Case 1
+			Select Case true
+				Case pirateship.RotZ < 90
+					pirateship.RotZ = pirateship.RotZ + 0.051
+				Case pirateship.RotZ >= 90
+					Pirateship.Z = Pirateship.Z - 0.1
+					If pirateship.Z <= -150 Then
+						me.enabled = 0
+						SinkPirateShip = 0
+						pirateship.Y = 1167.221
+						pirateship.RotZ = 0
+						pirateship.Z = 55
+					End If					
+			End Select
+	End Select
 End Sub
 
 '**************
