@@ -213,9 +213,13 @@ dim countr
 dim countr1
 dim countr2
 dim monkeybattle
+dim treasuresfound
 dim PFMultiplier
 dim barunlocked
 dim voodoounlocked
+dim mchicken
+dim quest
+dim mode1TimerCount
 
 ' core.vbs variables
 
@@ -709,10 +713,16 @@ end sub
 ' Play random quotes
 '********************
 
+Sub PlayLechuckQuote
+	Dim tmp
+	tmp = INT(RND * 74) + 1
+	PlaySound "Lechuck_" &tmp
+End Sub
+
 Sub PlayQuote
 	Dim tmp
-	tmp = INT(RND * 123) + 1
-	PlaySound "HIT_" &tmp
+	tmp = INT(RND * 74) + 1
+	PlaySound "Lechuck_" &tmp
 End Sub
 
 '**********************
@@ -992,10 +1002,13 @@ Sub ResetForNewGame()
 '	BallInHoles = 0
 	PFMultiplier = 2
 	monkeybattle = 0
+	treasuresfound = 0
 	barunlocked = 1
 	voodoounlocked = 1
 	'UpdateMusic = UpdateMusic + 6
 	UpdateMusicNow
+	'Updatemonkeycountr
+	'Updatetreasurecountr
 	' initialise Game variables
 	Game_Init()
 	' you may wish to start some music, play a sound, do whatever at this point
@@ -1043,6 +1056,8 @@ Sub ResetForNewPlayerBall()
 	Countr = 0
 	Countr1 = 0
 	Countr2 = 0
+	mchicken = 0
+	quest = 0
 	ResetNewBallVariables
 	ResetNewBallLights()
 	'Multiball=false	
@@ -1117,7 +1132,7 @@ Sub EndOfBall()
 	' mechanism will handle any extra balls or end of game)
 
 	'LightSeqAttract.Play SeqBlinking, , 5, 150
-
+StopmodeEndofBall
 StopSong
 'bonuscheckie
 
@@ -2356,8 +2371,21 @@ Sub ShowTableInfo
 			DMD CL(0, "CREDITS " & Credits), CL(1, "INSERT COIN"), "", eNone, eBlink, eNone, 2000, False, ""
 		End If
 	End If
-	'   Put here your intro DMD
-
+	DMD "", "", "dmdintro1", eNone, eNone, eNone, 2000, True, ""
+	DMD "", "", "dmdintro2", eNone, eNone, eNone, 1000, True, ""
+	DMD "", "", "dmdintrm1", eNone, eNone, eNone, 1000, True, ""
+	DMD "", "", "dmdintrm2", eNone, eNone, eNone, 100, True, ""
+	DMD "", "", "dmdintrm3", eNone, eNone, eNone, 100, True, ""
+	DMD "", "", "dmdintrm4", eNone, eNone, eNone, 100, True, ""
+	DMD "", "", "dmdintrm5", eNone, eNone, eNone, 100, True, ""
+	DMD "", "", "dmdintrm6", eNone, eNone, eNone, 100, True, ""
+	DMD "", "", "dmdintrm7", eNone, eNone, eNone, 100, True, ""
+	DMD "", "", "dmdintrm8", eNone, eNone, eNone, 100, True, ""
+	DMD "", "", "dmdintrm9", eNone, eNone, eNone, 100, True, ""
+	DMD "", "", "dmdintrm10", eNone, eNone, eNone, 500, True, ""
+	DMD "", "", "dmdintrm11", eNone, eNone, eNone, 200, True, ""
+	DMD "", "", "dmdintrm12", eNone, eNone, eNone, 200, True, ""
+	DMD "", "", "dmdintrm13", eNone, eNone, eNone, 1000, True, ""
 	DMD CL(0, "HIGHSCORES"), Space(dCharsPerLine(1) ), "", eScrollLeft, eScrollLeft, eNone, 20, False, ""
 	DMD CL(0, "HIGHSCORES"), "", "", eBlinkFast, eNone, eNone, 1000, False, ""
 	DMD CL(0, "HIGHSCORES"), "1> " &HighScoreName(0) & " " &FormatScore(HighScore(0) ), "", eNone, eScrollLeft, eNone, 2000, False, ""
@@ -2369,6 +2397,7 @@ End Sub
 
 Dim InAttract:InAttract = 0
 Sub StartAttractMode
+	startB2S(1)
 	monkey1btimer.enabled = 1
 	monkey2btimer.enabled = 1
 	monkey3btimer.enabled = 1
@@ -2961,6 +2990,7 @@ Sub CheckMonkeyBattle
 	li003.state=0
 	monkeybattle = monkeybattle + 1
 	Updatemonkeycountr
+vpmtimer.addtimer 250, "startB2S(3) '"
 	End If
 End Sub
 
@@ -3077,6 +3107,7 @@ Dim dBall
 Dim LeChuckBallID
 
 sub Kicker001_hit()
+	PlayLechuckQuote
 	Score(CurrentPlayer) = Score(CurrentPlayer) + (1000*PFMultiplier)
 	BallInHole1 = BallInHole1 + 1
     Set dBall = ActiveBall:Me.TimerEnabled = 1
@@ -3197,13 +3228,16 @@ Dim cBall
 Dim VoodooBallID
 
 sub Kicker005_hit()
+	treasuresfound = treasuresfound + 1
+	Updatetreasurecountr
+	vpmtimer.addtimer 250, "startB2S(3) '"
 	Score(CurrentPlayer) = Score(CurrentPlayer) + (1000*PFMultiplier)
 	BallInHole3 = BallInHole3 + 1
     Set cBall = ActiveBall:Me.TimerEnabled = 1
 	VoodooBallID = cBall.ID
 	Playsound "portalsound2"
     Me.Enabled = 0
-    if voodoounlocked = 0 Then
+    if voodoounlocked = 0 or quest = 1 Then
 		SuperVukAddBall6
 		exit Sub
 	end if
@@ -3484,15 +3518,15 @@ End Sub
 
 Dim SlotAward, SlotValue
 
-SlotAward = Array("dmd1", "dmd1")
+SlotAward = Array("lc2", "lc1")
 
 Sub StartSlotmachine()
     Dim i
     DMDFlush
     For i = 0 to 1
-        DMD "", "", SlotAward(i), eNone, eNone, eNone, 50, False, ""
+        DMD "", "", SlotAward(i), eNone, eNone, eNone, 100, False, ""
     Next
-    vpmtimer.AddTimer 500, "GiveSlotAward '"
+    vpmtimer.AddTimer 2000, "GiveSlotAward '"
 End Sub
 
 Sub GiveSlotAward()
@@ -3568,13 +3602,13 @@ end sub
 'Dim TempBall
 Dim SlotAward2, SlotValue2
 
-SlotAward2 = Array("dmd1", "dmd2", "dmd3", "dmd4", "dmd5")
+SlotAward2 = Array("v1", "v2", "v3", "v4", "v5")
 
 Sub StartVoodooSlotmachine()
     Dim i
     DMDFlush
     For i = 0 to 4
-        DMD "", "", SlotAward2(i), eNone, eNone, eNone, 50, False, ""
+        DMD "", "", SlotAward2(i), eNone, eNone, eNone, 50, False, "fx_spinner"
     Next
     vpmtimer.AddTimer 500, "GiveSlotAward2 '"
 End Sub
@@ -3586,11 +3620,11 @@ Sub GiveSlotAward2()
     DMD "", "", SlotAward2(SlotValue2), eNone, eNone, eNone, 500, True, ""
 
     Select Case SlotValue2
-        Case 0:VoodooMagic
+        Case 0:VoodooChicken'VoodooMagic
         Case 1:VoodooChicken
-        Case 2:VoodooMushroom
-        Case 3:VoodooDolls
-        Case 4:VoodooEars
+        Case 2:VoodooChicken'VoodooMushroom
+        Case 3:VoodooChicken'VoodooDolls
+        Case 4:VoodooChicken'VoodooEars
     End Select
 End Sub
 
@@ -3687,24 +3721,188 @@ Sub VoodooAward()
 	VoodooKick.TimerEnabled = 1
 End Sub
 
+'********voodoo magic mode***************
+
 sub VoodooMagic
 SuperVukAddBall4
 end sub
 
+'********voodoo chicken mode***************
+
 sub VoodooChicken
+StopSong
+PlaySong "voodooquests" 
+mode1TimerCount = 60
+mode1timer.Enabled = 1
+enablechickens
 SuperVukAddBall4
 end sub
+
+
+sub enablechickens
+'tim001.Enabled = 1
+'tim002.Enabled = 1
+'tim003.Enabled = 1
+'tim004.Enabled = 1
+'tim005.Enabled = 1
+'tim006.Enabled = 1 
+tchicken001.enabled = 1
+chicken001.z = 0 
+end sub
+
+Sub tchicken001_Hit()
+tchicken001.enabled = 0
+movechicken1down
+Score(CurrentPlayer) = Score(CurrentPlayer) + (10000*PFMultiplier)
+Playsound "chickenhurt"
+mchicken = mchicken + 1
+mode1TimerCount = mode1TimerCount + 5
+checkbonuschicken
+tchicken002.enabled = 1
+chicken002.z = 0
+end sub
+
+sub movechicken1down
+chicken001.z = -200
+end sub
+
+Sub tchicken002_Hit()
+tchicken002.enabled = 0
+movechicken2down
+Score(CurrentPlayer) = Score(CurrentPlayer) + (10000*PFMultiplier)
+Playsound "chickenhurt"
+mchicken = mchicken + 1
+mode1TimerCount = mode1TimerCount + 5
+checkbonuschicken
+tchicken003.enabled = 1
+chicken003.z = 0
+end sub
+
+sub movechicken2down
+chicken002.z = -200
+end sub
+
+Sub tchicken003_Hit()
+tchicken003.enabled = 0
+movechicken3down
+Score(CurrentPlayer) = Score(CurrentPlayer) + (10000*PFMultiplier)
+Playsound "chickenhurt"
+mchicken = mchicken + 1
+mode1TimerCount = mode1TimerCount + 5
+checkbonuschicken
+tchicken004.enabled = 1
+chicken004.z = 0
+end sub
+
+sub movechicken3down
+chicken003.z = -200
+end sub
+
+Sub tchicken004_Hit()
+tchicken004.enabled = 0
+movechicken4down
+Score(CurrentPlayer) = Score(CurrentPlayer) + (10000*PFMultiplier)
+Playsound "chickenhurt"
+mchicken = mchicken + 1
+mode1TimerCount = mode1TimerCount + 5
+checkbonuschicken
+tchicken005.enabled = 1
+chicken005.z = 0
+end sub
+
+sub movechicken4down
+chicken004.z = -200
+end sub
+
+Sub tchicken005_Hit()
+tchicken005.enabled = 0
+movechicken5down
+Score(CurrentPlayer) = Score(CurrentPlayer) + (10000*PFMultiplier)
+Playsound "chickenhurt"
+mchicken = mchicken + 1
+mode1TimerCount = mode1TimerCount + 5
+checkbonuschicken
+end sub
+
+sub movechicken5down
+chicken005.z = -200
+end sub
+
+sub checkbonuschicken
+If mchicken = 5 then
+'DMD "", "", "dmdmc", eNone, eNone, eNone, 1000, True, ""
+playsound "won"
+StopmodeEndofBall
+'li094.state = 1
+mchicken = 0
+AddMultiball 1
+quest = 0
+ChangeSong
+end if
+end sub
+
+'********voodoo mushroom mode***************
 
 sub VoodooMushroom
 SuperVukAddBall4
 end sub
 
+'********voodoo dolls mode***************
+
 sub VoodooDolls
 SuperVukAddBall4
 end sub
 
+'********voodoo ears mode***************
+
 sub VoodooEars
 SuperVukAddBall4
+end sub
+
+'********end of ball stop missions + add time ***************
+sub stopquests
+mchicken = 0
+quest = 0
+tchicken001.enabled = 0
+tchicken002.enabled = 0
+tchicken003.enabled = 0
+tchicken004.enabled = 0
+tchicken005.enabled = 0
+chicken001.z = -200
+chicken002.z = -200
+chicken003.z = -200
+chicken004.z = -200
+chicken005.z = -200
+end sub
+
+Sub tim001_Hit()
+if mode1TimerCount > 90 then exit sub
+mode1TimerCount = mode1TimerCount + 2
+end sub
+
+Sub tim002_Hit()
+if mode1TimerCount > 90 then exit sub
+mode1TimerCount = mode1TimerCount + 2
+end sub
+
+Sub tim003_Hit()
+if mode1TimerCount > 90 then exit sub
+mode1TimerCount = mode1TimerCount + 2
+end sub
+
+Sub tim004_Hit()
+if mode1TimerCount > 90 then exit sub
+mode1TimerCount = mode1TimerCount + 2
+end sub
+
+Sub tim005_Hit()
+if mode1TimerCount > 90 then exit sub
+mode1TimerCount = mode1TimerCount + 2
+end sub
+
+Sub tim006_Hit()
+if mode1TimerCount > 90 then exit sub 
+mode1TimerCount = mode1TimerCount + 2
 end sub
 
 '********************************
@@ -3746,19 +3944,15 @@ End Sub
 
 'clocktimer
 Sub mode1timer_Timer
-	PlaySong "missionmusic"
-	missionmodes = 1
+'	PlaySong "missionmusic"
+	quest = 1
     mode1TimerCount = mode1TimerCount - 1
     UpdateClock mode1TimerCount
-    If mode1TimerCount = 30 Then PlaySound "30s2"
+    If mode1TimerCount = 30 Then PlaySound "30s"
     If mode1TimerCount = 10 Then PlaySound "10s"
     If mode1TimerCount = 0 Then
-	DMD "", "", "dmdmf", eNone, eNone, eNone, 1000, True, ""
-        PlaySound "obj_failed"
-		stopidlchiefke
-		chmfRtimer.enabled = 1
-		chmfLtimer.enabled = 1
-		stopmissions
+'	DMD "", "", "dmdmf", eNone, eNone, eNone, 1000, True, ""
+        PlaySound "lost"
         Stopmode1
     End If
 End Sub
@@ -3781,14 +3975,11 @@ Sub mode2timer_Timer
 End Sub
 
 Sub Stopmode1
-flashplaat1.ImageA = "flshalopin"
 mode1timer.Enabled = 0
-changelights2
+stopquests
 StopSong
 UpdateMusicNow
 TurnOffClock
-missionmodes = 0
-enemylft = 0
 End Sub
 
 Sub Stopmode2
@@ -3807,14 +3998,12 @@ enemylft = 0
 End Sub
 
 Sub StopmodeEndofBall
-changelights2
 mode1timer.Enabled = 0
 StopSong
 'UpdateMusicNow
 TurnOffClock
-missionmodes = 0
+stopquests
 End Sub
-
 
 '************************************************
 '**************3d animations*****************
@@ -3895,112 +4084,216 @@ select case countr2
 			end Select
 End Sub
 
-
 '************************************************
 '**************b2s counters*****************
 '************************************************
 
 sub Updatemonkeycountr
 select case monkeybattle
-				case 0 : Controller.B2SSetData 40,0:Controller.B2SSetData 50,0
-				case 1 : Controller.B2SSetData 51,0
-				case 2 : Controller.B2SSetData 52,0
-				case 3 : Controller.B2SSetData 53,0
-				case 4 : Controller.B2SSetData 54,0
-				case 5 : Controller.B2SSetData 55,0
-				case 6 : Controller.B2SSetData 56,0
-				case 7 : Controller.B2SSetData 57,0
-				case 8 : Controller.B2SSetData 58,0
-				case 9 : Controller.B2SSetData 59,0
-				case 10 : Controller.B2SSetData 41,0:Controller.B2SSetData 50,0
-				case 11 : Controller.B2SSetData 51,0
-				case 12 : Controller.B2SSetData 52,0
-				case 13 : Controller.B2SSetData 53,0
-				case 14 : Controller.B2SSetData 54,0
-				case 15 : Controller.B2SSetData 55,0
-				case 16 : Controller.B2SSetData 56,0
-				case 17 : Controller.B2SSetData 57,0
-				case 18 : Controller.B2SSetData 58,0
-				case 19 : Controller.B2SSetData 59,0
-				case 20 : Controller.B2SSetData 42,0:Controller.B2SSetData 50,0
-				case 21 : Controller.B2SSetData 51,0
-				case 22 : Controller.B2SSetData 52,0
-				case 23 : Controller.B2SSetData 53,0
-				case 24 : Controller.B2SSetData 54,0
-				case 25 : Controller.B2SSetData 55,0
-				case 26 : Controller.B2SSetData 56,0
-				case 27 : Controller.B2SSetData 57,0
-				case 28 : Controller.B2SSetData 58,0
-				case 29 : Controller.B2SSetData 59,0
-				case 30 : Controller.B2SSetData 43,0:Controller.B2SSetData 50,0
-				case 31 : Controller.B2SSetData 51,0
-				case 32 : Controller.B2SSetData 52,0
-				case 33 : Controller.B2SSetData 53,0
-				case 34 : Controller.B2SSetData 54,0
-				case 35 : Controller.B2SSetData 55,0
-				case 36 : Controller.B2SSetData 56,0
-				case 37 : Controller.B2SSetData 57,0
-				case 38 : Controller.B2SSetData 58,0
-				case 39 : Controller.B2SSetData 59,0
-				case 40 : Controller.B2SSetData 44,0:Controller.B2SSetData 50,0
-				case 41 : Controller.B2SSetData 51,0
-				case 42 : Controller.B2SSetData 52,0
-				case 43 : Controller.B2SSetData 53,0
-				case 44 : Controller.B2SSetData 54,0
-				case 45 : Controller.B2SSetData 55,0
-				case 46 : Controller.B2SSetData 56,0
-				case 47 : Controller.B2SSetData 57,0
-				case 48 : Controller.B2SSetData 58,0
-				case 49 : Controller.B2SSetData 59,0
-				case 50 : Controller.B2SSetData 45,0:Controller.B2SSetData 50,0
-				case 51 : Controller.B2SSetData 51,0
-				case 52 : Controller.B2SSetData 52,0
-				case 53 : Controller.B2SSetData 53,0
-				case 54 : Controller.B2SSetData 54,0
-				case 55 : Controller.B2SSetData 55,0
-				case 56 : Controller.B2SSetData 56,0
-				case 57 : Controller.B2SSetData 57,0
-				case 58 : Controller.B2SSetData 58,0
-				case 59 : Controller.B2SSetData 59,0
-				case 60 : Controller.B2SSetData 46,0:Controller.B2SSetData 50,0
-				case 61 : Controller.B2SSetData 51,0
-				case 62 : Controller.B2SSetData 52,0
-				case 63 : Controller.B2SSetData 53,0
-				case 64 : Controller.B2SSetData 54,0
-				case 65 : Controller.B2SSetData 55,0
-				case 66 : Controller.B2SSetData 56,0
-				case 67 : Controller.B2SSetData 57,0
-				case 68 : Controller.B2SSetData 58,0
-				case 69 : Controller.B2SSetData 59,0
-				case 70 : Controller.B2SSetData 47,0:Controller.B2SSetData 50,0
-				case 71 : Controller.B2SSetData 51,0
-				case 72 : Controller.B2SSetData 52,0
-				case 73 : Controller.B2SSetData 53,0
-				case 74 : Controller.B2SSetData 54,0
-				case 75 : Controller.B2SSetData 55,0
-				case 76 : Controller.B2SSetData 56,0
-				case 77 : Controller.B2SSetData 57,0
-				case 78 : Controller.B2SSetData 58,0
-				case 79 : Controller.B2SSetData 59,0
-				case 80 : Controller.B2SSetData 48,0:Controller.B2SSetData 50,0
-				case 81 : Controller.B2SSetData 51,0
-				case 82 : Controller.B2SSetData 52,0
-				case 83 : Controller.B2SSetData 53,0
-				case 84 : Controller.B2SSetData 54,0
-				case 85 : Controller.B2SSetData 55,0
-				case 86 : Controller.B2SSetData 56,0
-				case 87 : Controller.B2SSetData 57,0
-				case 88 : Controller.B2SSetData 58,0
-				case 89 : Controller.B2SSetData 59,0
-				case 90 : Controller.B2SSetData 48,0:Controller.B2SSetData 50,0
-				case 91 : Controller.B2SSetData 51,0
-				case 92 : Controller.B2SSetData 52,0
-				case 93 : Controller.B2SSetData 53,0
-				case 94 : Controller.B2SSetData 54,0
-				case 95 : Controller.B2SSetData 55,0
-				case 96 : Controller.B2SSetData 56,0
-				case 97 : Controller.B2SSetData 57,0
-				case 98 : Controller.B2SSetData 58,0
-				case 99 : Controller.B2SSetData 59,0
+				case 0 : startB2S(40):startB2S(50)
+				case 1 : startB2S(51)
+				case 2 : startB2S(52)
+				case 3 : startB2S(53)
+				case 4 : startB2S(54)
+				case 5 : startB2S(55)
+				case 6 : startB2S(56)
+				case 7 : startB2S(57)
+				case 8 : startB2S(58)
+				case 9 : startB2S(59)
+				case 10 : startB2S(41):startB2S(50)
+				case 11 : startB2S(51)
+				case 12 : startB2S(52)
+				case 13 : startB2S(53)
+				case 14 : startB2S(54)
+				case 15 : startB2S(55)
+				case 16 : startB2S(56)
+				case 17 : startB2S(57)
+				case 18 : startB2S(58)
+				case 19 : startB2S(59)
+				case 20 : startB2S(42):startB2S(50)
+				case 21 : startB2S(51)
+				case 22 : startB2S(52)
+				case 23 : startB2S(53)
+				case 24 : startB2S(54)
+				case 25 : startB2S(55)
+				case 26 : startB2S(56)
+				case 27 : startB2S(57)
+				case 28 : startB2S(58)
+				case 29 : startB2S(59)
+				case 30 : startB2S(43):startB2S(50)
+				case 31 : startB2S(51)
+				case 32 : startB2S(52)
+				case 33 : startB2S(53)
+				case 34 : startB2S(54)
+				case 35 : startB2S(55)
+				case 36 : startB2S(56)
+				case 37 : startB2S(57)
+				case 38 : startB2S(58)
+				case 39 : startB2S(59)
+				case 40 : startB2S(44):startB2S(50)
+				case 41 : startB2S(51)
+				case 42 : startB2S(52)
+				case 43 : startB2S(53)
+				case 44 : startB2S(54)
+				case 45 : startB2S(55)
+				case 46 : startB2S(56)
+				case 47 : startB2S(57)
+				case 48 : startB2S(58)
+				case 49 : startB2S(59)
+				case 50 : startB2S(45):startB2S(50)
+				case 51 : startB2S(51)
+				case 52 : startB2S(52)
+				case 53 : startB2S(53)
+				case 54 : startB2S(54)
+				case 55 : startB2S(55)
+				case 56 : startB2S(56)
+				case 57 : startB2S(57)
+				case 58 : startB2S(58)
+				case 59 : startB2S(59)
+				case 60 : startB2S(46):startB2S(50)
+				case 61 : startB2S(51)
+				case 62 : startB2S(52)
+				case 63 : startB2S(53)
+				case 64 : startB2S(54)
+				case 65 : startB2S(55)
+				case 66 : startB2S(56)
+				case 67 : startB2S(57)
+				case 68 : startB2S(58)
+				case 69 : startB2S(59)
+				case 70 : startB2S(47):startB2S(50)
+				case 71 : startB2S(51)
+				case 72 : startB2S(52)
+				case 73 : startB2S(53)
+				case 74 : startB2S(54)
+				case 75 : startB2S(55)
+				case 76 : startB2S(56)
+				case 77 : startB2S(57)
+				case 78 : startB2S(58)
+				case 79 : startB2S(59)
+				case 80 : startB2S(48):startB2S(50)
+				case 81 : startB2S(51)
+				case 82 : startB2S(52)
+				case 83 : startB2S(53)
+				case 84 : startB2S(54)
+				case 85 : startB2S(55)
+				case 86 : startB2S(56)
+				case 87 : startB2S(57)
+				case 88 : startB2S(58)
+				case 89 : startB2S(59)
+				case 90 : startB2S(49):startB2S(50)
+				case 91 : startB2S(51)
+				case 92 : startB2S(52)
+				case 93 : startB2S(53)
+				case 94 : startB2S(54)
+				case 95 : startB2S(55)
+				case 96 : startB2S(56)
+				case 97 : startB2S(57)
+				case 98 : startB2S(58)
+				case 99 : startB2S(59)
+			end Select
+End Sub
+
+sub Updatetreasurecountr
+select case treasuresfound
+				case 0 : startB2S(20):startB2S(30)
+				case 1 : startB2S(31)
+				case 2 : startB2S(32)
+				case 3 : startB2S(33)
+				case 4 : startB2S(34)
+				case 5 : startB2S(35)
+				case 6 : startB2S(36)
+				case 7 : startB2S(37)
+				case 8 : startB2S(38)
+				case 9 : startB2S(39)
+				case 10 : startB2S(21):startB2S(30)
+				case 11 : startB2S(31)
+				case 12 : startB2S(32)
+				case 13 : startB2S(33)
+				case 14 : startB2S(34)
+				case 15 : startB2S(35)
+				case 16 : startB2S(36)
+				case 17 : startB2S(37)
+				case 18 : startB2S(38)
+				case 19 : startB2S(39)
+				case 20 : startB2S(22):startB2S(30)
+				case 21 : startB2S(31)
+				case 22 : startB2S(32)
+				case 23 : startB2S(33)
+				case 24 : startB2S(34)
+				case 25 : startB2S(35)
+				case 26 : startB2S(36)
+				case 27 : startB2S(37)
+				case 28 : startB2S(38)
+				case 29 : startB2S(39)
+				case 30 : startB2S(23):startB2S(30)
+				case 31 : startB2S(31)
+				case 32 : startB2S(32)
+				case 33 : startB2S(33)
+				case 34 : startB2S(34)
+				case 35 : startB2S(35)
+				case 36 : startB2S(36)
+				case 37 : startB2S(37)
+				case 38 : startB2S(38)
+				case 39 : startB2S(39)
+				case 40 : startB2S(24):startB2S(30)
+				case 41 : startB2S(31)
+				case 42 : startB2S(32)
+				case 43 : startB2S(33)
+				case 44 : startB2S(34)
+				case 45 : startB2S(35)
+				case 46 : startB2S(36)
+				case 47 : startB2S(37)
+				case 48 : startB2S(38)
+				case 49 : startB2S(39)
+				case 50 : startB2S(25):startB2S(30)
+				case 51 : startB2S(31)
+				case 52 : startB2S(32)
+				case 53 : startB2S(33)
+				case 54 : startB2S(34)
+				case 55 : startB2S(35)
+				case 56 : startB2S(36)
+				case 57 : startB2S(37)
+				case 58 : startB2S(38)
+				case 59 : startB2S(39)
+				case 60 : startB2S(26):startB2S(30)
+				case 61 : startB2S(31)
+				case 62 : startB2S(32)
+				case 63 : startB2S(33)
+				case 64 : startB2S(34)
+				case 65 : startB2S(35)
+				case 66 : startB2S(36)
+				case 67 : startB2S(37)
+				case 68 : startB2S(38)
+				case 69 : startB2S(39)
+				case 70 : startB2S(27):startB2S(30)
+				case 71 : startB2S(31)
+				case 72 : startB2S(32)
+				case 73 : startB2S(33)
+				case 74 : startB2S(34)
+				case 75 : startB2S(35)
+				case 76 : startB2S(36)
+				case 77 : startB2S(37)
+				case 78 : startB2S(38)
+				case 79 : startB2S(39)
+				case 80 : startB2S(28):startB2S(30)
+				case 81 : startB2S(31)
+				case 82 : startB2S(32)
+				case 83 : startB2S(33)
+				case 84 : startB2S(34)
+				case 85 : startB2S(35)
+				case 86 : startB2S(36)
+				case 87 : startB2S(37)
+				case 88 : startB2S(38)
+				case 89 : startB2S(39)
+				case 90 : startB2S(29):startB2S(30)
+				case 91 : startB2S(31)
+				case 92 : startB2S(32)
+				case 93 : startB2S(33)
+				case 94 : startB2S(34)
+				case 95 : startB2S(35)
+				case 96 : startB2S(36)
+				case 97 : startB2S(37)
+				case 98 : startB2S(38)
+				case 99 : startB2S(39)
 			end Select
 End Sub
