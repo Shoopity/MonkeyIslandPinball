@@ -354,6 +354,9 @@ Sub Table1_KeyDown(ByVal Keycode)
 		Playsound "plungerpull2"
 		'PlaySoundAt "fx_plungerpull", plunger
 		'PlaySoundAt "fx_reload", plunger
+		PirateShipTimer.Interval = 1
+		PirateShipTimer.enabled = true
+		If SinkPirateShip = 0 Then SinkPirateShip = 1
 	End If
 	If hsbModeActive Then
 		EnterHighScoreKey(keycode)
@@ -422,8 +425,10 @@ Sub Table1_KeyUp(ByVal keycode)
 		Playsound "Fire"
 		'PlaySoundAt "fx_plunger", plunger
 		'If bBallInPlungerLane Then PlaySoundAt "fx_fire", plunger
-		pirateshipDir = 30
-		PirateShipTimer.enabled = true
+		If SinkPirateShip = 1 Then 
+			SinkPirateShip = 2
+			ShipAnimStage = 1
+		End If
 	End If
 
 	If hsbModeActive Then
@@ -3442,7 +3447,7 @@ end sub
 '*****************
 'beard and palmtrees
 '*****************
-Dim Sway
+Dim Sway, PRock, PRoll
 
 sub beardtreetimer_Timer()
 'Palm Trees
@@ -3463,10 +3468,16 @@ sub beardtreetimer_Timer()
 	Leaves007.RotY = tree001.RotY
 	Leaves008.RotY = tree001.RotY
 	Sway = Sway + 0.05
-	If Sway > 360 Then Sway = 1
+	If Sway > 360 Then Sway = Sway - 360
 	'******
 	'Le chuck's Beard matches the gate
 	Beard.RotX = -Gate002.CurrentAngle
+	'Rock the boat (don't tip the boat over)
+	If SinkPirateShip = 0 Then
+		PirateShip.RotZ = dSin(Sway)*4
+		PirateShip.RotX = dCos(Sway)*4 + 90
+		PirateShip.TransY = dCos(Sway)*20
+	End If
 	'******
 	'Rotate and move the magic dust
 	'For Each X in Magic
@@ -3503,13 +3514,59 @@ End Function
 ' pirateship animation
 '*****************
 
-Dim pirateshipDir
-pirateshipDir = 30 'this is both the direction, if + goes up, if - goes down, and also the speed
+Dim pirateshipDir, SinkPirateShip, ShipAnimStage, ShipOrigY, ShipOrigX, ShipOrigRotX, ShipSpeed
+ShipSpeed = 0.05
+ShipOrigY = PirateShip.Y
+ShipOrigX = Pirateship.X
+ShipOrigRotX = PirateShip.RotX
+pirateshipDir = 90 'this is both the direction, if + goes up, if - goes down, and also the speed
+PirateShip.X = dSin(PirateShipDir * 2) * 100 + ShipOrigX
+PirateShip.Y = dSin(PirateShipDir - 90) * 300 + ShipOrigY + 300
+PirateShip.RotX = dSin(PirateShipDir - 90) * 25 + ShipOrigRotX
+Pirateship.ObjRotZ = dSin(PirateShipDir) * 120 - 180
+SinkPirateShip = 0
+ShipAnimStage = 0
 
 Sub PirateShipTimer_Timer
-    pirateship.TransX = pirateship.TransX - pirateshipDir
-    If pirateship.TransX < -600 Then pirateshipDir = -30 'goes down
-    If pirateship.TransX > 2 Then PirateShipTimer.Enabled = 0
+	Select Case SinkPirateShip
+		Case 1 'We're sailing, waiting to be hit
+			'Move the ship down and back
+			pirateship.Y = dSin(PirateShipDir - 90) * 300 + ShipOrigY + 300
+			'Point the ship in the direction of travel
+			Pirateship.ObjRotZ = dSin(PirateShipDir) * 120 - 180
+			'Move the ship side to side
+			PirateShip.X = dSin(PirateShipDir * 2) * 100 + ShipOrigX
+			'Lean the ship into the turn
+			PirateShip.RotX = dSin(PirateShipDir - 90) * 25 + ShipOrigRotX
+			PirateShipDir = (PirateShipDir + ShipSpeed)
+			If PirateShipDir > 360 Then PirateShipDir = PirateShipDir - 360
+		Case 2	'We've been hit!!
+			Select Case ShipAnimStage
+				Case 1	'First we tip...
+					pirateship.RotZ = pirateship.RotZ + 0.051
+					If PirateShip.RotZ >= 90 Then ShipAnimStage = 2
+				Case 2	'Then we sink...
+					Pirateship.Z = Pirateship.Z - 0.1
+					If pirateship.Z <= -250 Then
+						ShipAnimStage = 3
+					End If					
+				Case 3	'And we reset to fight again another day
+					PirateShipDir = 90
+					PirateShip.X = dSin(PirateShipDir * 2) * 100 + ShipOrigX
+					PirateShip.Y = dSin(PirateShipDir - 90) * 300 + ShipOrigY + 300
+					PirateShip.RotX = dSin(PirateShipDir - 90) * 25 + ShipOrigRotX
+					Pirateship.ObjRotZ = dSin(PirateShipDir) * 120 - 180
+					pirateship.RotZ = 0
+					PirateShip.Z = PirateShip.Z + 0.1
+					If PirateShip.Z >= 55 Then
+						me.enabled = 0
+						PirateShip.Z = 55
+						ShipAnimStage = 0
+						SinkPirateShip = 0
+					End If
+					PirateShipDir = 90
+			End Select
+	End Select
 End Sub
 
 '**************
