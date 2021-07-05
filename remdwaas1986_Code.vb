@@ -2053,7 +2053,7 @@ Sub DMD_Init() 'default/startup values
                 DMDScene.GetImage("Dig" & i).SetBounds 4 + i * 6, dCharsPerLine(0) + 5, 8, 8
             Next
             For i = dCharsPerLine(1) to (dCharsPerLine(0) + dCharsPerLine(1) - 1) ' Bottom
-                DMDScene.GetImage("Dig" & i).SetBounds (i - 20) * 8, 3, 8, 16
+                DMDScene.GetImage("Dig" & i).SetBounds (i - dCharsPerLine(1)) * 8, 3, 8, 16
             Next
             FlexDMD.LockRenderThread
             FlexDMD.Stage.AddActor DMDScene
