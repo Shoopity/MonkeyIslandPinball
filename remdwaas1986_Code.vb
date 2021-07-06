@@ -557,8 +557,16 @@ Sub Table1_KeyDown(ByVal Keycode)
 	End If
 	' Normal flipper action
 	If bGameInPlay AND NOT Tilted Then
-		If keycode = LeftTiltKey Then Nudge 90, 8:PlaySound "fx_nudge", 0, 1, -0.1, 0.25:CheckTilt
-		If keycode = RightTiltKey Then Nudge 270, 8:PlaySound "fx_nudge", 0, 1, 0.1, 0.25:CheckTilt
+		If keycode = LeftTiltKey Then
+			Nudge 90, 8
+			PlaySound "fx_nudge", 0, 1, -0.1, 0.25
+			CheckTilt()
+		End If
+		If keycode = RightTiltKey Then
+			Nudge 270, 8
+			PlaySound "fx_nudge", 0, 1, 0.1, 0.25
+			CheckTilt()
+		End If
 		If keycode = CenterTiltKey Then Nudge 0, 9:PlaySound "fx_nudge", 0, 1, 1, 0.25:CheckTilt
 '		If keycode = LeftFlipperKey Then SolLFlipper 1
 '		If keycode = RightFlipperKey Then SolRFlipper 1
@@ -610,22 +618,30 @@ Sub Table1_KeyDown(ByVal Keycode)
 			End If
 		End If
 	End If ' If (GameInPlay)
-	If LowerFlippersActive Then
-		If keycode = RightFlipperkey then
-			PlaySound "fx_flipperup", 0, 1, 0, 0.25
-			RightFlipper001.RotateToEnd
-		end If
-			If keycode = LeftFlipperkey then
-			PlaySound "fx_flipperup", 0, 1, 0, 0.25
-			LeftFlipper001.RotateToEnd
-		end If
-		Else
-		If keycode = LeftFlipperKey Then SolLFlipper 1
-		If keycode = RightFlipperKey Then SolRFlipper 1
+	If bGameInPLay AND NOT Tilted Then
+		If keycode = LeftFlipperKey Then
+			Select Case Status
+				Case "Spitting"
+					SpitProcessKey(keycode)
+				Case "Treasure"
+					PlaySound "fx_flipperup", 0, 1, 0, 0.25
+					LeftFlipper001.RotateToEnd
+				Case Else
+					SolLFlipper 1
+			End Select
+		End If
+		If keycode = RightFlipperKey Then
+			Select Case Status
+				Case "Spitting"
+					SpitProcessKey(keycode)
+				Case "Treasure"
+					PlaySound "fx_flipperup", 0, 1, 0, 0.25
+					RightFlipper001.RotateToEnd
+				Case Else
+					SolRFlipper 1
+			End Select
+		End If
 	End If
-
-'table keys
-'If keycode = RightMagnaSave or keycode = LeftMagnasave Then ShowPost 
 End Sub
 
 Sub Table1_KeyUp(ByVal keycode)
@@ -635,29 +651,27 @@ Sub Table1_KeyUp(ByVal keycode)
 	If hsbModeActive Then
 		Exit Sub
 	End If
-
 	' Table specific
-
 	If bGameInPLay AND NOT Tilted Then
 		If keycode = LeftFlipperKey Then
-			SolLFlipper 0
+			Select Case Status
+				Case "Treasure"
+					PlaySound "fx_flipperup", 0, 1, 0, 0.25
+					LeftFlipper001.RotatetoStart
+				Case Else
+					SolLFlipper 0
+			End Select
 		End If
 		If keycode = RightFlipperKey Then
-			SolRFlipper 0
+			Select Case Status
+				Case "Treasure"
+					PlaySound "fx_flipperup", 0, 1, 0, 0.25
+					RightFlipper001.RotatetoStart
+				Case Else
+					SolRFlipper 0
+			End Select
 		End If
 	End If
-
-	If LowerFlippersActive Then
-		If keycode = RightFlipperkey then
-			PlaySound "fx_flipperup", 0, 1, 0, 0.25
-			RightFlipper001.RotatetoStart
-		end If
-			If keycode = LeftFlipperkey then
-			PlaySound "fx_flipperup", 0, 1, 0, 0.25
-			LeftFlipper001.RotatetoStart
-		end If
-	End If
-
 End Sub
 
 '*************
@@ -683,13 +697,10 @@ Sub SolLFlipper(Enabled)
 	If Enabled Then
 		PlaySoundAt SoundFXDOF("fx_flipperup", 101, DOFOn, DOFFlippers), LeftFlipper
 		LeftFlipper.RotateToEnd
-'		Flipper1.RotateToEnd 'Adds To End Movement for Flipper1
-		RotateLaneLightsLeft
-		'RotateLaneLightsLeft2
+		RotateLaneLightsLeft()
 	Else
 		PlaySoundAt SoundFXDOF("fx_flipperdown", 101, DOFOff, DOFFlippers), LeftFlipper
 		LeftFlipper.RotateToStart
-'		Flipper1.RotateToStart 'Adds To End Movement for Flipper1
 	End If
 End Sub
 
@@ -697,8 +708,7 @@ Sub SolRFlipper(Enabled)
 	If Enabled Then
 		PlaySoundAt SoundFXDOF("fx_flipperup", 102, DOFOn, DOFFlippers), RightFlipper
 		RightFlipper.RotateToEnd
-		RotateLaneLightsRight
-		'RotateLaneLightsRight2
+		RotateLaneLightsRight()
 	Else
 		PlaySoundAt SoundFXDOF("fx_flipperdown", 102, DOFOff, DOFFlippers), RightFlipper
 		RightFlipper.RotateToStart
@@ -1211,6 +1221,14 @@ sub checkbarr()
 	end if
 end sub
 
+Sub CheckBar()
+	If BarSlot = 31 Then
+		BarUnlocked = 0
+		li048.state = 1
+		li007.state = 0
+	End If
+End Sub
+
 ' *********************************************************************
 '						 User Defined Script Events
 ' *********************************************************************
@@ -1642,12 +1660,13 @@ Sub Trigger1_Hit()
 		PlaySound "fire"
 		bAutoPlunger = False
 	End If	
-	'StopSong
-'	DMDScoreNow()
 	bBallInPlungerLane = True
-'	DMD "_", CL(1, "SHOOT THE BALL"), "", eNone, eBlink, eNone, 1000, True, ""
 	If (BallMoverHold Is Nothing) Then Set ballmoverhold = ActiveBall
-	If bMultiBallMode = false Then PirateShipTimer.Enabled = 1
+	If bMultiBallMode = false Then
+		PirateShipTimer.Enabled = 1
+		ShipAngleSpeed = 2.5
+		ShipReset = 1
+	End If
 End Sub
 
 ' The ball is released from the plunger
@@ -1661,7 +1680,8 @@ Sub Trigger1_UnHit()
 		If (ShipAngle > 160 AND ShipAngle < 200) OR (ShipAngle > 520 AND ShipAngle < 560) OR (ShipAngle > 880 AND ShipAngle < 920) OR (ShipAngle > 1240 AND ShipAngle < 1280) Then
 			SinkPirateShip = 1
 		Else
-			'Bring the ship back to the start position
+			ShipAngleSpeed = 8
+			ShipReset = -1
 		End If
 		smokeytimer.enabled = 1
 	End If
@@ -2361,7 +2381,7 @@ Sub DMDInit()
 	Chars(60) = "dless"	   '<
 	Chars(61) = "dequal"   '=
 	Chars(62) = "dgreater" '>
-	'	Chars(64) = '@
+'	Chars(64) = '@
 	Chars(65) = "da" 'A
 	Chars(66) = "db" 'B
 	Chars(67) = "dc" 'C
@@ -2388,11 +2408,11 @@ Sub DMDInit()
 	Chars(88) = "dx" 'X
 	Chars(89) = "dy" 'Y
 	Chars(90) = "dz" 'Z
-	'Chars(91) = "dball" '[
-	'Chars(92) = "dcoin" '|
-	'Chars(93) = "dpika" ']
-	'	 Chars(94) = '^
-	'	 Chars(95) = '_
+'	Chars(91) = '[
+'	Chars(92) = '|
+'	Chars(93) = ']
+'	Chars(94) = '^
+'	Chars(95) = '_
 	Chars(96) = "d0a"  '0.
 	Chars(97) = "d1a"  '1.
 	Chars(98) = "d2a"  '2.
@@ -2616,7 +2636,7 @@ Sub ShowTableInfo
 End Sub
 
 Dim InAttract:InAttract = 0
-Sub StartAttractMode
+Sub StartAttractMode()
 	startB2S(1)
 	InAttract = 1
 	spinningwheel.enabled = 1
@@ -2812,6 +2832,9 @@ Sub Game_Init() 'called at the start of a new game
 	in_ = "**"
 	su_ = "**"
 	lt_ = "**"
+	SpittingDistance(1) = 40
+	NextSpitKey = 1
+	BuildSpit = 0
 End Sub
 
 Sub StopEndOfBallMode()		'this sub is called after the last ball is drained
@@ -2936,16 +2959,16 @@ Sub TrRightOrbit_Hit()
 		'Play Some Sound that you didn't make it
 		RightOrbitStart = 0
 		DMDFlush()
-		DMD "", CL(1, "<0>"), "_", eNone, eNone, eNone, 1, True, ""
-		DMD "", CL(1, " "), "_", eNone, eScrollRight, eNone, 1, True, ""
+		DMD "_", CL(1, "MISSED"), "_", eNone, eNone, eNone, 1, True, ""
+		DMD "_", CL(1, "_"), "_", eNone, eScrollRight, eNone, 1, True, ""
 		Exit Sub
 	End If
-	If LeftOrbitStart = 1 Then
+	If LeftOrbitStart = 2 Then
 		LeftOrbitStart = 0
 		Exit Sub
 	End If
-	DMD "", CL(1, "<0>"), "_", eNone, eScrollLeft, eNone, 1, True, ""
-	DMD "", CL(1, " "), "_", eNone, eScrollLeft, eNone, 1, True, ""
+	DMD "_", CL(1, "RIGHT LANE"), "_", eNone, eScrollLeft, eNone, 1, True, ""
+	DMD "_", CL(1, "_"), "_", eNone, eScrollLeft, eNone, 1, True, ""
 	RightOrbitStart = 1
 	Score(CurrentPlayer) = Score(CurrentPlayer) + (100*PFMultiplier)
 	LSOrbit.Play SeqRadarLeftOn, 10
@@ -2956,13 +2979,14 @@ Sub TrRightOrbitMake_Hit()
 		Score(CurrentPlayer) = Score(CurrentPlayer) + (900*PFMultiplier)
 		'Play Some Sound for making a right orbit
 		'Maybe some lighting effect
-		DMD CL(1, "<0>"), "", "_", eScrollLeft, eNone, eNone, 1, True, ""
-		DMD CL(1, " "), "", "_", eScrollLeft, eNone, eNone, 1, True, ""
+		DMD CL(1, "RIGHT LANE"), "_", "_", eScrollLeft, eNone, eNone, 1, True, ""
+		DMD CL(1, "_"), "_", "_", eScrollLeft, eNone, eNone, 1, True, ""
 		GrogCounter = GrogCounter + 1
-	End If
-	If GrogCounter >= 3 Then
-		GrogEnabled = 1
-'		KiGrog.Enabled = 1
+		RightOrbitStart = 2
+		If GrogCounter >= 3 Then
+			GrogEnabled = 1
+'			KiGrog.Enabled = 1
+		End If
 	End If
 End Sub
 
@@ -2971,16 +2995,16 @@ Sub TrLeftOrbit_Hit()
 		'Play Some Sound that you didn't make it
 		LeftOrbitStart = 0
 		DMDFlush()
-		DMD "", CL(1, "<0>"), "_", eNone, eNone, eNone, 1, True, ""
-		DMD "", CL(1, " "), "_", eNone, eScrollLeft, eNone, 1, True, ""
+		DMD "_", CL(1, "MISSED"), "_", eNone, eNone, eNone, 1, True, ""
+		DMD ")", CL(1, "_"), "_", eNone, eScrollLeft, eNone, 1, True, ""
 		Exit Sub
 	End If 
-	If RightOrbitStart = 1 Then
+	If RightOrbitStart = 2 Then
 		RightOrbitStart = 0
 		Exit Sub
 	End If
-	DMD "_", CL(1, "<0>"), "_", eNone, eScrollRight, eNone, 1, True, ""
-	DMD "_", CL(1, ""), "_", eNone, eScrollRight, eNone, 1, True, ""
+	DMD "_", CL(1, "LEFT LANE"), "_", eNone, eScrollRight, eNone, 1, True, ""
+	DMD "_", CL(1, "_"), "_", eNone, eScrollRight, eNone, 1, True, ""
 	LeftOrbitStart = 1
 	Score(CurrentPlayer) = Score(CurrentPlayer) + (100*PFMultiplier)
 	LSOrbit.Play SeqRadarRightOn, 10
@@ -2991,8 +3015,9 @@ Sub TrLeftOrbitMake_Hit()
 		Score(CurrentPlayer) = Score(CurrentPlayer) + (900*PFMultiplier)
 		'Play Some Sound for making a right orbit
 		'Maybe some lighting effect
-		DMD CL(0, "<0>"), "_", "_", eScrollRight, eNone, eNone, 1, True, ""
-		DMD CL(0, ""), "_", "_", eScrollRight, eNone, eNone, 1, True, ""
+		LeftOrbitStart = 2
+		DMD CL(0, "LEFT LANE"), "_", "_", eScrollRight, eNone, eNone, 1, True, ""
+		DMD CL(0, "_"), "_", "_", eScrollRight, eNone, eNone, 1, True, ""
 	End If
 End Sub
 
@@ -3132,7 +3157,7 @@ End Sub
 '************************** 
 
 sub scorebumpers
-PlaySound "shakegrog"
+	PlaySound "shakegrog"
 	Score(CurrentPlayer) = Score(CurrentPlayer) + (2500*PFMultiplier)
 end sub	
 
@@ -3618,7 +3643,7 @@ sub Kicker006_hit()
 	Me.TimerEnabled = 1
 end sub
 
-Sub Kicker006_Timer
+Sub Kicker006_Timer()
 	if (barunlocked = 0) or (Status <> "Normal") or (bMultiBallMode = true) Then
 		If eBall.Z > 0 Then
 			eBall.Z = eBall.Z - 5
@@ -3862,12 +3887,12 @@ Flames = Array("lava000", "lava001", "lava002", "lava003", "lava004", "lava005",
 "lava068", "lava069", "lava070", "lava071", "lava072", "lava073", "lava074", "lava075", "lava076", "lava077", "lava078", "lava079", "lava080", "lava081", "lava082", "lava083", "lava084",_															  
 "lava085", "lava086", "lava087", "lava088", "lava089", "lava090", "lava091", "lava092", "lava093", "lava094", "lava095", "lava096", "lava097", "lava098", "lava099", "lava100", "lava101")
 
-Sub StartFire
+Sub StartFire()
 	Fire1Pos = 0
 	FireTimer.Enabled = 1
 End Sub
 
-Sub FireTimer_Timer
+Sub FireTimer_Timer()
 	lava.ImageA = Flames(Fire1Pos)
 	Fire1Pos = (Fire1Pos + 1) MOD 102
 End Sub
@@ -3876,12 +3901,12 @@ Dim Fire2Pos,Flames2
 Flames2 = Array("magma00", "magma01", "magma02", "magma03", "magma04", "magma05", "magma06", "magma07", "magma08", "magma09", "magma10", "magma11", "magma12", "magma13", "magma14", "magma15", "magma16",_
 "magma17", "magma18", "magma19", "magma20", "magma21", "magma22", "magma23", "magma24", "magma25", "magma26", "magma27", "magma28", "magma29", "magma30", "magma31")
 
-Sub StartFire2
+Sub StartFire2()
 	Fire2Pos = 0
 	FireTimer2.Enabled = 1
 End Sub
 
-Sub FireTimer2_Timer
+Sub FireTimer2_Timer()
 	magma.ImageA = Flames2(Fire2Pos)
 	Fire2Pos = (Fire2Pos + 1) MOD 32
 End Sub
@@ -4022,7 +4047,7 @@ End Function
 ' pirateship animation
 '*****************
 
-Dim pirateshipDir, SinkPirateShip, SinkSpeed, ShipSpeed, ShipTip, ShipAngle, ShipAngleSpeed, ShipHeight
+Dim pirateshipDir, SinkPirateShip, SinkSpeed, ShipSpeed, ShipTip, ShipAngle, ShipAngleSpeed, ShipHeight, ShipReset
 Dim ShipOrigX, ShipOrigY, ShipOrigZ
 ShipSpeed = 6
 pirateshipDir = ShipSpeed 'this is the direction, if + goes up, if - goes down
@@ -4035,6 +4060,7 @@ ShipHeight = 25
 ShipOrigX = PirateShip.X
 ShipOrigY = PirateShip.Y
 ShipOrigZ = PirateShip.Z
+ShipReset = 1
 
 Sub PirateShipTimer_Timer
 	Select Case SinkPirateShip
@@ -4042,9 +4068,16 @@ Sub PirateShipTimer_Timer
 		Case 0
 			PirateShip.Y = ShipOrigY + dCos(ShipAngle*0.25+135) * 300 + 300
 			PirateShip.Z = dCos(ShipAngle) * ShipHeight + ShipHeight + 55
-			ShipAngle = ShipAngle + ShipAngleSpeed
+			ShipAngle = ShipAngle + ShipAngleSpeed * ShipReset
 			PirateShip.RotZ = dSin(ShipAngle) * ShipTip
 			If ShipAngle > 1440 Then ShipAngle = ShipAngle - 1440
+			If ShipAngle < 180 AND ShipReset = -1 Then
+				ShipReset = 1
+				SinkPirateShip = 0
+				ShipAngle = 180
+				me.enabled = 0
+				ShipAngleSpeed = 2.5
+			End If
 		Case 1
 			'Ship got hit, so start the sinking animation
 			Select Case true
@@ -4162,7 +4195,6 @@ sub titem001_hit()
 	playsound "won"
 	StopmodeEndofBall()
 	titem001.enabled = 0
-	AddMultiball 1
 	Status = "Normal"
 	ChangeSong()
 	LeChuckSlot = LeChuckSlot OR 1
@@ -4191,7 +4223,6 @@ sub titem002_hit()
 	playsound "won"
 	StopmodeEndofBall()
 	titem002.enabled = 0
-	AddMultiball 1
 	ChangeSong()
 	LeChuckSlot = LeChuckSlot OR 2
 	checkitemscomplete()
@@ -4220,7 +4251,6 @@ sub titem003_hit()
 	playsound "won"
 	StopmodeEndofBall()
 	titem003.enabled = 0
-	AddMultiball 1
 	Status = "Normal"
 	ChangeSong()
 	LeChuckSlot = LeChuckSlot OR 4
@@ -4249,7 +4279,6 @@ sub titem004_hit()
 	playsound "won"
 	StopmodeEndofBall()
 	titem004.enabled = 0
-	AddMultiball 1
 	Status = "Normal"
 	ChangeSong()
 	LeChuckSlot = LeChuckSlot OR 8
@@ -4278,7 +4307,6 @@ sub titem005_hit()
 	playsound "won"
 	StopmodeEndofBall
 	titem005.enabled = 0
-	AddMultiball 1
 	Status = "Normal"
 	ChangeSong()
 	LeChuckSlot = LeChuckSlot OR 16
@@ -4307,7 +4335,6 @@ sub titem006_hit()
 	playsound "won"
 	StopmodeEndofBall()
 	titem006.enabled = 0
-	AddMultiball 1
 	Status = "Normal"
 	ChangeSong()
 	LeChuckSlot = LeChuckSlot OR 32
@@ -4336,7 +4363,6 @@ sub titem007_hit()
 	playsound "won"
 	StopmodeEndofBall()
 	titem007.enabled = 0
-	AddMultiball 1
 	Status = "Normal"
 	ChangeSong()
 	LeChuckSlot = LeChuckSlot OR 64
@@ -4365,7 +4391,6 @@ sub titem008_hit()
 	playsound "won"
 	StopmodeEndofBall()
 	titem008.enabled = 0
-	AddMultiball 1
 	Status = "Normal"
 	ChangeSong()
 	LeChuckSlot = LeChuckSlot OR 128
@@ -4435,9 +4460,9 @@ Sub GiveSlotAwardBar()
 	DMD "", "", SlotAward1(SlotValue1 - 1), eNone, eNone, eNone, 500, True, ""
 	Select Case SlotValue1
 		Case 1
-			SlotValue1 = 1	'Treasure
+			SlotValue1 = 1	'Spitting
 		Case 2
-			SlotValue1 = 2	'Spitting
+			SlotValue1 = 2	'Treasure
 		Case 3
 			SlotValue1 = 4	'Bar Fight
 		Case 4
@@ -4451,9 +4476,9 @@ Sub GiveSlotAwardBar()
 		DMD "", "", SlotAward1(SlotValue1-1), eNone, eNone, eNone, 500, True, ""
 		Select Case SlotValue1
 			Case 1
-				SlotValue1 = 1	'Treasure
+				SlotValue1 = 1	'Spitting
 			Case 2
-				SlotValue1 = 2	'Spitting
+				SlotValue1 = 2	'Treasure
 			Case 3
 				SlotValue1 = 4	'Bar Fight
 			Case 4
@@ -4468,7 +4493,6 @@ Sub GiveSlotAwardBar()
 			Set eBall = Nothing
 			vpmTimer.AddTimer 1000, "Spitting '"		'Spitting
 		Case 2
-			'BSBarToBar.AddBall Kicker006
 			vpmTimer.AddTimer 1000, "Treasure '"		'Treasure
 		Case 4
 			BSBarToBar.AddBall Kicker006
@@ -4483,25 +4507,139 @@ Sub GiveSlotAwardBar()
 			Set eBall = Nothing
 			vpmTimer.AddTimer 1000, "Duels '"			'Duels
 	End Select
-	BarSlot = BarSlot OR SlotValue1
-	If BarSlot = 31 Then
-		BarUnlocked = 0
-		li048.state = 1
-		li007.state = 0
-	End If
 End Sub
 
 '********bar pitting mode***************
+Dim NextSpitDistance, SpittingDistance(5), BuildSpit, SpitPower, SpitPic, SpitCount, SpitPos(13), NextSpitKey
+SpitPos(1)  = "            MAX "
+SpitPos(2)  = "=           MAX "
+SpitPos(3)  = "==          MAX "
+SpitPos(4)  = "===         MAX "
+SpitPos(5)  = "====        MAX "
+SpitPos(6)  = "=====       MAX "
+SpitPos(7)  = "======      MAX "
+SpitPos(8)  = "=======     MAX "
+SpitPos(9)  = "========    MAX "
+SpitPos(10) = "=========   MAX "
+SpitPos(11) = "==========  MAX "
+SpitPos(12) = "=========== MAX "
+SpitPos(13) = "============MAX "
 
 sub Spitting()
 	li032.state = 2
-	li032.state = 1
-	BSBarToBar.ExitSol_On
+	NextSpitDistance=SpittingDistance(1)
 	Status = "Spitting"
+	SpitPower = 1
+	SpitCount = 0
+	DMDFlush()
+	DMD CL(0, "SPITTING"), CL(1, "COMPETITION"),"",eBlink,eBlink,0,1500,False,""
+	DMD CL(0, "ALT FLIPPERS"), CL(1, "FOR SPIT POWER"),"",eBlink,eBlink,0,2000,False,""
+	DMD CL(0, "TARGET IS ="), CL(1, "AT LEAST "&NextSpitDistance&" FT"),"",0,0,0,1000,False,""
+	DMD CL(0, "READY"), CL(1, "READY"),"",eScrollLeft,eScrollRight,0,1000,False,""
+	DMD CL(0, "STEADY"), CL(1, "STEADY"),"",eScrollRight,eScrollLeft,0,1000,False,""
+	DMD CL(0, "GO"), CL(1, "GO"),"",eBlinkFast,eBlinkFast,0,500,False,""
+	DMD "_", "_", "_", eNone, eNone, eNone, 5000, False, ""
+	Wall016.TimerInterval = 160
+	vpmTimer.AddTimer 12000, "Wall016.TimerEnabled = 1 '"
+	vpmTimer.AddTimer 12000, "BuildSpit = 1 '"
+	li007.state = 0
+	li011.state = 0
+end sub
+
+Sub SpitProcessKey(WhichFlipper)
+	If BuildSpit = 1 Then
+		Select Case (WhichFlipper)
+			Case LeftFlipperKey
+				If NextSpitKey = 0 Then
+					SpitPower = SpitPower + 1
+					'Play a Sound
+				End If
+				NextSpitKey = 1
+			Case RightFlipperKey
+				If NextSpitKey = 1 Then
+					SpitPower = SpitPower + 1
+					'Play a sound
+				End If
+				NextSpitKey = 0
+		End Select
+	End If
+End Sub
+
+Sub Wall016_timer()
+	Wall016.TimerEnabled = 0
+	SpitPic = ABS(Int(SpitPower/10))
+	If SpitPic < 1 Then SpitPic = 1
+	If SpitPic > 13 Then SpitPic = 13
+	DMDFlush()
+	DMD CL(0, "POWER = " & Int(SpitPower)), CL(1, SpitPos(SpitPic)),"",0,0,0,Wall016.TimerInterval,False,""
+	SpitPower = SpitPower - 0.5
+	If SpitPower < 1 Then SpitPower = 1
+	If SpitPower > 130 Then SpitPower = 130
+	Spitcount = SpitCount + 1
+	If SpitCount = 30 Then
+		DMDFlush()
+		DMD CL(0, "READY FOR"), CL(1, SpitPower & " FEET"),"",0,0,0,1000,False,""
+		If SpitPic > 12 Then SpitPic=12
+		vpmTimer.AddTimer 1000, "FinishSpit '"
+		BuildSpit = 0
+	Else
+		Me.TimerEnabled = 1
+	End If
+End Sub
+
+Sub FinishSpit()
+	'Play Some Sound
+	Wall016.TimerEnabled = 0
+	DMDFlush()
+	DMD CL(0, "= PHTOOEY ="), "<>                  ","",0,0,0,50,False,""
+	DMD CL(0, "= PHTOOEY ="), "<  >                ","",0,0,0,50,False,""
+	DMD CL(0, "= PHTOOEY ="), "<    >              ","",0,0,0,50,False,""
+	DMD CL(0, "= PHTOOEY ="), "<      >            ","",0,0,0,50,False,""
+	DMD CL(0, "= PHTOOEY ="), "<        >          ","",0,0,0,50,False,""
+	DMD CL(0, "= PHTOOEY ="), "<          >        ","",0,0,0,50,False,""
+	DMD CL(0, "= PHTOOEY ="), "<            >      ","",0,0,0,50,False,""
+	DMD CL(0, "= PHTOOEY ="), "<              >    ","",0,0,0,50,False,""
+	DMD CL(0, "= PHTOOEY ="), "<                >  ","",0,0,0,50,False,""
+	DMD CL(0, "= PHTOOEY ="), "<                  >","",0,0,0,50,False,""
+	DMD CL(0, "= PHTOOEY ="), "  <                >","",0,0,0,50,False,""
+	DMD CL(0, "= PHTOOEY ="), "    <              >","",0,0,0,50,False,""
+	DMD CL(0, "= PHTOOEY ="), "      <            >","",0,0,0,50,False,""
+	DMD CL(0, "= PHTOOEY ="), "        <          >","",0,0,0,50,False,""
+	DMD CL(0, "= PHTOOEY ="), "          <        >","",0,0,0,50,False,""
+	DMD CL(0, "= PHTOOEY ="), "            <      >","",0,0,0,50,False,""
+	DMD CL(0, "= PHTOOEY ="), "              <    >","",0,0,0,50,False,""
+	DMD CL(0, "= PHTOOEY ="), "                <  >","",0,0,0,50,False,""
+	DMD CL(0, "= PHTOOEY ="), "                  <>","",0,0,0,50,False,"knocker"
+	DMD "_","_","_",0,0,0,1000,False,""
+	vpmTimer.AddTimer 1700, "TestSpit '"
+End Sub
+
+Sub TestSpit()
+	DMDFlush()
+	DMD CL(0, "LETS   SEE"), CL(1, "HOW  YA  DID"),"",2,2,0,1000,False,""
+	Score(CurrentPlayer) = Score(CurrentPlayer) + (SpitPower*2000*PFMultiplier)
+	If SpitPower >= NextSpitDistance Then
+		vpmTimer.AddTimer 1000, "GoSpitAward '"
+	Else
+		DMD CL(0, "NICE   TRY"), CL(1, "GUYBRUSH"),"",3,3,0,1000,True,"lost"
+		vpmTimer.AddTimer 1500, "BSBarToBar.ExitSol_On '"
+	End If
 	Status = "Normal"
+	CheckBar()
+End Sub
+
+Sub GoSpitAward()
+	DMDFlush()
+	BarSlot = BarSlot OR 1
+	DMD CL(0, "COMPETITION"), CL(1, "WINNER"),"",1,1,0,1000,False,"won"
+	li032.State = 1
+	DMD CL(0, "YOU ARE AWARDED"), CL(1, (SpitPower*2000*PFMultiplier) & "POINTS"), "", eNone, eNone, eNone, 1000, True, ""
+	ChangeSong()
+	vpmtimer.addtimer 250, "startB2S(3) '"
 	If BarUnlocked = 1 Then li007.state = 2
 	If VoodooUnlocked = 1 Then li011.state = 2
-end sub
+	vpmTimer.AddTimer 1200, "BSBarToBar.ExitSol_On '"
+End Sub
 
 '********bar treasure hunt mode***************
 dim rBall
@@ -4509,6 +4647,7 @@ dim BallInHole4
 Dim SchatkistShake
 
 sub Treasure()
+	treasurfindy = 0
 	bringChestdown()
 	StopSong()
 	playsound "dig"
@@ -4616,6 +4755,8 @@ sub checktreasurecomplete()
 		vpmtimer.addtimer 250, "startB2S(3) '"
 		If BarUnlocked = 1 Then li007.state = 2
 		If VoodooUnlocked = 1 Then li011.state = 2
+		BarSlot = BarSlot OR 2
+		CheckBar()
 	end if
 end sub
 
@@ -4699,6 +4840,7 @@ end sub
 
 Dim mFist
 sub BarFight()
+	mFist = 0
 	StopSong()
 	PlaySong "barquest2" 
 	mode1TimerCount = 90
@@ -4806,6 +4948,8 @@ sub checkbonusfist()
 		ChangeSong()
 		If BarUnlocked = 1 Then li007.state = 2
 		If VoodooUnlocked = 1 Then li011.state = 2
+		BarSlot = BarSlot OR 4
+		CheckBar()
 	end if
 end sub
 
@@ -4813,6 +4957,7 @@ end sub
 
 Dim mCoin
 sub CoinFrenzy()
+	mCoin = 0
 	StopSong()
 	PlaySong "barquest2" 
 	mode1TimerCount = 90
@@ -4930,6 +5075,8 @@ sub checkbonuscoin()
 		ChangeSong()
 		If BarUnlocked = 1 Then li007.state = 2
 		If VoodooUnlocked = 1 Then li011.state = 2
+		BarSlot = BarSlot OR 8
+		CheckBar()
 	end if
 end sub
 
@@ -4943,6 +5090,8 @@ sub Duels()
 	Status = "Normal"
 	If BarUnlocked = 1 Then li007.state = 2
 	If VoodooUnlocked = 1 Then li011.state = 2
+	BarSlot = BarSlot OR 16
+	CheckBar()
 end sub
 
 '**************
@@ -5032,6 +5181,14 @@ Sub VoodooPicker()
 	Randomize()
 	WheelSpeed = Int(2.5*Rnd+1)
 	SpinningWheel.enabled = 1
+End Sub
+
+Sub CheckVoodoo()
+	If VoodooSlot = 31 Then
+		VoodooUnlocked = 0
+		li047.state = 1
+		li011.state = 0
+	End If
 End Sub
 
 '********voodoo magic mode***************
@@ -5177,11 +5334,7 @@ Sub GetRidOfVoodooBall(Ball)
 	If VoodooUnlocked = 1 Then li011.state = 2
 	If BarUnlocked = 1 Then li007.state = 2
 	StopModeEndOfBall()
-	If VoodooSlot = 31 Then
-		VoodooUnlocked = 0
-		li047.state = 1
-		li011.state = 0
-	End If
+	CheckVoodoo()
 End Sub
 
 '********voodoo chicken mode***************
@@ -5324,11 +5477,7 @@ sub checkbonuschicken()
 		If BarUnlocked = 1 Then li007.state = 2
 		VoodooSlot = VoodooSlot OR 2
 		TiChickenDance.Enabled = 0
-		If VoodooSlot = 31 Then
-			VoodooUnlocked = 0
-			li047.state = 1
-			li011.state = 0
-		End If
+		CheckVoodoo()
 	end if
 end sub
 
@@ -5488,11 +5637,7 @@ sub checkbonusmushroom()
 		If VoodooUnlocked = 1 Then li011.state = 2
 		If BarUnlocked = 1 Then li007.state = 2
 		VoodooSlot = VoodooSlot OR 4
-		If VoodooSlot = 31 Then
-			VoodooUnlocked = 0
-			li047.state = 1
-			li011.state = 0
-		End If
+		CheckVoodoo()
 	end if
 end sub
 
@@ -5632,11 +5777,7 @@ sub CheckBonusVoodooDoll()
 		If VoodooUnlocked = 1 Then li011.state = 2
 		If BarUnlocked = 1 Then li007.state = 2
 		VoodooSlot = VoodooSlot OR 8
-		If VoodooSlot = 31 Then
-			VoodooUnlocked = 0
-			li047.state = 1
-			li011.state = 0
-		End If
+		CheckVoodoo()
 	end if
 end sub
 
@@ -5779,11 +5920,7 @@ sub checkbonusear()
 		If VoodooUnlocked = 1 Then li011.state = 2
 		If BarUnlocked = 1 Then li007.state = 2
 		VoodooSlot = VoodooSlot OR 16
-		If VoodooSlot = 31 Then
-			VoodooUnlocked = 0
-			li047.state = 1
-			li011.state = 0
-		End If
+		CheckVoodoo()
 	end if
 end sub
 
@@ -5948,6 +6085,8 @@ Sub Stopmode1()
 	StopSong()
 	UpdateMusicNow()
 	TurnOffClock()
+	CheckBar()
+	CheckVoodoo()
 End Sub
 
 Sub Stopmode2()
@@ -5956,7 +6095,7 @@ Sub Stopmode2()
 	LowerFlippersActive = False
 	mode2timer.Enabled = 0
 	stopquests()
-	StopSong
+	StopSong()
 	UpdateMusicNow()
 	TurnOffClock()
 End Sub
