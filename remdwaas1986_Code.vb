@@ -4567,7 +4567,7 @@ End Sub
 
 Sub Wall016_timer()
 	Wall016.TimerEnabled = 0
-	SpitPic = ABS(Int(SpitPower/10))
+	SpitPic = ABS(Int(SpitPower/5))
 	If SpitPic < 1 Then SpitPic = 1
 	If SpitPic > 13 Then SpitPic = 13
 	DMDFlush()
