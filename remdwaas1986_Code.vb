@@ -3091,8 +3091,8 @@ end sub
 Sub tmurray_Hit
 	startB2S(6)
 	PlayMurrayQuote()
-	vpmTimer.AddTimer 2000, "Ramp010.Collidable = 0 '"
-	vpmTimer.AddTimer 2250, "Ramp010.Collidable = 1 '"
+'	vpmTimer.AddTimer 2000, "Ramp010.Collidable = 0 '"
+'	vpmTimer.AddTimer 2250, "Ramp010.Collidable = 1 '"
 End Sub
 
 '**********************inner/outerlane*********************
