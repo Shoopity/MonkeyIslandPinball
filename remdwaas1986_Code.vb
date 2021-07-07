@@ -492,7 +492,7 @@ Sub GameTimer_Timer
 '	Else
 '		TextBox001.Text = "wait"
 '	end If
-	TextBox001.Text = BallsOnPlayfield
+'	TextBox001.Text = BallsOnPlayfield
 End Sub
 
 '******
@@ -568,8 +568,6 @@ Sub Table1_KeyDown(ByVal Keycode)
 			CheckTilt()
 		End If
 		If keycode = CenterTiltKey Then Nudge 0, 9:PlaySound "fx_nudge", 0, 1, 1, 0.25:CheckTilt
-'		If keycode = LeftFlipperKey Then SolLFlipper 1
-'		If keycode = RightFlipperKey Then SolRFlipper 1
 		If keycode = StartGameKey Then
 			If((PlayersPlayingGame <MaxPlayers) AND(bOnTheFirstBall = True) ) Then
 				If(bFreePlay = True) Then
@@ -592,6 +590,28 @@ Sub Table1_KeyDown(ByVal Keycode)
 					End If
 				End If
 			End If
+		End If
+		If keycode = LeftFlipperKey Then
+			Select Case Status
+				Case "Spitting"
+					SpitProcessKey(keycode)
+				Case "Treasure"
+					PlaySound "fx_flipperup", 0, 1, 0, 0.25
+					LeftFlipper001.RotateToEnd
+				Case Else
+					SolLFlipper 1
+			End Select
+		End If
+		If keycode = RightFlipperKey Then
+			Select Case Status
+				Case "Spitting"
+					SpitProcessKey(keycode)
+				Case "Treasure"
+					PlaySound "fx_flipperup", 0, 1, 0, 0.25
+					RightFlipper001.RotateToEnd
+				Case Else
+					SolRFlipper 1
+			End Select
 		End If
 	Else ' If (GameInPlay)
 		If keycode = StartGameKey Then
@@ -618,30 +638,6 @@ Sub Table1_KeyDown(ByVal Keycode)
 			End If
 		End If
 	End If ' If (GameInPlay)
-	If bGameInPLay AND NOT Tilted Then
-		If keycode = LeftFlipperKey Then
-			Select Case Status
-				Case "Spitting"
-					SpitProcessKey(keycode)
-				Case "Treasure"
-					PlaySound "fx_flipperup", 0, 1, 0, 0.25
-					LeftFlipper001.RotateToEnd
-				Case Else
-					SolLFlipper 1
-			End Select
-		End If
-		If keycode = RightFlipperKey Then
-			Select Case Status
-				Case "Spitting"
-					SpitProcessKey(keycode)
-				Case "Treasure"
-					PlaySound "fx_flipperup", 0, 1, 0, 0.25
-					RightFlipper001.RotateToEnd
-				Case Else
-					SolRFlipper 1
-			End Select
-		End If
-	End If
 End Sub
 
 Sub Table1_KeyUp(ByVal keycode)
@@ -1222,6 +1218,14 @@ sub checkbarr()
 end sub
 
 Sub CheckBar()
+	if voodoounlocked = 1 then
+		li047.state = 0 
+		li011.state = 2
+	end if
+	if barunlocked = 1 then
+		li048.state = 0
+		li007.state = 2
+	end if
 	If BarSlot = 31 Then
 		BarUnlocked = 0
 		li048.state = 1
@@ -1535,7 +1539,7 @@ Sub EndOfBallComplete()
 		' set the next player
 		CurrentPlayer = NextPlayer
 		' make sure the correct display is up to date
-		DMDScoreNow
+		DMDScoreNow()
 		' reset the playfield for the new player (or new ball)
 		ResetForNewPlayerBall()
 		' AND create a new ball
@@ -2855,7 +2859,7 @@ Sub ResetNewBallLights()	'turn on or off the needed lights before a new ball is 
 	if barunlocked = 0 then
 		li048.state = 1
 		li007.state = 0
-	end if	
+	end if
 	'TurnOffPlayfieldLights
 	'li025.State = 1
 	'li021.State = 1
@@ -2959,7 +2963,7 @@ Sub TrRightOrbit_Hit()
 		'Play Some Sound that you didn't make it
 		RightOrbitStart = 0
 		DMDFlush()
-		DMD "_", CL(1, "MISSED"), "_", eNone, eNone, eNone, 1, True, ""
+		DMD "_", CL(1, "RIGHT LANE"), "_", eNone, eNone, eNone, 1, False, ""
 		DMD "_", CL(1, "_"), "_", eNone, eScrollRight, eNone, 1, True, ""
 		Exit Sub
 	End If
@@ -2967,11 +2971,15 @@ Sub TrRightOrbit_Hit()
 		LeftOrbitStart = 0
 		Exit Sub
 	End If
-	DMD "_", CL(1, "RIGHT LANE"), "_", eNone, eScrollLeft, eNone, 1, True, ""
-	DMD "_", CL(1, "_"), "_", eNone, eScrollLeft, eNone, 1, True, ""
-	RightOrbitStart = 1
+	If RightOrbitStart = 0 Then
+		DMD "_", CL(1, "RIGHT LANE"), "_", eNone, eScrollLeft, eNone, 1, False, ""
+		DMD "_", CL(1, "RIGHT LANE"), "_", eNone, eNone, eNone, 1, False, ""
+		RightOrbitStart = 1
+		LSOrbit.Play SeqRadarLeftOn, 10
+	End If
 	Score(CurrentPlayer) = Score(CurrentPlayer) + (100*PFMultiplier)
-	LSOrbit.Play SeqRadarLeftOn, 10
+	vpmTimer.AddTimer 2000, "RightOrbitStart = 0 '"
+	vpmTimer.AddTimer 2100, "DMDScoreNow() '"
 End Sub
 
 Sub TrRightOrbitMake_Hit()
@@ -2979,8 +2987,8 @@ Sub TrRightOrbitMake_Hit()
 		Score(CurrentPlayer) = Score(CurrentPlayer) + (900*PFMultiplier)
 		'Play Some Sound for making a right orbit
 		'Maybe some lighting effect
-		DMD CL(1, "RIGHT LANE"), "_", "_", eScrollLeft, eNone, eNone, 1, True, ""
-		DMD CL(1, "_"), "_", "_", eScrollLeft, eNone, eNone, 1, True, ""
+		DMD "_", CL(1, "RIGHT LANE"), "_", eNone, eNone, eNone, 1, False, ""
+		DMD "_", CL(1, "_"), "_", eNone, eScrollLeft, eNone, 1, True, ""
 		GrogCounter = GrogCounter + 1
 		RightOrbitStart = 2
 		If GrogCounter >= 3 Then
@@ -2995,29 +3003,33 @@ Sub TrLeftOrbit_Hit()
 		'Play Some Sound that you didn't make it
 		LeftOrbitStart = 0
 		DMDFlush()
-		DMD "_", CL(1, "MISSED"), "_", eNone, eNone, eNone, 1, True, ""
-		DMD ")", CL(1, "_"), "_", eNone, eScrollLeft, eNone, 1, True, ""
+		DMD "_", CL(1, "LEFT LANE"), "_", eNone, eNone, eNone, 1, False, ""
+		DMD "_", CL(1, "_"), "_", eNone, eScrollLeft, eNone, 1, True, ""
 		Exit Sub
 	End If 
 	If RightOrbitStart = 2 Then
 		RightOrbitStart = 0
 		Exit Sub
 	End If
-	DMD "_", CL(1, "LEFT LANE"), "_", eNone, eScrollRight, eNone, 1, True, ""
-	DMD "_", CL(1, "_"), "_", eNone, eScrollRight, eNone, 1, True, ""
-	LeftOrbitStart = 1
+	If LeftOrbitStart = 0 Then
+		DMD "_", CL(1, "LEFT LANE"), "_", eNone, eScrollRight, eNone, 1, False, ""
+		DMD "_", CL(1, "LEFT LANE"), "_", eNone, eNone, eNone, 1, False, ""
+		LeftOrbitStart = 1
+		LSOrbit.Play SeqRadarRightOn, 10
+	End If
 	Score(CurrentPlayer) = Score(CurrentPlayer) + (100*PFMultiplier)
-	LSOrbit.Play SeqRadarRightOn, 10
+	vpmTimer.AddTimer 2000, "LeftOrbitStart = 0 '"
+	vpmTimer.AddTimer 2100, "DMDScoreNow() '"
 End Sub
 
 Sub TrLeftOrbitMake_Hit()
 	If LeftOrbitStart = 1 Then
 		Score(CurrentPlayer) = Score(CurrentPlayer) + (900*PFMultiplier)
-		'Play Some Sound for making a right orbit
+		'Play Some Sound for making a left orbit
 		'Maybe some lighting effect
 		LeftOrbitStart = 2
-		DMD CL(0, "LEFT LANE"), "_", "_", eScrollRight, eNone, eNone, 1, True, ""
-		DMD CL(0, "_"), "_", "_", eScrollRight, eNone, eNone, 1, True, ""
+		DMD "_", CL(1, "LEFT LANE"), "_", eNone, eNone, eNone, 1, False, ""
+		DMD "_", CL(1, "_"), "_", eNone, eScrollRight, eNone, 1, True, ""
 	End If
 End Sub
 
@@ -3077,8 +3089,10 @@ end sub
 '**********************murray cave*********************
 
 Sub tmurray_Hit
-startB2S(6)
-PlayMurrayQuote
+	startB2S(6)
+	PlayMurrayQuote()
+	vpmTimer.AddTimer 2000, "Ramp010.Collidable = 0 '"
+	vpmTimer.AddTimer 2250, "Ramp010.Collidable = 1 '"
 End Sub
 
 '**********************inner/outerlane*********************
@@ -3392,6 +3406,7 @@ Sub CheckInsult()
 	if (in_ = "IN") And (su_ = "SU") And (lt_ = "LT") Then 
 		if voodoounlocked = 0 Then
 			playsound "Unlock"
+			Score(CurrentPlayer) = Score(CurrentPlayer) + (75000*PFMultiplier)
 		end if
 		voodoounlocked = 1
 		DMDFlush()
@@ -3404,8 +3419,9 @@ Sub CheckInsult()
 		li041.state = 2
 		li042.state = 2
 		If Status = "Normal" Then li011.state = 2
-		Score(CurrentPlayer) = Score(CurrentPlayer) + (75000*PFMultiplier)
-	end if
+	Else
+		DMD CL(0, "SPELL INSULT"), CL(1, "TO UNLOCK DEEP GUT"), "", eScrollLeft, eScrollRight, eNone, 1500, True, ""
+	End if
 End Sub
 
 '*****************
@@ -3637,18 +3653,17 @@ Dim eBall
 
 sub Kicker006_hit()
 	playsound "balldropy"
-	FlashForMs Flasher002, 1000, 50, 0
 	Score(CurrentPlayer) = Score(CurrentPlayer) + (1000*PFMultiplier)
 	Set eBall = ActiveBall
 	Me.TimerEnabled = 1
 end sub
 
 Sub Kicker006_Timer()
+	If eBall.Z > 0 Then
+		eBall.Z = eBall.Z - 5
+		Exit Sub
+	End If
 	if (barunlocked = 0) or (Status <> "Normal") or (bMultiBallMode = true) Then
-		If eBall.Z > 0 Then
-			eBall.Z = eBall.Z - 5
-			Exit Sub
-		End If
 		MyTroughLRAdd(eBall)
 		Me.DestroyBall
 		startB2S(4)
@@ -3665,21 +3680,20 @@ Dim cBall
 
 sub Kicker005_hit()
 	FlashForMs Flasher001, 1000, 50, 0
-'	vpmtimer.addtimer 250, "startB2S(3) '"
 	Score(CurrentPlayer) = Score(CurrentPlayer) + (1000*PFMultiplier)
 	'Animate the ball going down
 	Set cBall = ActiveBall
 	Me.TimerEnabled = 1
 end sub
 
-Sub Kicker005_Timer
+Sub Kicker005_Timer()
+	'Lower the ball
+	If cBall.Z > 0 Then
+		cBall.Z = cBall.Z - 5
+		Exit Sub
+	End If
 	'If voodoo is locked, you're in a quest, or in a multiball mode, then kickout from the right
 	if (voodoounlocked = 0) or (Status <> "Normal") or (bMultiBallMode = true) Then
-		'Lower the ball
-		If cBall.Z > 0 Then
-			cBall.Z = cBall.Z - 5
-			Exit Sub
-		End If
 		MyTroughLRAdd(cBall)
 		'When it's all the way down
 		Me.DestroyBall
@@ -3688,18 +3702,9 @@ Sub Kicker005_Timer
 		LRKickout 1000, 290, 7, 0
 	'Otherwise, Do something based on the mode we're in
 	Else
-		Select Case Status
-			Case "Normal"
-				StartVoodooSlotmachine()
-			Case Else
-				LRKickout 1000, 290, 7, 0
-		End Select
+		StartVoodooSlotmachine()
 	end if
 	Me.TimerEnabled = 0
-End Sub
-
-Sub FromVoodooToLowerRight()
-	PlaySound "knocker"
 End Sub
 
 'We have to do it this way so that newly entering balls don't trigger ball creating immediately; ball creation should only happen 1 second after a ball is kicked out
@@ -4490,21 +4495,20 @@ Sub GiveSlotAwardBar()
 	Select Case SlotValue1
 		Case 1
 			BSTreasure.AddBall Kicker006
-			Set eBall = Nothing
 			vpmTimer.AddTimer 1000, "Spitting '"		'Spitting
 		Case 2
 			vpmTimer.AddTimer 1000, "Treasure '"		'Treasure
 		Case 4
 			BSBarToBar.AddBall Kicker006
-			Set eBall = Nothing
+			FlashForMs Flasher002, 1000, 50, 0
 			vpmTimer.AddTimer 1000, "BarFight '"		'BarFight
 		Case 8
 			BSBarToBar.AddBall Kicker006
-			Set eBall = Nothing
+			FlashForMs Flasher002, 1000, 50, 0
 			vpmTimer.AddTimer 1000, "CoinFrenzy '"		'CoinFrenzy
 		Case 16
 			BSBarToBar.AddBall Kicker006
-			Set eBall = Nothing
+			FlashForMs Flasher002, 1000, 50, 0
 			vpmTimer.AddTimer 1000, "Duels '"			'Duels
 	End Select
 End Sub
@@ -4591,25 +4595,25 @@ Sub FinishSpit()
 	'Play Some Sound
 	Wall016.TimerEnabled = 0
 	DMDFlush()
-	DMD CL(0, "= PHTOOEY ="), "<>                  ","",0,0,0,50,False,""
-	DMD CL(0, "= PHTOOEY ="), "<  >                ","",0,0,0,50,False,""
-	DMD CL(0, "= PHTOOEY ="), "<    >              ","",0,0,0,50,False,""
-	DMD CL(0, "= PHTOOEY ="), "<      >            ","",0,0,0,50,False,""
-	DMD CL(0, "= PHTOOEY ="), "<        >          ","",0,0,0,50,False,""
-	DMD CL(0, "= PHTOOEY ="), "<          >        ","",0,0,0,50,False,""
-	DMD CL(0, "= PHTOOEY ="), "<            >      ","",0,0,0,50,False,""
-	DMD CL(0, "= PHTOOEY ="), "<              >    ","",0,0,0,50,False,""
-	DMD CL(0, "= PHTOOEY ="), "<                >  ","",0,0,0,50,False,""
-	DMD CL(0, "= PHTOOEY ="), "<                  >","",0,0,0,50,False,""
-	DMD CL(0, "= PHTOOEY ="), "  <                >","",0,0,0,50,False,""
-	DMD CL(0, "= PHTOOEY ="), "    <              >","",0,0,0,50,False,""
-	DMD CL(0, "= PHTOOEY ="), "      <            >","",0,0,0,50,False,""
-	DMD CL(0, "= PHTOOEY ="), "        <          >","",0,0,0,50,False,""
-	DMD CL(0, "= PHTOOEY ="), "          <        >","",0,0,0,50,False,""
-	DMD CL(0, "= PHTOOEY ="), "            <      >","",0,0,0,50,False,""
-	DMD CL(0, "= PHTOOEY ="), "              <    >","",0,0,0,50,False,""
-	DMD CL(0, "= PHTOOEY ="), "                <  >","",0,0,0,50,False,""
-	DMD CL(0, "= PHTOOEY ="), "                  <>","",0,0,0,50,False,"knocker"
+	DMD CL(0, "= PHTOOEY ="), "<>                  ","",0,0,0,20,False,""
+	DMD CL(0, "= PHTOOEY ="), "<  >                ","",0,0,0,20,False,""
+	DMD CL(0, "= PHTOOEY ="), "<    >              ","",0,0,0,20,False,""
+	DMD CL(0, "= PHTOOEY ="), "<      >            ","",0,0,0,20,False,""
+	DMD CL(0, "= PHTOOEY ="), "<        >          ","",0,0,0,20,False,""
+	DMD CL(0, "= PHTOOEY ="), "<          >        ","",0,0,0,20,False,""
+	DMD CL(0, "= PHTOOEY ="), "<            >      ","",0,0,0,20,False,""
+	DMD CL(0, "= PHTOOEY ="), "<              >    ","",0,0,0,20,False,""
+	DMD CL(0, "= PHTOOEY ="), "<                >  ","",0,0,0,20,False,""
+	DMD CL(0, "= PHTOOEY ="), "<                  >","",0,0,0,20,False,""
+	DMD CL(0, "= PHTOOEY ="), "  <                >","",0,0,0,20,False,""
+	DMD CL(0, "= PHTOOEY ="), "    <              >","",0,0,0,20,False,""
+	DMD CL(0, "= PHTOOEY ="), "      <            >","",0,0,0,20,False,""
+	DMD CL(0, "= PHTOOEY ="), "        <          >","",0,0,0,20,False,""
+	DMD CL(0, "= PHTOOEY ="), "          <        >","",0,0,0,20,False,""
+	DMD CL(0, "= PHTOOEY ="), "            <      >","",0,0,0,20,False,""
+	DMD CL(0, "= PHTOOEY ="), "              <    >","",0,0,0,20,False,""
+	DMD CL(0, "= PHTOOEY ="), "                <  >","",0,0,0,20,False,""
+	DMD CL(0, "= PHTOOEY ="), "                  <>","",0,0,0,20,False,"knocker"
 	DMD "_","_","_",0,0,0,1000,False,""
 	vpmTimer.AddTimer 1700, "TestSpit '"
 End Sub
@@ -4622,6 +4626,8 @@ Sub TestSpit()
 		vpmTimer.AddTimer 1000, "GoSpitAward '"
 	Else
 		DMD CL(0, "NICE   TRY"), CL(1, "GUYBRUSH"),"",3,3,0,1000,True,"lost"
+		FlashForMs Flasher002, 1500, 50, 0
+		vpmTimer.AddTimer 1400, "eBall.Z = 25 '"
 		vpmTimer.AddTimer 1500, "BSBarToBar.ExitSol_On '"
 	End If
 	Status = "Normal"
@@ -4636,8 +4642,8 @@ Sub GoSpitAward()
 	DMD CL(0, "YOU ARE AWARDED"), CL(1, (SpitPower*2000*PFMultiplier) & "POINTS"), "", eNone, eNone, eNone, 1000, True, ""
 	ChangeSong()
 	vpmtimer.addtimer 250, "startB2S(3) '"
-	If BarUnlocked = 1 Then li007.state = 2
-	If VoodooUnlocked = 1 Then li011.state = 2
+	FlashForMs Flasher002, 1200, 50, 0
+	vpmTimer.AddTimer 1100, "eBall.Z = 25 '"
 	vpmTimer.AddTimer 1200, "BSBarToBar.ExitSol_On '"
 End Sub
 
@@ -4705,8 +4711,8 @@ Sub Kicker007_Timer
 	Me.TimerEnabled = 0
 	Me.Enabled = 1
 	Me.DestroyBall
-	FlashForMs Flasher002, 2100, 50, 0
-	vpmtimer.addtimer 2100, "BackToPlayfield '" 
+	FlashForMs Flasher002, 1000, 50, 0
+	vpmtimer.addtimer 1100, "BackToPlayfield '" 
 End Sub
 
 sub Target004_hit()
@@ -4753,8 +4759,6 @@ sub checktreasurecomplete()
 		treasuresfound = treasuresfound + 1
 		Updatetreasurecountr()
 		vpmtimer.addtimer 250, "startB2S(3) '"
-		If BarUnlocked = 1 Then li007.state = 2
-		If VoodooUnlocked = 1 Then li011.state = 2
 		BarSlot = BarSlot OR 2
 		CheckBar()
 	end if
@@ -4847,6 +4851,7 @@ sub BarFight()
 	mode1timer.Enabled = 1
 	itemrotztimer.Enabled = 1
 	enablefists()
+	eBall.Z = 25
 	BSBarToBar.ExitSol_On
 	li034.state = 2
 	Status = "Fight"
@@ -4946,8 +4951,6 @@ sub checkbonusfist()
 		AddMultiball 1
 		Status = "Normal"
 		ChangeSong()
-		If BarUnlocked = 1 Then li007.state = 2
-		If VoodooUnlocked = 1 Then li011.state = 2
 		BarSlot = BarSlot OR 4
 		CheckBar()
 	end if
@@ -4964,6 +4967,7 @@ sub CoinFrenzy()
 	mode1timer.Enabled = 1
 	itemrotztimer.Enabled = 1
 	enablecoins()
+	eBall.Z = 25
 	BSBarToBar.ExitSol_On
 	li007.state = 0
 	li035.state = 2
@@ -5073,8 +5077,6 @@ sub checkbonuscoin()
 		AddMultiball 1
 		Status = "Normal"
 		ChangeSong()
-		If BarUnlocked = 1 Then li007.state = 2
-		If VoodooUnlocked = 1 Then li011.state = 2
 		BarSlot = BarSlot OR 8
 		CheckBar()
 	end if
@@ -5085,11 +5087,10 @@ end sub
 sub Duels()
 	li036.state = 2
 	li036.state = 1
+	eBall.Z = 25
 	BSBarToBar.ExitSol_On
 	Status = "Duels"
 	Status = "Normal"
-	If BarUnlocked = 1 Then li007.state = 2
-	If VoodooUnlocked = 1 Then li011.state = 2
 	BarSlot = BarSlot OR 16
 	CheckBar()
 end sub
@@ -5112,7 +5113,6 @@ Sub StartVoodooSlotmachine()
 		DMD "", "", SlotAward2(i), eNone, eNone, eNone, 50, False, "fx_spinner"
 	Next
 	vpmtimer.AddTimer 2000, "GiveSlotAwardVoodoo '"
-	playsound "dropopen"
 	'Stop the lights blinking and reset the INSULT variables
 	li047.state = 0
 	li037.state = 0
@@ -5184,6 +5184,14 @@ Sub VoodooPicker()
 End Sub
 
 Sub CheckVoodoo()
+	if voodoounlocked = 1 then
+		li047.state = 0 
+		li011.state = 2
+	end if
+	if barunlocked = 1 then
+		li048.state = 0
+		li007.state = 2
+	end if
 	If VoodooSlot = 31 Then
 		VoodooUnlocked = 0
 		li047.state = 1
@@ -5244,6 +5252,7 @@ Sub MagnetsOnMain()		' NudgeOkay=0 because nudge liberate Voodoo Ball...
 	Kicker002.kick 0, 15, 80
 	Kicker002.Enabled = 0
 	Playsound "fx_popper"
+	vpmtimer.AddTimer 1900, "cBall.Z = 25 '"
 	vpmtimer.AddTimer 2000, "BSVoodooToVoodoo.ExitSol_On '"
 	vpmtimer.addtimer 4000, "ResetTarget013 '"
 	vpmtimer.addtimer 4000, "Kicker002Enable '"
@@ -5331,8 +5340,6 @@ Sub GetRidOfVoodooBall(Ball)
 		Ball.AngMomZ = TAngMomZ
 	End If
 	Status = "Normal"
-	If VoodooUnlocked = 1 Then li011.state = 2
-	If BarUnlocked = 1 Then li007.state = 2
 	StopModeEndOfBall()
 	CheckVoodoo()
 End Sub
@@ -5346,9 +5353,11 @@ sub VoodooChicken()
 	mode1TimerCount = 90
 	mode1timer.Enabled = 1
 	enablechickens()
+	cBall.Z = 25
 	BSVoodooToVoodoo.ExitSol_On
 	TiChickenDance.Enabled = 1
 	li028.state = 2
+	ChickenChecker = 0
 end sub
 
 Dim WhichChicken, ChickenChecker
@@ -5386,28 +5395,32 @@ sub enablechickens()
 			chicken001.Visible = 1
 			chicken001.X = tchicken001.X
 			chicken001.Y = tchicken001.Y
+			Chicken001.RotY = -30
 		Case 2
 			tchicken002.enabled = 1
 			chicken001.Visible = 1
 			chicken001.X = tchicken002.X
 			chicken001.Y = tchicken002.Y
+			Chicken001.RotY = 0
 		Case 4
 			tchicken003.enabled = 1
 			chicken001.Visible = 1
 			chicken001.X = tchicken003.X
 			chicken001.Y = tchicken003.Y
+			Chicken001.RotY = 35
 		Case 8
 			tchicken004.enabled = 1
 			chicken001.Visible = 1
 			chicken001.X = tchicken004.X
 			chicken001.Y = tchicken004.Y
+			Chicken001.RotY = 0
 		Case 16
 			tchicken005.enabled = 1
 			chicken001.Visible = 1
 			chicken001.X = tchicken005.X
 			chicken001.Y = tchicken005.Y
+			Chicken001.RotY = 40
 	End Select
-	ChickenChecker = (ChickenChecker OR WhichChicken)
 end sub
 
 sub movechickendown()
@@ -5423,6 +5436,7 @@ Sub tchicken001_Hit()
 	Score(CurrentPlayer) = Score(CurrentPlayer) + (10000*PFMultiplier)
 	Playsound "chickenhurt"
 	addextratime()
+	ChickenChecker = (ChickenChecker OR 1)
 	EnableChickens()
 end sub
 
@@ -5432,6 +5446,7 @@ Sub tchicken002_Hit()
 	Score(CurrentPlayer) = Score(CurrentPlayer) + (10000*PFMultiplier)
 	Playsound "chickenhurt"
 	addextratime()
+	ChickenChecker = (ChickenChecker OR 2)
 	EnableChickens()
 end sub
 
@@ -5441,6 +5456,7 @@ Sub tchicken003_Hit()
 	Score(CurrentPlayer) = Score(CurrentPlayer) + (10000*PFMultiplier)
 	Playsound "chickenhurt"
 	addextratime()
+	ChickenChecker = (ChickenChecker OR 4)
 	EnableChickens()
 end sub
 
@@ -5450,6 +5466,7 @@ Sub tchicken004_Hit()
 	Score(CurrentPlayer) = Score(CurrentPlayer) + (10000*PFMultiplier)
 	Playsound "chickenhurt"
 	addextratime()
+	ChickenChecker = (ChickenChecker OR 8)
 	EnableChickens()
 end sub
 
@@ -5459,6 +5476,7 @@ Sub tchicken005_Hit()
 	Score(CurrentPlayer) = Score(CurrentPlayer) + (10000*PFMultiplier)
 	Playsound "chickenhurt"
 	addextratime()
+	ChickenChecker = (ChickenChecker OR 16)
 	EnableChickens()
 end sub
 
@@ -5473,8 +5491,6 @@ sub checkbonuschicken()
 		Status = "Normal"
 		ChangeSong()
 		ChickenChecker = 0
-		If VoodooUnlocked = 1 Then li011.state = 2
-		If BarUnlocked = 1 Then li007.state = 2
 		VoodooSlot = VoodooSlot OR 2
 		TiChickenDance.Enabled = 0
 		CheckVoodoo()
@@ -5503,8 +5519,10 @@ sub VoodooMushroom()
 	mode1timer.Enabled = 1
 	itemrotytimer.Enabled = 1
 	enablemushrooms()
+	cBall.Z = 25
 	BSVoodooToVoodoo.ExitSol_On
 	li029.state = 2
+	MushroomChecker = 0
 end sub
 
 Dim WhichMushroom, MushroomChecker
@@ -5568,7 +5586,6 @@ sub enablemushrooms()
 			Mushroom001.Y = tmushroom005.Y
 			Mushroom001.Z = 30
 	End Select
-	MushroomChecker = (MushroomChecker OR WhichMushroom)
 end sub
 
 Sub tmushroom001_Hit()
@@ -5577,6 +5594,7 @@ Sub tmushroom001_Hit()
 	Score(CurrentPlayer) = Score(CurrentPlayer) + (10000*PFMultiplier)
 	Playsound "mushroomhurt"
 	addextratime()
+	MushroomChecker = (MushroomChecker OR 1)
 	EnableMushrooms()
 end sub
 
@@ -5593,6 +5611,7 @@ Sub tmushroom002_Hit()
 	Score(CurrentPlayer) = Score(CurrentPlayer) + (10000*PFMultiplier)
 	Playsound "mushroomhurt"
 	addextratime()
+	MushroomChecker = (MushroomChecker OR 2)
 	EnableMushrooms()
 end sub
 
@@ -5602,6 +5621,7 @@ Sub tmushroom003_Hit()
 	Score(CurrentPlayer) = Score(CurrentPlayer) + (10000*PFMultiplier)
 	Playsound "mushroomhurt"
 	addextratime()
+	MushroomChecker = (MushroomChecker OR 4)
 	EnableMushrooms()
 end sub
 
@@ -5611,6 +5631,7 @@ Sub tmushroom004_Hit()
 	Score(CurrentPlayer) = Score(CurrentPlayer) + (10000*PFMultiplier)
 	Playsound "mushroomhurt"
 	addextratime()
+	MushroomChecker = (MushroomChecker OR 8)
 	EnableMushrooms()
 end sub
 
@@ -5620,6 +5641,7 @@ Sub tmushroom005_Hit()
 	Score(CurrentPlayer) = Score(CurrentPlayer) + (10000*PFMultiplier)
 	Playsound "mushroomhurt"
 	addextratime()
+	MushroomChecker = (MushroomChecker OR 16)
 	EnableMushrooms()
 end sub
 
@@ -5634,8 +5656,6 @@ sub checkbonusmushroom()
 		Status = "Normal"
 		ChangeSong()
 		MushroomChecker = 0
-		If VoodooUnlocked = 1 Then li011.state = 2
-		If BarUnlocked = 1 Then li007.state = 2
 		VoodooSlot = VoodooSlot OR 4
 		CheckVoodoo()
 	end if
@@ -5651,8 +5671,10 @@ sub VoodooDolls()
 	mode1timer.Enabled = 1
 	itemrotytimer.Enabled = 1
 	enablevoodoodolls()
+	cBall.Z = 25
 	BSVoodooToVoodoo.ExitSol_On
 	li030.state = 2
+	DollChecker = 0
 end sub
 
 Dim WhichDoll, DollChecker
@@ -5711,7 +5733,6 @@ sub EnableVoodooDolls()
 			VoodooDoll001.X = tvoodoodoll005.X
 			VoodooDoll001.Y = tvoodoodoll005.Y
 	End Select
-	DollChecker = (DollChecker OR WhichDoll)
 end sub
 
 Sub tvoodoodoll001_Hit()
@@ -5720,6 +5741,7 @@ Sub tvoodoodoll001_Hit()
 	Score(CurrentPlayer) = Score(CurrentPlayer) + (10000*PFMultiplier)
 	Playsound "voodoodollhurt"
 	addextratime()
+	DollChecker = (DollChecker OR 1)
 	EnableVoodooDolls()
 end sub
 
@@ -5733,6 +5755,7 @@ Sub tvoodoodoll002_Hit()
 	Score(CurrentPlayer) = Score(CurrentPlayer) + (10000*PFMultiplier)
 	Playsound "voodoodollhurt"
 	addextratime()
+	DollChecker = (DollChecker OR 2)
 	EnableVoodooDolls()
 end sub
 
@@ -5742,6 +5765,7 @@ Sub tvoodoodoll003_Hit()
 	Score(CurrentPlayer) = Score(CurrentPlayer) + (10000*PFMultiplier)
 	Playsound "voodoodollhurt"
 	addextratime()
+	DollChecker = (DollChecker OR 4)
 	EnableVoodooDolls()
 end sub
 
@@ -5751,6 +5775,7 @@ Sub tvoodoodoll004_Hit()
 	Score(CurrentPlayer) = Score(CurrentPlayer) + (10000*PFMultiplier)
 	Playsound "voodoodollhurt"
 	addextratime()
+	DollChecker = (DollChecker OR 8)
 	EnableVoodooDolls()
 end sub
 
@@ -5760,6 +5785,7 @@ Sub tvoodoodoll005_Hit()
 	Score(CurrentPlayer) = Score(CurrentPlayer) + (10000*PFMultiplier)
 	Playsound "voodoodollhurt"
 	addextratime()
+	DollChecker = (DollChecker OR 16)
 	EnableVoodooDolls()
 end sub
 
@@ -5774,8 +5800,6 @@ sub CheckBonusVoodooDoll()
 		Status = "Normal"
 		ChangeSong()
 		DollChecker = 0
-		If VoodooUnlocked = 1 Then li011.state = 2
-		If BarUnlocked = 1 Then li007.state = 2
 		VoodooSlot = VoodooSlot OR 8
 		CheckVoodoo()
 	end if
@@ -5791,8 +5815,10 @@ sub VoodooEars()
 	mode1timer.Enabled = 1
 	itemrotytimer.Enabled = 1
 	EnableEars()
+	cBall.Z = 25
 	BSVoodooToVoodoo.ExitSol_On
 	li031.state = 2
+	EarChecker = 0
 end sub
 
 Dim WhichEar, EarChecker
@@ -5851,7 +5877,6 @@ sub EnableEars()
 			Ear001.X = TEar005.X
 			Ear001.Y = TEar005.Y
 	End Select
-	EarChecker = (EarChecker OR WhichEar)
 end sub
 
 Sub tear001_Hit()
@@ -5860,6 +5885,7 @@ Sub tear001_Hit()
 	Score(CurrentPlayer) = Score(CurrentPlayer) + (10000*PFMultiplier)
 	Playsound "earhurt"
 	addextratime()
+	EarChecker = (EarChecker OR 1)
 	EnableEars()
 end sub
 
@@ -5876,6 +5902,7 @@ Sub tear002_Hit()
 	Score(CurrentPlayer) = Score(CurrentPlayer) + (10000*PFMultiplier)
 	Playsound "earhurt"
 	addextratime()
+	EarChecker = (EarChecker OR 2)
 	EnableEars()
 end sub
 
@@ -5885,6 +5912,7 @@ Sub tear003_Hit()
 	Score(CurrentPlayer) = Score(CurrentPlayer) + (10000*PFMultiplier)
 	Playsound "earhurt"
 	addextratime()
+	EarChecker = (EarChecker OR 4)
 	EnableEars()
 end sub
 
@@ -5894,6 +5922,7 @@ Sub tear004_Hit()
 	Score(CurrentPlayer) = Score(CurrentPlayer) + (10000*PFMultiplier)
 	Playsound "earhurt"
 	addextratime()
+	EarChecker = (EarChecker OR 8)
 	EnableEars()
 end sub
 
@@ -5903,6 +5932,7 @@ Sub tear005_Hit()
 	Score(CurrentPlayer) = Score(CurrentPlayer) + (10000*PFMultiplier)
 	Playsound "earhurt"
 	addextratime()
+	EarChecker = (EarChecker OR 16)
 	EnableEars()
 end sub
 
@@ -5917,8 +5947,6 @@ sub checkbonusear()
 		Status = "Normal"
 		ChangeSong()
 		EarChecker = 0
-		If VoodooUnlocked = 1 Then li011.state = 2
-		If BarUnlocked = 1 Then li007.state = 2
 		VoodooSlot = VoodooSlot OR 16
 		CheckVoodoo()
 	end if
